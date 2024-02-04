@@ -1,8 +1,12 @@
 import React from 'react'
-
+import TrendingBlogs from '../homepage/trending/Trending'
 const Blog = () => {
   return (
-    <div>Blog</div>
+    < div className=''>
+    <div className='TrendingBlogs  overflow-hidden w-full'>
+      <TrendingBlogs />
+    </div>
+    </div>
   )
 }
 
