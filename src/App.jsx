@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+ 
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+
+import MyState from './context/data/myState';
+import { ToastContainer } from 'react-toastify';
+// import Login from './components/registration/Login';
+// import Signup from './components/registration/Signup';
+// import Home from './components/Home';
+import NoPage from './components/nopage/NoPage'; 
+// import NewFormGeneration from './components/NewFormGeneration';
+// import UserDashboard from './components/user-forms/UserDashboard';
+// import AdminDashboard from './components/admin/AdminDashboard';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <MyState>
+      <Router>
+
+        <Routes>
+          {/* <Route path="/" element={<Home />} /> */}
+
+          {/* <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} /> */}
+
+          <Route path="/*" element={<NoPage />} />
+
+        </Routes>
+
+        <ToastContainer />
+
+      </Router>
+    </MyState>
+
   )
 }
 
 export default App
+
+// user 
+export const ProtectedRoute = ({ children }) => {
+  const user = localStorage.getItem('user')
+  if (user) {
+    return children
+  } else {
+    return <Navigate to={'/login'} />
+  }
+}
+
+// admin 
+// const ProtectedRouteForAdmin = ({ children }) => {
+//   const admin = JSON.parse(localStorage.getItem('user'))
+
+//   if (admin.user.email === ADMIN_EMAIL) {
+//     return children
+//   }
+//   else {
+//     return <Navigate to={'/login'} />
+//   }
+
+// }
