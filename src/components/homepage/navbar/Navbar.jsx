@@ -20,10 +20,10 @@ const Navbar = () => {
     };
 
     const Ham_menu = () => {
-        return(<div className={`flex-col fixed w-[70%] left-0 top-0
+        return(ham&&<div className={`flex-col fixed w-[70%] left-0 top-0
          z-10 bg-${mode === "light" ? "white" : "[#2A2C38]"} h-[100%] shadow-2xl`}>
         <div className="mx-6 w-[70%] flex items-center
-        justify-start font-extrabold text-[30px] mt-4 "
+        justify-start font-extrabold text-[30px] mt-4"
         onClick={toggleHam}>
             <IoMdClose />
         </div>
