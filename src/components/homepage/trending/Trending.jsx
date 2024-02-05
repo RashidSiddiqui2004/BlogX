@@ -3,13 +3,13 @@ import { GoArrowRight } from "react-icons/go";
 
 // this  is  only for the   skeleton purpose
 const BlogCard = () => (
-  <div className=" flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-    <div className="flex flex-col shrink p-2 w-full bg-neutral-80 rounded-lg   max-md:mt-4 transform transition-transform hover:scale-95    ">
+  <div className=" flex flex-col w-[33%] max-md:ml-0 max-md:w-full ">
+    <div className="flex flex-col shrink p-2 w-full bg-neutral-80  bg-neutral-50 rounded-lg  max-md:mt-4 transform transition-transform hover:scale-95    ">
       <img
         src="https://res.cloudinary.com/dk8y96rpu/image/upload/v1703790717/img1_fnim8m.jpg"
         className="w-full aspect-[1.5] rounded-lg fill-zinc-800"
       />
-      <div className="flex flex-col bg-neutral-50 rounded-lg  px-2 pt-2 mt-2">
+      <div className="flex flex-col   px-2 pt-2 mt-2">
         <div className="text-2xl tracking-tight leading-6 text-zinc-800">
           Grand Blog for Nerds
         </div>
