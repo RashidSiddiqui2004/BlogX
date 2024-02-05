@@ -81,7 +81,7 @@ function TrendingBlogs() {
       </div>
       <div className="flex flex-col">
         <div
-          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap rounded-lg border border-solid ${
+          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border border-solid ${
             mode === "dark"
               ? "bg-customBlue rounded-lg text-white border-neutral-50"
               : "bg-neutral-80 text-zinc-800"
