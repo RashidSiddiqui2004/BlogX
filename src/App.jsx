@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route,Navigate } from "react-router-dom";
 
 // import Login from './components/registration/Login';
 // import Signup from './components/registration/Signup';
@@ -48,6 +48,7 @@ export const ProtectedRoute = ({ children }) => {
     return <Navigate to={"/login"} />;
   }
 };
+
 
 // admin
 // const ProtectedRouteForAdmin = ({ children }) => {
