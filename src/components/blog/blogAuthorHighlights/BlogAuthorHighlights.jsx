@@ -1,15 +1,40 @@
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaCircleUser } from "react-icons/fa6";
 import BlogInteraction from '../interaction/BlogInteraction';
 import myContext from '../../../context/data/myContext';
+import getUserID from '../../../utilities/userData/GetUserID';
 
-
-const BlogAuthorHighlights = ({ authorID, claps, commentsCount, blogUrl, minutesRead, publishDate }) => {
+const BlogAuthorHighlights = ({ authorID, authorName, claps, commentsCount, minutesRead, publishDate }) => {
 
   const context = useContext(myContext);
-  const { mode } = context;
-  
+  const { mode, followAuthor} = context;
+ 
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const uid = await getUserID(); 
+
+        if (uid) { 
+          setUserId(uid); 
+        }
+
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+ 
+
+  const followUser = async () => {
+    // followerId, followingId, followingUsername 
+    await followAuthor(userId, authorID, authorName);
+  }
+
   return (
     <div>
 
@@ -24,9 +49,9 @@ const BlogAuthorHighlights = ({ authorID, claps, commentsCount, blogUrl, minutes
         <div className='text-sm md:text-lg'>
           {/* author details */}
           <div className='flex flex-row items-center space-x-4'>
-            <h2>Punit Chawla</h2>
+            <h2>{authorName}</h2>
             <div className=''>•</div> {/* Centered Dot */}
-            <h2 className='text-green-400'>Follow</h2>
+            <h2 className='text-green-400 cursor-pointer' onClick={followUser}>Follow</h2>
           </div>
           {/* blog details */}
           <div className='flex flex-row items-center space-x-1 md:space-x-4
@@ -35,14 +60,14 @@ const BlogAuthorHighlights = ({ authorID, claps, commentsCount, blogUrl, minutes
             <div className=''>•</div>  */}
             <h2 className='w-[100px]'>{minutesRead} min Read</h2>
             <div className=''>•</div> {/* Centered Dot */}
-            <h2 className='w-[100px]'>Jan 04, 2024</h2>
+            <h2 className='w-[125px]'>{publishDate}</h2>
           </div>
         </div>
 
       </div>
 
       {/* claps and comments count */}
-      <BlogInteraction claps={claps} commentsCount={commentsCount} blogUrl={blogUrl} />
+      <BlogInteraction claps={claps} commentsCount={commentsCount} />
 
     </div>
   )

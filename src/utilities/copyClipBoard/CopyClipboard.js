@@ -17,13 +17,13 @@ function copyToClipboard() {
     // Remove the temporary input element
     document.body.removeChild(tempInput);
 
-    const messagePointer = document.getElementById('copyConf');
+    // const messagePointer = document.getElementById('copyConf');
 
-    messagePointer.classList.remove('hidden');
+    // messagePointer.classList.remove('hidden');
 
-    setTimeout(() => {
-        messagePointer.classList.add('hidden');
-    }, 1000);
+    // setTimeout(() => {
+    //     messagePointer.classList.add('hidden');
+    // }, 1000);
 
 }
 
