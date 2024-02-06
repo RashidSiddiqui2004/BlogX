@@ -17,8 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const fireDB = getFirestore(app);
-const auth = getAuth(app); 
-// Create a root reference
+const auth = getAuth(app);  
 const storage = getStorage();
 
 export {fireDB, auth, storage}

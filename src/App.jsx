@@ -1,20 +1,16 @@
- 
-import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route,Navigate } from "react-router-dom";
 
-import MyState from './context/data/myState';
+  
+import MyState from "./context/data/myState"; 
+import Homepage from "./components/homepage/Homepage";
+import Login from "./components/homepage/registration/Login";
+import Signup from "./components/homepage/registration/Signup";
 import { ToastContainer } from 'react-toastify'; 
-import NoPage from './components/nopage/NoPage'; 
-import Homepage from './components/homepage/Homepage';
-import Login from './components/homepage/registration/Login';
-import Signup from './components/homepage/registration/Signup';
-import Blog from './components/blog/Blog';
-// import NewFormGeneration from './components/NewFormGeneration';
+import NoPage from './components/nopage/NoPage';  
+import Blog from './components/blog/Blog'; 
+import AddBlogLayout from './components/addBlog/AddBlogLayout';
+
 // import UserDashboard from './components/user-forms/UserDashboard';
 // import AdminDashboard from './components/admin/AdminDashboard';
 
@@ -22,39 +18,43 @@ function App() {
   return (
     <MyState>
       <Router>
-
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path='/blog' element={<Blog/>} />
+ 
+          <Route path="/blog" element={<Blog />} />
+ 
+          <Route path='/blog/:id' element={<Blog/>} />
 
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup/>} />
+          <Route path='/add-blog' element={<AddBlogLayout/>} />
 
-          <Route path="/*" element={<NoPage />} />
+      
 
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          <Route path="/*" element={<Blog />} />
         </Routes>
 
         <ToastContainer />
-
       </Router>
     </MyState>
-
-  )
+  );
 }
 
-export default App
+export default App;
 
-// user 
+// user
 export const ProtectedRoute = ({ children }) => {
-  const user = localStorage.getItem('user')
+  const user = localStorage.getItem("user");
   if (user) {
-    return children
+    return children;
   } else {
-    return <Navigate to={'/login'} />
+    return <Navigate to={"/login"} />;
   }
-}
+};
 
-// admin 
+
+// admin
 // const ProtectedRouteForAdmin = ({ children }) => {
 //   const admin = JSON.parse(localStorage.getItem('user'))
 

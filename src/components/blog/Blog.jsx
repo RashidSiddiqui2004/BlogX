@@ -1,4 +1,6 @@
-import React, { useContext } from 'react'
+
+import React, { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
 import Navbar from '../homepage/navbar/Navbar'
 import BlogAuthorHighlights from './blogAuthorHighlights/BlogAuthorHighlights'
 import RenderHTMLContent from '../../utilities/htmlRenderer/RenderHTMLContent'
@@ -7,58 +9,80 @@ import CommentForm from './comments/CommentForm'
 import TagSection from './tags/TagSection'
 import BlogInteraction from './interaction/BlogInteraction'
 import CommentSection from './comments/CommentSection'
+import Footer from '../homepage/footer/Footer';
+import AuthorDetails from './blogAuthorHighlights/AuthorDetails';
 
 const Blog = () => {
 
   const context = useContext(myContext);
-  const { mode } = context;
+  const { mode, getBlogData, getFollowersCount } = context;
 
-  const title = "UX/UI Design Trends Going Into 2024";
+  const params = useParams();
+  const blogId = params.id;
+  const [followersCnt, setfollowersCnt] = useState(0);
 
-  const tagsOnBlog = ["Web Development", "UI/UX", "GitHub"];
+  const [blogState, setblogState] = useState('');
 
-  const blogContent = `<h1 style="text-align: center;"><strong><span style="font-family: 'comic sans ms', sans-serif;"><em><img src="https://www.mindinventory.com/blog/wp-content/uploads/2021/03/mobile-app-design-fundamentals-the-difference-between-UI-and-UX.webp" alt="UI/UX " width="800" height="505"></em></span></strong></h1><p style="text-align: center;"><strong><span style="font-family: 'comic sans ms', sans-serif; font-size: 18pt;"><em>NEW POST</em></span></strong></p><p style="text-align: center;">&nbsp;</p><p style="text-align: center;">&nbsp;</p><h1 id="2ae8" class="mn mo fr be mp mq mr gr ms mt mu gu mv mw mx my mz na nb nc nd ne nf ng nh ni bj" data-selectable-paragraph="">Visual Studio Code is one of the most widely-used source code editors out there, with over 136k stars on GitHub. Its popularity comes about due to its lightness, flexibility, open-source nature, simplicity, and extensibility.</h1><p id="f3f1" class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph="">Speaking of extensibility, VSCode has thousands of extensions you can install to ramp up your developer productivity and save yourself from mundane tasks. They are all available in the Visual Studio Code marketplace and the vast majority of them are completely free.</p><p class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph="">&nbsp;</p><p class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph="">&nbsp;</p><p class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph=""><img src="https://frameboxx.in/upload/page/what-are-the-opportunities-for-ui-ux-designers_165530x.jpg" alt="2nd Image for blog" width="800" height="451"></p><p class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph="">&nbsp;</p><p class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph="">&nbsp;</p><p class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph="">&nbsp;</p><h1 id="7363" class="mn mo fr be mp mq mr gr ms mt mu gu mv mw mx my mz na nb nc nd ne nf ng nh ni bj" data-selectable-paragraph="">2.&nbsp;<mark class="tt tu ao">JavaScript Booster</mark></h1><p>&nbsp;</p><p>&nbsp;</p><p id="ffdd" class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph="">This extension upgrades Visual Studio Code with code actions to perform common refactoring tasks that occur when programming with JavaScript.</p><p class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph="">&nbsp;</p><p class="pw-post-body-paragraph nj nk fr nl b gp nm nn no gs np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe fk bj" data-selectable-paragraph="">&nbsp;</p>`;
+  useEffect(() => {
+
+    const fetchData = async () => {
+      await getBlogData(blogId).then((data) => setblogState(data))
+      await getFollowersCount(blogState?.authorId).then((data) => {setfollowersCnt(data)});  
+    }
+
+    fetchData();
+  }, []);
+
 
   return (
     <div style={{ color: mode === 'dark' ? 'white' : '' }}
-      className=' overflow-hidden'>
+      className='overflow-hidden'>
+
       <Navbar />
 
-      <h1 className='text-4xl font-bold my-4'>{title}</h1>
-
+      <h1 className='text-4xl font-bold md:mx-[20%] mt-8 mb-6'>{blogState?.title}</h1>
+ 
       <div className='w-[55%] md:mx-[25%] my-4 py-5'>
-        <BlogAuthorHighlights claps={100} commentsCount={50} authorID={100}
-          blogUrl={'gouhw70uyhf'} minutesRead={5} publishDate="" />
+        <BlogAuthorHighlights claps={blogState?.claps} commentsCount={1}
+          authorID={blogState?.authorId} authorName={blogState?.author}
+          minutesRead={blogState?.minutesRead} publishDate={blogState?.date} />
       </div>
 
       <div className='md:mx-[20%]'>
-        <RenderHTMLContent htmlContent={blogContent} />
+        <RenderHTMLContent htmlContent={blogState?.description} />
       </div>
 
       {/* tags */}
       <div className='mx-4 md:mx-[22%] mb-4'>
-        <TagSection tagList={tagsOnBlog} />
+        <TagSection tagList={blogState?.tags} />
       </div>
 
       {/* claps and comment count */}
       <div className='md:mx-[22%] my-10'>
-        <BlogInteraction claps={100} commentsCount={50} blogUrl={'gouhw70uyhf'} />
+        <BlogInteraction claps={blogState?.claps} commentsCount={1} blogUrl={blogId} />
       </div>
 
 
       {/* comment section */}
       <div className='mx-4 md:mx-[20%]'>
-        <CommentForm />
+        <CommentForm blogId={blogId}/>
       </div>
 
-      <hr />
+      <hr class="rounded-full shadow-md shadow-gray-500 my-8" />
 
       <div className='md:mx-[20%]'>
-        <CommentSection/>
+        <CommentSection blogId={blogId} />
       </div>
+
+      <div className='bg-slate-400'> 
+        <AuthorDetails authorName={blogState?.author} followersCnt={followersCnt}/>
+      </div>
+
+      <Footer/>
 
     </div>
   )
 }
 
 export default Blog
+

@@ -1,19 +1,34 @@
 
-import React from 'react'
+import React, { useContext } from 'react'
+import myContext from '../../../context/data/myContext';
 
 const Comment = ({ comment }) => {
 
+    const context = useContext(myContext);
+    const { getCommentsForBlog, mode } = context;
+
+    const isDarkTheme = mode === 'dark';
+
+    const time = "12 minutes ago"
+    const userProfileImg = "https://res.cloudinary.com/drlkkozug/image/upload/v1705071144/y9evmbpdht5ezj3fkal9.jpg"
+
     return (
-        <div className="bg-white p-4 rounded-lg shadow-md">
+        <div
+            className={`text-sm md:text-md px-4 py-3 rounded-sm shadow-md
+         ${isDarkTheme ? 'text-white' : 'text-slate-900 '}`}>
             <div className="flex items-center">
                 <img
-                    src="https://res.cloudinary.com/drlkkozug/image/upload/v1705071144/y9evmbpdht5ezj3fkal9.jpg"
+                    src={userProfileImg}
                     alt='User Avatar'
                     className="w-10 h-10 rounded-full object-cover mr-2"
                 />
-                <span className="font-semibold text-gray-700">{comment.username}</span>
+                <div className='justify-center flex flex-col mx-4'>
+                    <h3 className="font-semibold">{comment.username}</h3>
+                    <h3 className="font-normal">{time}</h3>
+                </div>
+
             </div>
-            <p className="text-gray-800 mt-2">{comment.comment}</p>
+            <p className="mt-2 flex justify-start mx-16">{comment.comment}</p>
         </div>
     )
 }
