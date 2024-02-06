@@ -1,35 +1,16 @@
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext} from 'react'
 import { FaCircleUser } from "react-icons/fa6";
 import BlogInteraction from '../interaction/BlogInteraction';
-import myContext from '../../../context/data/myContext';
-import getUserID from '../../../utilities/userData/GetUserID';
+import myContext from '../../../context/data/myContext'; 
 
-const BlogAuthorHighlights = ({ authorID, authorName, claps, commentsCount, minutesRead, publishDate }) => {
+const BlogAuthorHighlights = ({ userId, blogId , authorID, authorName, claps, 
+  commentsCount, minutesRead, publishDate }) => {
 
   const context = useContext(myContext);
-  const { mode, followAuthor} = context;
- 
-  const [userId, setUserId] = useState('');
+  const { mode, followAuthor } = context;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const uid = await getUserID(); 
-
-        if (uid) { 
-          setUserId(uid); 
-        }
-
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
- 
-
+  // function for allowing users to follow author
   const followUser = async () => {
     // followerId, followingId, followingUsername 
     await followAuthor(userId, authorID, authorName);
@@ -51,7 +32,10 @@ const BlogAuthorHighlights = ({ authorID, authorName, claps, commentsCount, minu
           <div className='flex flex-row items-center space-x-4'>
             <h2>{authorName}</h2>
             <div className=''>•</div> {/* Centered Dot */}
-            <h2 className='text-green-400 cursor-pointer' onClick={followUser}>Follow</h2>
+            <button disabled={userId === null} onClick={followUser}>
+              <h2 className='text-green-400'>Follow</h2>
+            </button>
+
           </div>
           {/* blog details */}
           <div className='flex flex-row items-center space-x-1 md:space-x-4
@@ -67,7 +51,7 @@ const BlogAuthorHighlights = ({ authorID, authorName, claps, commentsCount, minu
       </div>
 
       {/* claps and comments count */}
-      <BlogInteraction claps={claps} commentsCount={commentsCount} />
+      <BlogInteraction blogId={blogId} claps={claps} commentsCount={commentsCount} userId={userId}/>
 
     </div>
   )

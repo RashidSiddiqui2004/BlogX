@@ -2,7 +2,14 @@
 import React from 'react'
 import { FaCircleUser } from "react-icons/fa6";
 
-const AuthorDetails = ({ authorName, followersCnt }) => {
+const AuthorDetails = ({ authorName, followersCnt, userId, authorID }) => {
+
+    // function for allowing users to follow author
+    const followUser = async () => {
+        // followerId, followingId, followingUsername 
+        await followAuthor(userId, authorID, authorName);
+    }
+
     return (
         <div className='py-8 flex mx-[20%] justify-center gap-x-28'>
             <div className='mx-4 my-3 flex flex-col justify-start'>
@@ -21,7 +28,10 @@ const AuthorDetails = ({ authorName, followersCnt }) => {
 
             <div className='mx-4 my-16 flex flex-col justify-start'>
                 <button className="bg-gray-800 text-white px-6 py-4
-                rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:border-blue-300">
+                rounded-lg hover:bg-gray-700 focus:outline-none focus:ring
+                 focus:border-blue-300"
+                    disabled={userId === null}
+                    onClick={followUser}>
                     Follow
                 </button>
             </div>
