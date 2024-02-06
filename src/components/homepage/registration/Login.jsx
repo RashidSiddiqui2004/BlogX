@@ -65,7 +65,7 @@ function Login() {
                 <div className="flex justify-center merriweather">
                     {/* <img src="/logo.jpg" alt="Urban Guard Logo"
                         className="w-12 h-12 rounded-full mb-2 ml-10" /> */}
-                    <h1 className="text-xl font-semibold mt-3 ml-2">DevAppendor</h1>
+                    <h1 className="text-xl font-semibold mt-3 ml-2">BlogX</h1>
                 </div>
                 <div>
                     <h1 className='text-center text-white text-xl mb-4 merriweather font-bold'>Login</h1>

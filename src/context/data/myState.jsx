@@ -21,7 +21,7 @@ function myState(props) {
         else {
             setMode('light');
             document.body.style.backgroundColor = "white"
-        } 
+        }
     }
 
     const [loading, setLoading] = useState(false);
@@ -36,7 +36,9 @@ function myState(props) {
         blogPoster: "",
         tags: [],
         claps: 0,
+        views: 0,
         minutesRead: 0,
+        isFeatured: false,
         timeOfCreation: Timestamp.now(),
         date: new Date().toLocaleString(
             "en-US",
@@ -101,22 +103,38 @@ function myState(props) {
         }
     }
 
+
     const getBlogData = async (blogId) => {
         setLoading(true);
         try {
-          const productTemp =  await getDoc(doc(fireDB, 'blogs', blogId));
-          const data = productTemp.data(); 
-          setLoading(false);
-          return data;
+            const blogRef = doc(fireDB, 'blogs', blogId);
+
+            // Get the document snapshot
+            const blogSnapshot = await getDoc(blogRef);
+
+            if (!blogSnapshot.exists()) { 
+                return;
+            }
+
+            // Get the current views count
+            const data = blogSnapshot.data();
+            const currentViews = data.views || 0;
+
+            // Update the views count by 1
+            const updatedViews = currentViews + 1;
+
+            // Update the views count in the document
+            await updateDoc(blogRef, { views: updatedViews });
+
+            return data;
         } catch (error) {
-          console.log(error);
-          setLoading(false);
+            console.error('Error updating views count:', error);
         }
-      }
+    };
 
 
-    //   not done yet
-    const updateBlog = async () => {
+    //  to-do
+    const updateBlog = async (blogId, blog) => {
 
     }
 
@@ -128,11 +146,11 @@ function myState(props) {
             const blogDoc = await getDoc(doc(fireDB, 'blogs', blogId));
 
             // Check if the user is the author
-            if (blogDoc.exists() && blogDoc.data().authorId === userID) { 
+            if (blogDoc.exists() && blogDoc.data().authorId === userID) {
                 await deleteDoc(doc(fireDB, 'blogs', blogId));
                 toast.success('Blog deleted!');
                 // getAllBlogs();  
-            } else { 
+            } else {
                 toast.error('You do not have permission to delete this blog');
             }
 
@@ -174,14 +192,14 @@ function myState(props) {
         }
     }
 
-     //   not done yet
+    //    to-do
     const getTrendingBlogs = async () => {
 
     }
 
     const [comments, setComments] = useState([]);
 
-    const getCommentsForBlog = async ( blogId ) => {
+    const getCommentsForBlog = async (blogId) => {
         try {
             const commentsRef = collection(fireDB, 'comments');
 
@@ -241,12 +259,45 @@ function myState(props) {
 
     }
 
-     //   not done yet
-    const clapBlog = async (userId, blogId ) => {
+    const clapBlog = async (userId, blogId, claps, blog) => {
+        try {
 
+            const likeRef = doc(fireDB, 'claps', `${userId}_${blogId}`);
+            const likeDoc = await getDoc(likeRef);
+
+            if (likeDoc.exists()) {
+                // The user has already liked the blog, so "unlike" it
+                const updatedVotes = claps - 1;
+                const updatedBlog = {
+                    ...blog,
+                    claps: updatedVotes,
+                };
+
+                await setDoc(doc(fireDB, 'blogs', blogId), updatedBlog);
+
+                await deleteDoc(likeRef);
+
+                toast.success("Blog disliked...")
+            } else {
+                // The user hasn't liked the post yet, so "like" it
+                const updatedVotes = claps + 1; // Increment the likes
+                const updatedBlog = {
+                    ...blog,
+                    claps: updatedVotes,
+                };
+
+                // Update the post in the database
+                await setDoc(doc(fireDB, 'blogs', blogId), updatedBlog);
+                await setDoc(likeRef, { userId, blogId });
+
+                toast.success("Blog liked...")
+            }
+        } catch (error) {
+            console.error('Error while liking a blog:', error);
+        }
     }
 
-    const commentOnBlog = async (blogId, user_id, comment, username ) => {
+    const commentOnBlog = async (blogId, user_id, comment, username) => {
         const commentsRef = collection(fireDB, 'comments');
 
         // Create a new comment document
@@ -265,8 +316,6 @@ function myState(props) {
                 }
             )
         };
-
-        console.log(newComment);
 
         await setDoc(doc(commentsRef), newComment);
     }
@@ -320,8 +369,8 @@ function myState(props) {
             return false;
         }
     };
- 
-    const getFollowersCount = async ( authorId ) => {
+
+    const getFollowersCount = async (authorId) => {
         // Get the followings count 
         const followersQuery = query(collection(fireDB, 'followings'), where('following', '==', authorId));
         const followersSnapshot = await getDocs(followersQuery);
@@ -340,9 +389,9 @@ function myState(props) {
     return (
         <MyContext.Provider value={{
             mode, loading, setLoading, toggleMode,
-            blog, allBlogs, setBlog,getBlogData,
+            blog, allBlogs, setBlog, getBlogData,
             createBlog, updateBlog, deleteBlog,
-            getUserBlogs, getTrendingBlogs, getAllBlogs, 
+            getUserBlogs, getTrendingBlogs, getAllBlogs,
             getDepartmentBlogs, getFeaturedBlogs,
             clapBlog, commentOnBlog, comments, setComments,
             followAuthor, getFollowersCount,

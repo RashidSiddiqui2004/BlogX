@@ -129,10 +129,8 @@ function Signup() {
             {loading && <Loader />}
 
             <div className='bg-gray-800 px-10 rounded-xl py-10'>
-                <div className="flex justify-center merriweather mb-5">
-                    {/* <img src="/logo.jpg" alt="Urban Guard Logo"
-                        className="w-12 h-12 rounded-full mb-2 ml-10" /> */}
-                    <h1 className="text-xl font-semibold mt-3 ml-2">DevAppendor</h1>
+                <div className="flex justify-center merriweather mb-5"> 
+                    <h1 className="text-xl font-semibold mt-3 ml-2">BlogX</h1>
                 </div>
                 <div>
                     <h1 className='text-center text-white text-xl mb-4 font-bold'>Signup</h1>

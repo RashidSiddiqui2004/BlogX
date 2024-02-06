@@ -50,8 +50,8 @@ function TrendingBlogs() {
           <button onClick={handleSeeMoreClick}>See More</button>
         </div>
       </div>
-
-      {/* first row */}
+ 
+ 
       <div className="px-5 mt-10 w-full max-md:max-w-full">
         <div className="grid md:grid-cols-3">
           {
