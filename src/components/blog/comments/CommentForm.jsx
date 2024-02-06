@@ -1,12 +1,10 @@
 
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import "./styles.css";
-import myContext from '../../../context/data/myContext';
-import getUsernameByUID from '../../../utilities/userData/GetUser';
-import { IoMdSend } from "react-icons/io";
-import getUserID from '../../../utilities/userData/GetUserID';
+import myContext from '../../../context/data/myContext'; 
+import { IoMdSend } from "react-icons/io"; 
 
-const CommentForm = ({ blogId }) => {
+const CommentForm = ({ blogId, userId, username}) => {
 
   const [comment, setComment] = useState("");
 
@@ -14,33 +12,11 @@ const CommentForm = ({ blogId }) => {
 
   const { commentOnBlog } = context;
 
-  const [u_name, setUser] = useState('');
-  const [userId, setUserId] = useState('');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const uid = await getUserID();
-        const username = await getUsernameByUID(uid);
-
-        if (username) {
-          setUser(username);
-          setUserId(uid); 
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.trim() === '') return;
 
-    await commentOnBlog(blogId, userId, comment, u_name);
+    await commentOnBlog(blogId, userId, comment, username);
 
     setComment('');
   };
