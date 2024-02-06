@@ -24,13 +24,6 @@ function FeaturedSection() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setCurrentIndex((prevIndex) => (prevIndex === numFeaturedBlogs - 1 ? 0 : prevIndex + 1));
-  //   }, 5000);
-  //   return () => clearInterval(intervalId);
-  // }, []);
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % numFeaturedBlogs);
@@ -38,10 +31,6 @@ function FeaturedSection() {
     return () => clearInterval(intervalId);
   }, [numFeaturedBlogs]);
 
-
-  const handleSeeMoreClick = () => {
-    navigate("/blog");
-  };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex === numFeaturedBlogs - 1 ? 0 : prevIndex + 1));
@@ -95,7 +84,7 @@ function FeaturedSection() {
               style={{ transform: "translateX(-30px)" }}
             >
               <Link to={`/blog/${featuredBlogs[currentIndex]?.id}`}>
-                <button onClick={handleSeeMoreClick}>See More</button>
+                <button>See More</button>
               </Link>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
-import myContext from "../../../context/data/myContext"; 
+import { useNavigate } from "react-router-dom";
+import myContext from "../../../context/data/myContext";
 import BlogCard from "./BlogCard";
 import { Link } from 'react-router-dom'
 
@@ -10,16 +10,27 @@ function TrendingBlogs() {
   const navigate = useNavigate();
 
   const handleSeeMoreClick = () => {
-    navigate("/blog"); // Navigate to the blog page
+    navigate("/trending-blogs"); // Navigate to the trending blogs page
   };
 
+  function extractFirst30Words(htmlString) {
+    // Remove HTML tags
+    const plainText = htmlString.replace(/<[^>]*>/g, '');
+
+    // Extract first 30 words
+    const words = plainText.split(/\s+/);
+    const first30Words = words.slice(0, 30).join(' ');
+
+    return first30Words;
+}
+
   useEffect(() => {
-    // will change to get trending blogs soon
-    const fetchAllBlogs = async () => {
+
+    const fetchAllTrendingBlogs = async () => {
       await getTrendingBlogs();
     }
 
-    fetchAllBlogs();
+    fetchAllTrendingBlogs();
   }, [])
 
   return (
@@ -50,8 +61,8 @@ function TrendingBlogs() {
           <button onClick={handleSeeMoreClick}>See More</button>
         </div>
       </div>
- 
- 
+
+
       <div className="px-5 mt-10 w-full max-md:max-w-full">
         <div className="grid md:grid-cols-3">
           {
@@ -68,13 +79,16 @@ function TrendingBlogs() {
                 claps,
                 minutesRead,
                 date,
-                id, 
-                } = item;
+                id,
+              } = item;
+
+              let shortSummary = extractFirst30Words(summary);
+              shortSummary+= ' ...'
 
               return (
                 <Link to={`/blog/${id}`} key={index}>
                   <BlogCard blogid={id} title={title} description={description}
-                   summary={summary} department={department} blogPoster={blogPoster}
+                    summary={shortSummary} department={department} blogPoster={blogPoster}
                     author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
                 </Link>
               )
@@ -82,6 +96,7 @@ function TrendingBlogs() {
             })
           }
 
+        
         </div>
       </div>
 
