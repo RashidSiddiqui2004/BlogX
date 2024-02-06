@@ -17,12 +17,13 @@ import getUsernameByUID from '../../utilities/userData/GetUser';
 const Blog = () => {
 
   const context = useContext(myContext);
-  const { mode, getBlogData, getFollowersCount } = context;
+  const { mode, getBlogData, getFollowersCount, getCommentsForBlog } = context;
+  const isDarkTheme = (mode=="dark");
 
   const params = useParams();
   const blogId = params.id;
-  const [followersCnt, setfollowersCnt] = useState(0);
 
+  const [followersCnt, setfollowersCnt] = useState(0);
   const [blogState, setblogState] = useState('');
 
 
@@ -36,8 +37,25 @@ const Blog = () => {
   const [u_name, setUser] = useState('');
   const [userId, setUserId] = useState(null);
 
-  useEffect(() => {
+  const [comments, setComments] = useState([]);
+  const commentsCnt= comments.length;
 
+
+  // get comments
+  useEffect(() => { 
+      async function fetchComments() {
+          const cmts = await getCommentsForBlog(blogId).then((commentsData) => {
+            setComments(commentsData);
+            // setCommentsCnt();
+          })  
+      }
+
+      fetchComments();
+  }, []);
+
+  // get blog and author data
+  useEffect(() => {
+ 
     const fetchUserData = async () => {
       try {
         const uid = await getUserID();
@@ -58,8 +76,17 @@ const Blog = () => {
     };
 
     const fetchBlogData = async () => {
-      await getBlogData(blogId).then((data) => setblogState(data))
-      await getFollowersCount(blogState?.authorId).then((data) => { setfollowersCnt(data) });
+      try {
+        // Fetch blog data
+        const blogData = await getBlogData(blogId);
+        setblogState(blogData);
+
+        // Fetch followers count
+        const followersCount = await getFollowersCount(blogData?.authorId);
+        setfollowersCnt(followersCount);
+      } catch (error) {
+        // handle error
+      }
     }
 
     fetchBlogData();
@@ -75,10 +102,8 @@ const Blog = () => {
 
       <h1 className='text-4xl font-bold md:mx-[20%] mt-8 mb-6'>{blogState?.title}</h1>
 
-      <div className='w-[55%] md:mx-[25%] my-4 py-5'>
-        <BlogAuthorHighlights claps={blogState?.claps} commentsCount={1} userId={userId}
-          authorID={blogState?.authorId} authorName={blogState?.author} blogId={blogId}
-          minutesRead={blogState?.minutesRead} publishDate={blogState?.date} />
+      <div className='md:w-[55%] md:mx-[25%] my-4 py-5'>
+        <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
       </div>
 
       <div className='md:mx-[20%]'>
@@ -91,13 +116,16 @@ const Blog = () => {
       </div>
 
       {/* claps and comment count */}
-      <div className='md:mx-[22%] my-10'>
-        <BlogInteraction claps={blogState?.claps} commentsCount={1} blogId={blogId} />
-      </div>
 
+      <div className={`md:ml-[25%] md:mr-[20%] my-10 border-2 border-l-0
+       border-r-0  ${isDarkTheme ? 'border-gray-800' : 'border-gray-100'}`}>
+        <BlogInteraction blogId={blogId} claps={blogState?.claps} commentsCount={commentsCnt}
+          userId={userId} blog={blogState} />
+      </div>
 
       {/* comment section */}
       {/* render only when user is registered o/w hide */}
+
 
       {
         !(userId === null) ?
@@ -118,14 +146,14 @@ const Blog = () => {
       }
 
 
-      <hr class="rounded-full shadow-md shadow-gray-500 my-8" />
+      <hr className="rounded-full shadow-md shadow-gray-500 my-8" />
 
       <div className='md:mx-[20%]'>
-        <CommentSection blogId={blogId} />
+        <CommentSection comments={comments} />
       </div>
 
-      <div className='bg-slate-400'>
-        <AuthorDetails userId={userId} authorID={blogState?.authorID} authorName={blogState?.author} followersCnt={followersCnt} />
+      <div className={`${isDarkTheme ? 'bg-gray-900' : 'bg-gray-200'}`}>
+        <AuthorDetails userId={userId}  blog={blogState} followersCnt={followersCnt} />
       </div>
 
       <Footer />

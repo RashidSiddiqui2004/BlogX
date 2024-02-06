@@ -36,7 +36,9 @@ function myState(props) {
         blogPoster: "",
         tags: [],
         claps: 0,
+        views: 0,
         minutesRead: 0,
+        isFeatured: false,
         timeOfCreation: Timestamp.now(),
         date: new Date().toLocaleString(
             "en-US",
@@ -101,22 +103,38 @@ function myState(props) {
         }
     }
 
+
     const getBlogData = async (blogId) => {
         setLoading(true);
         try {
-            const productTemp = await getDoc(doc(fireDB, 'blogs', blogId));
-            const data = productTemp.data();
-            setLoading(false);
+            const blogRef = doc(fireDB, 'blogs', blogId);
+
+            // Get the document snapshot
+            const blogSnapshot = await getDoc(blogRef);
+
+            if (!blogSnapshot.exists()) { 
+                return;
+            }
+
+            // Get the current views count
+            const data = blogSnapshot.data();
+            const currentViews = data.views || 0;
+
+            // Update the views count by 1
+            const updatedViews = currentViews + 1;
+
+            // Update the views count in the document
+            await updateDoc(blogRef, { views: updatedViews });
+
             return data;
         } catch (error) {
-            console.log(error);
-            setLoading(false);
+            console.error('Error updating views count:', error);
         }
-    }
+    };
 
 
     //  to-do
-    const updateBlog = async () => {
+    const updateBlog = async (blogId, blog) => {
 
     }
 
@@ -240,38 +258,42 @@ function myState(props) {
     const getFeaturedBlogs = async () => {
 
     }
- 
-    const clapBlog = async (userId, blogId, currLikes) => {
-        try { 
+
+    const clapBlog = async (userId, blogId, claps, blog) => {
+        try {
 
             const likeRef = doc(fireDB, 'claps', `${userId}_${blogId}`);
             const likeDoc = await getDoc(likeRef);
 
             if (likeDoc.exists()) {
                 // The user has already liked the blog, so "unlike" it
-                const updatedVotes = currLikes - 1;  
+                const updatedVotes = claps - 1;
                 const updatedBlog = {
                     ...blog,
-                    likes: updatedVotes,
+                    claps: updatedVotes,
                 };
 
-                await setDoc(doc(fireDB, 'blogs', id), updatedBlog);
-  
+                await setDoc(doc(fireDB, 'blogs', blogId), updatedBlog);
+
                 await deleteDoc(likeRef);
+
+                toast.success("Blog disliked...")
             } else {
                 // The user hasn't liked the post yet, so "like" it
-                const updatedVotes = currLikes + 1; // Increment the likes
+                const updatedVotes = claps + 1; // Increment the likes
                 const updatedBlog = {
                     ...blog,
-                    likes: updatedVotes,
+                    claps: updatedVotes,
                 };
 
                 // Update the post in the database
-                await setDoc(doc(fireDB, 'blogs', id), updatedBlog); 
+                await setDoc(doc(fireDB, 'blogs', blogId), updatedBlog);
                 await setDoc(likeRef, { userId, blogId });
+
+                toast.success("Blog liked...")
             }
         } catch (error) {
-            console.error('Error while liking a post:', error);
+            console.error('Error while liking a blog:', error);
         }
     }
 
@@ -294,7 +316,7 @@ function myState(props) {
                 }
             )
         };
- 
+
         await setDoc(doc(commentsRef), newComment);
     }
 

@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import NoPage from './components/nopage/NoPage';  
 import Blog from './components/blog/Blog'; 
 import AddBlogLayout from './components/addBlog/AddBlogLayout';
+import UpdateBlogLayout from "./components/updateblog/UpdateBlogLayout";
 
 // import UserDashboard from './components/user-forms/UserDashboard';
 // import AdminDashboard from './components/admin/AdminDashboard';
@@ -27,12 +28,14 @@ function App() {
 
           <Route path='/add-blog' element={<AddBlogLayout/>} />
 
+          <Route path='/update-blog/:id' element={<UpdateBlogLayout/>} />
+
       
 
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          <Route path="/*" element={<Blog />} />
+          <Route path="/*" element={<NoPage />} />
         </Routes>
 
         <ToastContainer />

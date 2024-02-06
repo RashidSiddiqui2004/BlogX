@@ -5,15 +5,59 @@ import { Editor } from '@tinymce/tinymce-react';
 import getUsernameByUID from '../.././utilities/userData/GetUser';
 import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
 import getUserID from '../../utilities/userData/GetUserID';
+import { Link, useParams } from 'react-router-dom';
 import departmentsInDevComm from '../../utilities/departments/departmentsInDevComm.JS';
 import BtnTemplate from '../../utilities/minutesRead/BtnTemplate';
 
-function AddBlog() {
-
+const UpdateBlog = () => {
     const context = useContext(myContext);
-    const { blog, setBlog, createBlog } = context;
+
+    const { blog, setBlog, updateBlog, getBlogData } = context;
+
+    const params = useParams();
+    const blogId = params.id;
+
+    const [blogState, setblogState] = useState('');
 
     const [tags, setTags] = useState([]);
+
+    useEffect(() => {
+
+        const fetchUserData = async () => {
+            try {
+                const uid = await getUserID();
+
+                if (uid === -1) {
+                    return;
+                }
+
+                const username = await getUsernameByUID(uid);
+
+                if (username) {
+                    setUser(username);
+                    setUserId(uid);
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        const fetchBlogData = async () => {
+            try {
+                // Fetch blog data
+                const blogData = await getBlogData(blogId);
+                setblogState(blogData);
+                setTags(blogData?.tags)
+
+            } catch (error) {
+                // handle error
+            }
+        }
+
+        fetchBlogData();
+        fetchUserData();
+    }, []);
+
     const [useImageUrl, setUseImageUrl] = useState(false);
     const [imageFile, setImageFile] = useState(null);
 
@@ -39,7 +83,7 @@ function AddBlog() {
         if (e.key === 'Enter' && currentTag.trim() !== '') {
             const newTag = e.target.value.trim();
             setTags([...tags, currentTag.trim()]);
-            setBlog((prevBlog) => ({ ...prevBlog, tags: [...prevBlog.tags, newTag] }));
+            setblogState((prevBlog) => ({ ...prevBlog, tags: [...prevBlog.tags, newTag] }));
             setCurrentTag('');
             console.log(blog.tags);
         }
@@ -71,7 +115,7 @@ function AddBlog() {
         const blogSummary = await blogSummaryEditor.current.getContent();
 
         // Update state using the state updater function
-        setBlog((prevBlog) => ({ ...prevBlog, description: content, summary: blogSummary }));
+        setblogState((prevBlog) => ({ ...prevBlog, description: content, summary: blogSummary }));
 
         if (!(imageFile == null)) {
             try {
@@ -79,7 +123,7 @@ function AddBlog() {
 
                 // Update state with the image URL
                 if (imageUrlfromFB !== null) {
-                    setBlog((prevBlog) => ({ ...prevBlog, blogPoster: imageUrlfromFB }));
+                    setblogState((prevBlog) => ({ ...prevBlog, blogPoster: imageUrlfromFB }));
                 }
 
             } catch (error) {
@@ -91,37 +135,37 @@ function AddBlog() {
     };
 
     const uploadBlog = async () => {
-        const postUploadstate = await createBlog();
+        const postUploadstate = await updateBlog(blogId, blogState);
 
         return postUploadstate;
     }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const uid = await getUserID();
-                const username = await getUsernameByUID(uid);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const uid = await getUserID();
+    //             const username = await getUsernameByUID(uid);
 
-                if (username) {
-                    setUser(username);
-                    setUserId(uid);
-                    blog.authorId = uid;
-                    blog.author = username;
-                }
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        };
+    //             if (username) {
+    //                 setUser(username);
+    //                 setUserId(uid);
+    //                 blog.authorId = uid;
+    //                 blog.author = username;
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching user data:', error);
+    //         }
+    //     };
 
-        fetchData();
-    }, []);
+    //     fetchData();
+    // }, []);
 
     return (
         <div>
             <div className='flex justify-center items-center postbg py-8'>
                 <div className='bg-gray-800 px-10 py-10 rounded-xl w-[90%] md:w-[80%]'>
                     <div className='flex gap-4 justify-center'>
-                        <h1 className='text-center text-white text-xl mb-4 font-bold'>Publish Blog</h1>
+                        <h1 className='text-center text-white text-xl mb-4 font-bold'>Update Blog</h1>
 
                         <span className='-my-3'><img src="https://res.cloudinary.com/drlkkozug/image/upload/v1705042854/ynrer4jfk9ywantavge8.png" alt="New Post" width={50} srcSet="" /></span>
                     </div>
@@ -129,9 +173,11 @@ function AddBlog() {
 
                     {/* title */}
                     <div>
+                        <h2 className='text-white flex justify-start text-xl mb-4 font-semibold'>Blog Title</h2>
+
                         <input type="text"
-                            value={blog.title}
-                            onChange={(e) => setBlog({ ...blog, title: e.target.value })}
+                            value={blogState.title}
+                            onChange={(e) => setblogState({ ...blogState, title: e.target.value })}
                             name='title'
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full   rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
                             placeholder='Add Post title'
@@ -142,7 +188,6 @@ function AddBlog() {
                     {/* editor for blog content */}
                     <div>
                         <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Tell your story...</h2>
-                        {/* <h3 className='text-center text-white text-xl mb-4 font-bold'>Add blog</h3> */}
 
                         <Editor
                             apiKey='aflhte2kchgwcgg6wo27mxqz79lhro2h443k16fftegeoo6x'
@@ -153,7 +198,7 @@ function AddBlog() {
                                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                 toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                             }}
-                            initialValue="Write blog"
+                            initialValue={blogState?.description}
                         />
                     </div>
 
@@ -169,7 +214,7 @@ function AddBlog() {
                                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                 toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                             }}
-                            initialValue="Write blog summary"
+                            initialValue={blogState?.summary}
                         />
                     </div>
 
@@ -221,8 +266,8 @@ function AddBlog() {
                                     Image URL
                                 </label>
                                 <input type="text"
-                                    value={blog.imageUrl}
-                                    onChange={(e) => setBlog({ ...blog, blogPoster: e.target.value })}
+                                    value={blogState.imageUrl}
+                                    onChange={(e) => setblogState({ ...blogState, blogPoster: e.target.value })}
                                     name='imageurl'
                                     className=' bg-gray-600 mb-4 px-2 py-3 my-2 w-full  rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
                                     placeholder='Add an Image Url'
@@ -248,8 +293,8 @@ function AddBlog() {
 
                     <div>
                         <input type="text"
-                            value={blog.department}
-                            onChange={(e) => setBlog({ ...blog, department: e.target.value })}
+                            value={blogState.department}
+                            onChange={(e) => setblogState({ ...blogState, department: e.target.value })}
                             name='category'
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full   rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
                             placeholder='Set Category'
@@ -265,7 +310,7 @@ function AddBlog() {
                                     <div
                                         key={dept}
                                         onClick={() => {
-                                            setBlog({ ...blog, department: dept });
+                                            setblogState({ ...blogState, department: dept });
                                         }}>
                                         <BtnTemplate header={dept} />
                                     </div>
@@ -278,14 +323,23 @@ function AddBlog() {
                     {/* minutes read of blog */}
                     <div className="items-center justify-center h-full">
                         <div className="text-center">
-                            <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Quick Read Estimate</h2>
+
+                            <h2 className='text-white flex justify-start text-xl mb-2
+                            font-semibold ml-3 italic'>What's Quick Read Estimate ?</h2>
+
+                            <div className='flex flex-row gap-x-2 mb-4'>
+                                <h3 className='text-white flex justify-start text-xl mb-4 mt-2
+                                 font-semibold ml-3 mr-6'>Blog estimate time is </h3>
+                                <BtnTemplate header={blogState?.minutesRead} msg={'mins'} />
+                            </div>
+
 
                             <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-5">
                                 {[2, 5, 10, 15, 20].map((minutes) => (
                                     <div
                                         key={minutes}
                                         onClick={() => {
-                                            setBlog({ ...blog, minutesRead: minutes });
+                                            setblogState({ ...blogState, minutesRead: minutes });
                                         }}>
                                         <BtnTemplate header={minutes} msg={"mins"} />
                                     </div>
@@ -310,8 +364,12 @@ function AddBlog() {
                     {/* tags associated with blogs input */}
 
                     <div className="mt-4">
+
+                        <h2 className='text-white flex justify-start text-xl mb-2
+                            font-semibold ml-3 italic'>Add blog tags here...</h2>
+
                         <div className="flex flex-wrap gap-2 mb-3">
-                            {tags.map((tag, index) => (
+                            {tags?.map((tag, index) => (
                                 <div className='rounded-full bg-slate-500 py-1 px-4 shadow-md shadow-green-300
                     hover:scale-95 transition-all' key={index}>
                                     {tag}
@@ -370,5 +428,5 @@ function AddBlog() {
     )
 }
 
-export default AddBlog
 
+export default UpdateBlog
