@@ -10,6 +10,9 @@ import { ToastContainer } from 'react-toastify';
 import NoPage from './components/nopage/NoPage';  
 import Blog from './components/blog/Blog'; 
 import AddBlogLayout from './components/addBlog/AddBlogLayout';
+ 
+import FeaturedSection from './components/homepage/featured/FeaturedSection';
+ 
 import UpdateBlogLayout from "./components/updateblog/UpdateBlogLayout";
 
 // import UserDashboard from './components/user-forms/UserDashboard';

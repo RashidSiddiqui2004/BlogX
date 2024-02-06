@@ -85,20 +85,6 @@ function TrendingBlogs() {
         </div>
       </div>
 
-      {/* <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="flex gap-5 max-md:flex-col max-md:gap-0 max-md:">
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
-        </div>
-      </div> 
-      <div className="px-5 mt-8 w-full max-md:max-w-full">
-        <div className="flex gap-5 max-md:flex-col max-md:gap-0 max-md:">
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
-        </div>
-      </div> */}
 
     </div>
   );

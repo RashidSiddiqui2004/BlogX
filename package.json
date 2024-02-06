@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tinymce/tinymce-react": "^4.3.2",
     "firebase": "^10.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "@types/tinymce": "^4.6.9",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.55.0",
@@ -29,5 +31,17 @@
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
     "vite": "^5.0.8"
-  }
+  },
+  "description": "Blog-X is a dynamic platform designed for sharing and exploring technical insights. With categories spanning web development, app development, data structures, and machine learning, users can create, publish, and engage with cutting-edge content. The site features a responsive design, allowing seamless access from various devices. Users can customize their experience with light and dark themes and stay updated with trending and recently added blogs.",
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RashidSiddiqui2004/BlogX.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RashidSiddiqui2004/BlogX/issues"
+  },
+  "homepage": "https://github.com/RashidSiddiqui2004/BlogX#readme"
 }
