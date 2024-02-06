@@ -5,7 +5,6 @@ import Navbar from "./navbar/Navbar";
 import FeaturedSection from './featured/FeaturedSection'
  
  
- 
 const Homepage = () => {
   return (
     <div className="">
@@ -20,7 +19,9 @@ const Homepage = () => {
         <TrendingBlogs />
       </div>
     </div>
+    </div>
   );
-};
+
+}
 
 export default Homepage;

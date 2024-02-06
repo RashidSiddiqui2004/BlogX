@@ -1,6 +1,5 @@
 
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react"; 
 import { GoArrowRight } from "react-icons/go";
 import myContext from "../../../context/data/myContext";
 import RenderHTMLContent from '../../../utilities/htmlRenderer/RenderHTMLContent'
@@ -9,17 +8,11 @@ import { Link } from 'react-router-dom'
 
 const BlogCard = ({
     blogid,
-    title,
-    description,
-    summary,
-    author,
-    authorId,
+    title, 
+    summary, 
     department,
-    blogPoster,
-    tags,
-    claps,
-    minutesRead,
-    date }) => {
+    blogPoster, 
+    minutesRead, }) => {
 
     const context = useContext(myContext);
     const { mode } = context;

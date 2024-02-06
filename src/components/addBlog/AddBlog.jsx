@@ -357,7 +357,7 @@ function AddBlog() {
                                     className='w-[90%] text-sm md:w-[50%] bg-slate-500 text-white shadow-md
                                      shadow-green-400 font-bold md:text-lg px-2 py-2 rounded-lg'
                                 >
-                                    Confirm Blog to Community
+                                    Confirm Blog to BlogX community
                                 </button>
                             </div>
                         )}

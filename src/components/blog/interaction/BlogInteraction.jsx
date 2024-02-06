@@ -4,6 +4,7 @@ import { PiHandsClappingBold } from "react-icons/pi";
 import { FaRegComment } from "react-icons/fa6";
 import { MdIosShare } from "react-icons/md";
 import myContext from '../../../context/data/myContext';
+import copyToClipboard from '../../../utilities/copyClipBoard/CopyClipboard'; 
 
 const BlogInteraction = ({ blogId, claps, commentsCount, userId, blog }) => {
 
@@ -48,7 +49,8 @@ const BlogInteraction = ({ blogId, claps, commentsCount, userId, blog }) => {
                     <FaRegComment className='text-2xl' />
                     <span className='text-lg font-semibold'>{commentsCount}</span>
                 </div>
-                <div className='flex flex-row space-x-3 cursor-pointer'>
+                <div className='flex flex-row space-x-3 cursor-pointer'
+                onClick={copyToClipboard}>
                     <MdIosShare className='text-2xl' />
                     <span className='text-lg font-semibold hidden md:block'>Share this Blog</span>
                 </div>

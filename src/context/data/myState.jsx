@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import MyContext from './myContext'
 import {
     Timestamp, addDoc, collection, deleteDoc, doc, getDocs,
@@ -112,7 +112,7 @@ function myState(props) {
             // Get the document snapshot
             const blogSnapshot = await getDoc(blogRef);
 
-            if (!blogSnapshot.exists()) { 
+            if (!blogSnapshot.exists()) {
                 return;
             }
 
@@ -133,10 +133,15 @@ function myState(props) {
     };
 
 
-    //  to-do
-    const updateBlog = async (blogId, blog) => {
-
-    }
+    const updateBlog = async (blogId, updatedBlog) => {
+        try {
+            const blogRef = doc(fireDB, 'blogs', blogId);
+            await updateDoc(blogRef, updatedBlog);
+            toast.success("Blog updated successfully");
+        } catch (error) {
+            console.error('Error updating blog:', error);
+        }
+    };
 
     const deleteBlog = async ({ userID, blogId }) => {
         setLoading(true);
@@ -192,9 +197,30 @@ function myState(props) {
         }
     }
 
-    //    to-do
     const getTrendingBlogs = async () => {
+        setLoading(true)
 
+        try {
+            const q = query(
+                collection(fireDB, 'blogs'),
+                orderBy('views', 'desc'),
+            );
+
+            const data = onSnapshot(q, (QuerySnapshot) => {
+                let blogArray = [];
+                QuerySnapshot.forEach((doc) => {
+                    blogArray.push({ ...doc.data(), id: doc.id });
+                });
+                setAllBlogs(blogArray);
+                setLoading(false);
+            });
+
+            return () => data;
+
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+        }
     }
 
     const [comments, setComments] = useState([]);
@@ -254,10 +280,24 @@ function myState(props) {
         }
 
     }
-
+    
     const getFeaturedBlogs = async () => {
+        try {
+            const blogCollection = collection(fireDB, 'blogs');
+            const q = query(blogCollection, where('isFeatured', '==', true));
+            const querySnapshot = await getDocs(q);
 
-    }
+            const featuredBlogs = [];
+            querySnapshot.forEach((doc) => {
+                featuredBlogs.push({ id: doc.id, ...doc.data() });
+            });
+
+            return featuredBlogs;
+        } catch (error) {
+            console.error('Error getting featured blogs:', error);
+            return [];
+        }
+    };
 
     const clapBlog = async (userId, blogId, claps, blog) => {
         try {

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 function TrendingBlogs() {
   const context = useContext(myContext);
-  const { mode, allBlogs, getAllBlogs } = context;
+  const { mode, allBlogs, getTrendingBlogs } = context;
   const navigate = useNavigate();
 
   const handleSeeMoreClick = () => {
@@ -16,7 +16,7 @@ function TrendingBlogs() {
   useEffect(() => {
     // will change to get trending blogs soon
     const fetchAllBlogs = async () => {
-      await getAllBlogs();
+      await getTrendingBlogs();
     }
 
     fetchAllBlogs();
