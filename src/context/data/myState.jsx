@@ -33,6 +33,7 @@ function myState(props) {
         author: null,
         authorId: "",
         department: "",
+        blogPoster: "",
         tags: [],
         claps: 0,
         minutesRead: 0,
@@ -72,7 +73,7 @@ function myState(props) {
         }
     }
 
-    const [blogs, setBlogs] = useState([]);
+    const [allBlogs, setAllBlogs] = useState([]);
 
     const getAllBlogs = async () => {
         setLoading(true)
@@ -88,7 +89,7 @@ function myState(props) {
                 QuerySnapshot.forEach((doc) => {
                     blogArray.push({ ...doc.data(), id: doc.id });
                 });
-                setBlogs(blogArray);
+                setAllBlogs(blogArray);
                 setLoading(false);
             });
 
@@ -339,7 +340,7 @@ function myState(props) {
     return (
         <MyContext.Provider value={{
             mode, loading, setLoading, toggleMode,
-            blog,setBlog,getBlogData,
+            blog, allBlogs, setBlog,getBlogData,
             createBlog, updateBlog, deleteBlog,
             getUserBlogs, getTrendingBlogs, getAllBlogs, 
             getDepartmentBlogs, getFeaturedBlogs,

@@ -4,7 +4,7 @@ import myContext from '../../context/data/myContext';
 import { Editor } from '@tinymce/tinymce-react';
 import getUsernameByUID from '../.././utilities/userData/GetUser';
 import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
-import getUserID from '../../utilities/userData/GetUserID'; 
+import getUserID from '../../utilities/userData/GetUserID';
 import departmentsInDevComm from '../../utilities/departments/departmentsInDevComm.JS';
 import BtnTemplate from '../../utilities/minutesRead/BtnTemplate';
 function AddBlog() {
@@ -78,7 +78,7 @@ function AddBlog() {
 
                 // Update state with the image URL
                 if (imageUrlfromFB !== null) {
-                    setBlog((prevBlog) => ({ ...prevBlog, imageUrl: imageUrlfromFB }));
+                    setBlog((prevBlog) => ({ ...prevBlog, blogPoster: imageUrlfromFB }));
                 }
 
             } catch (error) {
@@ -156,6 +156,7 @@ function AddBlog() {
                         />
                     </div>
 
+                    {/* editor for blog summary */}
                     <div className='my-4'>
                         <h3 className='text-center text-white text-xl mb-4 font-bold'>Add Blog summary</h3>
                         <Editor
@@ -220,7 +221,7 @@ function AddBlog() {
                                 </label>
                                 <input type="text"
                                     value={blog.imageUrl}
-                                    onChange={(e) => setBlog({ ...blog, imageUrl: e.target.value })}
+                                    onChange={(e) => setBlog({ ...blog, blogPoster: e.target.value })}
                                     name='imageurl'
                                     className=' bg-gray-600 mb-4 px-2 py-3 my-2 w-full  rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
                                     placeholder='Add an Image Url'
@@ -241,6 +242,8 @@ function AddBlog() {
                             </div>
                         )}
                     </div>
+
+                    {/* blog department selection */}
 
                     <div>
                         <input type="text"
@@ -271,6 +274,7 @@ function AddBlog() {
                     </div>
 
 
+                    {/* minutes read of blog */}
                     <div className="items-center justify-center h-full">
                         <div className="text-center">
                             <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Quick Read Estimate</h2>
@@ -282,7 +286,7 @@ function AddBlog() {
                                         onClick={() => {
                                             setBlog({ ...blog, minutesRead: minutes });
                                         }}>
-                                        <BtnTemplate header={minutes} msg={"mins"}/>
+                                        <BtnTemplate header={minutes} msg={"mins"} />
                                     </div>
 
                                     // <button
@@ -302,8 +306,7 @@ function AddBlog() {
                         </div>
                     </div>
 
-
-                    {/* <TagInput tags={tags} setTags={setTags} handleBlog = {setBlog}/> */}
+                    {/* tags associated with blogs input */}
 
                     <div className="mt-4">
                         <div className="flex flex-wrap gap-2 mb-3">
@@ -332,6 +335,7 @@ function AddBlog() {
                         />
                     </div>
 
+                    {/* blog submission button */}
                     <div>
                         {!postPreview && (
                             <div className='flex items-center justify-center mb-3 mt-7'>
