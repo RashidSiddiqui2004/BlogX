@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import MyContext from './myContext'
 import {
     Timestamp, addDoc, collection, deleteDoc, doc, getDocs,
-    onSnapshot, orderBy, query, setDoc, getDoc, updateDoc,
+    onSnapshot, orderBy, query, setDoc, getDoc, updateDoc, increment,
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { where } from 'firebase/firestore';
@@ -21,7 +21,7 @@ function myState(props) {
         else {
             setMode('light');
             document.body.style.backgroundColor = "white"
-        }
+        } 
     }
 
     const [loading, setLoading] = useState(false);
@@ -34,8 +34,10 @@ function myState(props) {
         authorId: "",
         department: "",
         blogPoster: "",
+        clapCount : 0,
         tags: [],
-        claps: 0,
+        viewcnt : 0,
+        claps: [],
         minutesRead: 0,
         timeOfCreation: Timestamp.now(),
         date: new Date().toLocaleString(
@@ -49,7 +51,8 @@ function myState(props) {
     });
 
     const createBlog = async () => {
-        if (blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>" || blog.tags.length < 1) {
+        console.log(blog);
+        if (blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>") {
             return toast.error("All fields are required")
         }
 
@@ -104,20 +107,26 @@ function myState(props) {
     const getBlogData = async (blogId) => {
         setLoading(true);
         try {
-            const productTemp = await getDoc(doc(fireDB, 'blogs', blogId));
-            const data = productTemp.data();
-            setLoading(false);
-            return data;
+          const doc_ref = doc(fireDB, 'blogs', blogId)  
+          const productTemp =  await getDoc(doc_ref);
+          const data = productTemp.data(); 
+
+          await updateDoc(doc_ref, {
+            viewcnt : data.viewcnt + 1,
+          })
+
+          setLoading(false);
+          return data;
         } catch (error) {
-            console.log(error);
-            setLoading(false);
+          console.log(error);
+          setLoading(false);
         }
-    }
+      }
 
 
-    //  to-do
+    //   not done yet
     const updateBlog = async () => {
-
+        setLoading(true);
     }
 
     const deleteBlog = async ({ userID, blogId }) => {
@@ -128,11 +137,11 @@ function myState(props) {
             const blogDoc = await getDoc(doc(fireDB, 'blogs', blogId));
 
             // Check if the user is the author
-            if (blogDoc.exists() && blogDoc.data().authorId === userID) {
+            if (blogDoc.exists() && blogDoc.data().authorId === userID) { 
                 await deleteDoc(doc(fireDB, 'blogs', blogId));
                 toast.success('Blog deleted!');
                 // getAllBlogs();  
-            } else {
+            } else { 
                 toast.error('You do not have permission to delete this blog');
             }
 
@@ -174,14 +183,37 @@ function myState(props) {
         }
     }
 
-    //    to-do
+     //   not done yet
     const getTrendingBlogs = async () => {
+        setLoading(true)
+        
+        try {
+            const q = query(
+                collection(fireDB, 'blogs'),
+                orderBy('viewcnt', 'desc'),
+                
+            );
 
+            const data = onSnapshot(q, (QuerySnapshot) => {
+                let blogArray = [];
+                QuerySnapshot.forEach((doc) => {
+                    blogArray.push({ ...doc.data(), id: doc.id });
+                });
+                setAllBlogs(blogArray);
+                setLoading(false);
+            });
+
+            return () => data;
+
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+        }
     }
 
     const [comments, setComments] = useState([]);
 
-    const getCommentsForBlog = async (blogId) => {
+    const getCommentsForBlog = async ( blogId ) => {
         try {
             const commentsRef = collection(fireDB, 'comments');
 
@@ -240,42 +272,31 @@ function myState(props) {
     const getFeaturedBlogs = async () => {
 
     }
- 
-    const clapBlog = async (userId, blogId, currLikes) => {
-        try { 
 
-            const likeRef = doc(fireDB, 'claps', `${userId}_${blogId}`);
-            const likeDoc = await getDoc(likeRef);
+     //   not done yet
+    const clapBlog = async (userId, blogId ) => {
+        try {
+            const blog_ref = doc(fireDB, "blogs", blogId)
+            const blog_snap = await getDoc(blog_ref);
 
-            if (likeDoc.exists()) {
-                // The user has already liked the blog, so "unlike" it
-                const updatedVotes = currLikes - 1;  
-                const updatedBlog = {
-                    ...blog,
-                    likes: updatedVotes,
-                };
+            const clapped_users = blog_snap.data().claps
 
-                await setDoc(doc(fireDB, 'blogs', id), updatedBlog);
-  
-                await deleteDoc(likeRef);
-            } else {
-                // The user hasn't liked the post yet, so "like" it
-                const updatedVotes = currLikes + 1; // Increment the likes
-                const updatedBlog = {
-                    ...blog,
-                    likes: updatedVotes,
-                };
+            if (!clapped_users.includes(userId)){
 
-                // Update the post in the database
-                await setDoc(doc(fireDB, 'blogs', id), updatedBlog); 
-                await setDoc(likeRef, { userId, blogId });
+                clapped_users.push(userId)
             }
-        } catch (error) {
-            console.error('Error while liking a post:', error);
+
+            await updateDoc(blog_ref, {
+                claps : clapped_users,
+                clapCount : increment(1),
+            })
+
+        } catch (e) {
+            console.error(e)
         }
     }
 
-    const commentOnBlog = async (blogId, user_id, comment, username) => {
+    const commentOnBlog = async (blogId, user_id, comment, username ) => {
         const commentsRef = collection(fireDB, 'comments');
 
         // Create a new comment document
@@ -294,7 +315,9 @@ function myState(props) {
                 }
             )
         };
- 
+
+        console.log(newComment);
+
         await setDoc(doc(commentsRef), newComment);
     }
 
@@ -347,8 +370,8 @@ function myState(props) {
             return false;
         }
     };
-
-    const getFollowersCount = async (authorId) => {
+ 
+    const getFollowersCount = async ( authorId ) => {
         // Get the followings count 
         const followersQuery = query(collection(fireDB, 'followings'), where('following', '==', authorId));
         const followersSnapshot = await getDocs(followersQuery);
@@ -367,9 +390,9 @@ function myState(props) {
     return (
         <MyContext.Provider value={{
             mode, loading, setLoading, toggleMode,
-            blog, allBlogs, setBlog, getBlogData,
+            blog, allBlogs, setBlog,getBlogData,
             createBlog, updateBlog, deleteBlog,
-            getUserBlogs, getTrendingBlogs, getAllBlogs,
+            getUserBlogs, getTrendingBlogs, getAllBlogs, 
             getDepartmentBlogs, getFeaturedBlogs,
             clapBlog, commentOnBlog, comments, setComments,
             followAuthor, getFollowersCount,

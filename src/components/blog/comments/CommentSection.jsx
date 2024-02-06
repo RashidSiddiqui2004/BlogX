@@ -20,7 +20,7 @@ function CommentSection({ blogId }) {
         }
 
         fetchComments();
-    }, [comments]);
+    }, []);
 
     
     return (

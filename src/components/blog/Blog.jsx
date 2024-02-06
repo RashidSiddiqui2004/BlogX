@@ -76,7 +76,7 @@ const Blog = () => {
       <h1 className='text-4xl font-bold md:mx-[20%] mt-8 mb-6'>{blogState?.title}</h1>
 
       <div className='w-[55%] md:mx-[25%] my-4 py-5'>
-        <BlogAuthorHighlights claps={blogState?.claps} commentsCount={1} userId={userId}
+        <BlogAuthorHighlights claps={blogState?.clapCount} commentsCount={1} userId={userId}
           authorID={blogState?.authorId} authorName={blogState?.author} blogId={blogId}
           minutesRead={blogState?.minutesRead} publishDate={blogState?.date} />
       </div>
@@ -92,7 +92,7 @@ const Blog = () => {
 
       {/* claps and comment count */}
       <div className='md:mx-[22%] my-10'>
-        <BlogInteraction claps={blogState?.claps} commentsCount={1} blogId={blogId} />
+        <BlogInteraction claps={blogState?.clapCount} commentsCount={1} blogId={blogId} />
       </div>
 
 
