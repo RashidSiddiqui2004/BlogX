@@ -2,13 +2,14 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoArrowRight } from "react-icons/go";
 import myContext from "../../../context/data/myContext";
-
+// const title = "hehhehhe"
 
 // this  is  only for the   skeleton purpose
-const BlogCard = () => {
+const BlogCard = ({title,description,summary, author, authorID, department ,claps,  minutesRead ,timeofcreation}) => {
   const context = useContext(myContext);
   const { mode, toggleMode } = context;
   const navigate = useNavigate();
+//   const title = "hehhehhe";
 
   const handleSeeMoreClick = () => {
     navigate("/blog"); // Navigate to the blog page
@@ -29,17 +30,18 @@ const BlogCard = () => {
         />
         <div className="flex flex-col   px-2 pt-2 mt-2">
           <div className="text-2xl tracking-tight leading-6">
-            Grand Blog for Nerds
+            {title}
           </div>
           <div className="mt-4 text-base font-light tracking-normal leading-6 text-opacity-80">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+            {summary}
+            {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris.
+            ad minim veniam, quis nostrud exercitation ullamco laboris. */}
           </div>
           <div className="flex gap-5 justify-between py-3 mt-4 w-full text-sm tracking-normal leading-4 text-sky-500 border-t  border-t-zinc-800 border-t-opacity-20">
             <div className="flex gap-3 justify-between">
-              <div>WebDev</div>
-              <div className="flex-auto">5min read</div>
+              <div>{department}</div>
+              <div className="flex-auto">{minutesRead}</div>
             </div>
             <GoArrowRight />
           </div>
@@ -74,28 +76,19 @@ function TrendingBlogs() {
           <div className="text-sm text-sky-500 uppercase max-md:max-w-full ">
             Trending Topics
           </div>
-          <div className="mt-2 text-5xl text-start  space-around tracking-tight leading-12  max-md:max-w-full max-md:text-4xl max-md:leading-10">
+          <div className="mt-2 text-5xl text-start  space-around tracking-tight leading-12  ma-md:max-text-sm max-md:max-w-full max-md:text-4xl max-md:leading-10">
             Stay Updated with Our <br /> Latest Insights
           </div>
         </div>
       </div>
-      <div className="flex flex-col">
-        <div
-          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${
-            mode === "dark"
-              ? "bg-customBlue rounded-lg text-white border-neutral-50"
-              : "bg-neutral-80 text-zinc-800"
-          } border-opacity-40 max-md:px-10 max-md:mt-10 `}
-          style={{ transform: "translateX(-30px)" }}
-        >
-          <button onClick={handleSeeMoreClick}>See More</button>
-        </div>
-      </div>
+      
 
       {/* first row */}
       <div className="px-5 mt-10 w-full max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0 max-md:">
-          <BlogCard />
+          <BlogCard 
+          title =" Who are you"
+          />
           <BlogCard />
           <BlogCard />
         </div>
@@ -107,6 +100,18 @@ function TrendingBlogs() {
           <BlogCard />
           <BlogCard />
           <BlogCard />
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <div
+          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${
+            mode === "dark"
+              ? "bg-customBlue rounded-lg text-white border-neutral-50"
+              : "bg-neutral-80 text-black-800"
+          } border-opacity-40 max-md:px-10 max-md:mt-10 `}
+          style={{ transform: "translateX(-30px)" }}
+        >
+          <button onClick={handleSeeMoreClick}>See More</button>
         </div>
       </div>
     </div>

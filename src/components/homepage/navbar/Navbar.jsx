@@ -19,37 +19,37 @@ const Navbar = () => {
         setham(!ham);
     };
 
-    // const Ham_menu = () => {
-    //     return(<div className={`flex-col fixed w-[70%] left-0 top-0
-    //      z-10 bg-${mode === "light" ? "white" : "[#2A2C38]"} h-[100%] shadow-2xl`}>
-    //     <div className="mx-6 w-[70%] flex items-center
-    //     justify-start font-extrabold text-[30px] mt-4 "
-    //     onClick={toggleHam}>
-    //         <IoMdClose />
-    //     </div>
-    //     <div className="my-4 mx-6 text-[14px] flex items-center
-    //     justify-start border-b-2 border-gray-600 py-4 w-[70%]">
-    //         Featured
-    //     </div>
-    //     <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
-    //     border-b-2 border-gray-600 py-4 w-[70%]">
-    //         Categories
-    //     </div>
-    //     <div className="my-4 mx-6 text-[14px] flex items-center justify-start
-    //     border-b-2 border-gray-600 py-4 w-[70%]">
-    //         Trending
-    //     </div>
-    //     <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
-    //     border-b-2 border-gray-600 py-4 w-[70%]">
-    //         Contact
-    //     </div>
-    //     <div className="my-4 mx-6 text-[14px] flex items-center justify-start
-    //     w-[70%] py-4">
-    //         About Us
-    //     </div>
-    // </div>
-    //     );
-    // }
+    const Ham_menu = () => {
+        return(<div className={`flex-col fixed w-[70%] left-0 top-0
+         z-10 bg-${mode === "light" ? "white" : "[#2A2C3    8]"} h-[100%] shadow-2xl`}>
+        <div className="mx-6 w-[70%] flex items-center
+        justify-start font-extrabold text-[30px] mt-4 "
+        onClick={toggleHam}>
+            <IoMdClose />
+        </div>
+        <div className="my-4 mx-6 text-[14px] flex items-center
+        justify-start border-b-2 border-gray-600 py-4 w-[70%]">
+            Featured
+        </div>
+        <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
+        border-b-2 border-gray-600 py-4 w-[70%]">
+            Categories
+        </div>
+        <div className="my-4 mx-6 text-[14px] flex items-center justify-start
+        border-b-2 border-gray-600 py-4 w-[70%]">
+            Trending
+        </div>
+        <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
+        border-b-2 border-gray-600 py-4 w-[70%]">
+            Contact
+        </div>
+        <div className="my-4 mx-6 text-[14px] flex items-center justify-start
+        w-[70%] py-4">
+            About Us
+        </div>
+    </div>
+        );
+    }
 
     return (
         <div className={`w-[100%] mx-auto flex py-4 
@@ -82,7 +82,7 @@ const Navbar = () => {
                 </div>
                 <div className={`mx-4 text-[14px] hidden md:flex items-center border-
                 ${(mode === "light" ? "[#333333]" : "white")} rounded-md border-2 py-2 px-4`}>
-                   <button > About Us</button> 
+                   <button>About Us</button> 
                 </div>
                 <div className="mx-4 text-[14px] flex items-center">
                     {mode === "light" 
