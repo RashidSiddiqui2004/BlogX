@@ -1,5 +1,5 @@
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import myContext from '../../../context/data/myContext'
 import { IoMdClose } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -7,26 +7,65 @@ import blog_x from "./blogx_icon.svg";
 import blog_xd from "./blogx_icond.svg";
 import { useState } from 'react';
 import { FaPenToSquare } from "react-icons/fa6";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import getUserID from '../../../utilities/userData/GetUserID';
 
 
 const Navbar = () => {
 
     const context = useContext(myContext);
-    const { mode, toggleMode } = context;
+    const { mode, toggleMode, isBlogXAuthor } = context;
 
     const [ham, setham] = useState(false);
 
     const navigate = useNavigate();
 
     const handleHome = () => {
-        navigate("/");  
+        navigate("/");
     };
+
+    const [userId, setUserId] = useState(null);
+
+    // check if user is authenticated and authorised or not
+
+    useEffect(() => {
+
+        const fetchUserData = async () => {
+            try {
+                const uid = await getUserID();
+
+                if (uid === -1) {
+                    return;
+                }
+
+                // if (username) { 
+                setUserId(uid);
+                // }
+            } catch (error) {
+                return 0;
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
 
     const toggleHam = () => {
         setham(!ham);
     };
+
+    const [isAuthor, setIsAuthor] = useState(false);
+
+    useEffect(() => {
+
+        const checkifAuthor = async () =>{
+            isBlogXAuthor(userId).then((data)=> setIsAuthor(data))
+            .catch((err) => console.log(err));
+        }
+
+        checkifAuthor();
+        
+    }, [])
 
     const Ham_menu = () => {
         return (<div className={`flex-col fixed md:hidden w-[70%] left-0 top-0
@@ -89,14 +128,19 @@ const Navbar = () => {
                 </span>
             </div>
 
-
-            <div className="mx-4 text-[14px] hidden md:flex items-center">
-                <Link to={'/add-blog'} className='md:flex md:gap-x-2'>
-                    <FaPenToSquare className='mt-[2px]' />
-                    Write Blog
-                </Link>
-            </div>
-
+   
+            {
+                (isAuthor)
+                    ?
+                    <div className="mx-4 text-[14px] hidden md:flex items-center">
+                        <Link to={'/add-blog'} className='md:flex md:gap-x-2'>
+                            <FaPenToSquare className='mt-[2px]' />
+                            Write Blog
+                        </Link>
+                    </div>
+                    :
+                    ''
+            }
 
             <div className="mx-4 text-[14px] hidden md:flex items-center">
                 Contact

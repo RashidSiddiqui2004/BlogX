@@ -160,7 +160,7 @@ function myState(props) {
         }
     };
 
-    const deleteBlog = async ({ userID, blogId }) => {
+    const deleteBlog = async (userID, blogId ) => {
         setLoading(true);
 
         try {
@@ -182,6 +182,28 @@ function myState(props) {
             setLoading(false);
         }
     }
+
+    const isBlogXAuthor = async (userId) => {
+        try {
+            const q = query(
+                collection(fireDB, 'creators'),
+                where('creatorID', '==', userId)
+            );
+    
+            const querySnapshot = await getDocs(q);
+
+            const authorData = querySnapshot.docs.map(doc => doc.data());
+
+            const isAuthor =  authorData.length >= 1;
+
+            return isAuthor;
+
+        } catch (error) {
+            console.error('Error checking if user is blog author:', error);
+            return false;
+        }
+    };
+ 
 
     
     const getTrendingBlogs = async () => {
@@ -502,6 +524,7 @@ function myState(props) {
             mode, loading, setLoading, toggleMode,
             blog, allBlogs, setBlog, getBlogData,
             createBlog, updateBlog, deleteBlog,
+            isBlogXAuthor,
             getTrendingBlogs, getAllBlogs,
             getDepartmentBlogs, deptBlogs, getFeaturedBlogs,
             getAuthorBlogs, authorSpecificBlogs,
