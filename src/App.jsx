@@ -18,6 +18,7 @@ import AddBlogLayout from './components/addBlog/AddBlogLayout';
  
 import UpdateBlogLayout from "./components/updateblog/UpdateBlogLayout";
 import AboutUs from "./components/aboutus/AboutUs";
+import AdminDashboard from "./components/admin/AdminDashboard";
 
 // import UserDashboard from './components/user-forms/UserDashboard';
 // import AdminDashboard from './components/admin/AdminDashboard';
@@ -29,12 +30,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
 
-          <Route path="/blog" element={<Blog />} />
+          <Route path="/add-blog" element={<AddBlogLayout />} />
  
           <Route path='/blog/:blogName/:blogID' element={<Blog/>} />
-
-          <Route path="/blog/:id" element={<Blog />} />
-
+ 
           <Route path='/update-blog/:id' element={<UpdateBlogLayout/>} />
 
           <Route path="/about-us" element={<AboutUs />} />
@@ -44,6 +43,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
 
           <Route path="/*" element={<NoPage />} />
+
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Routes>
 
         <ToastContainer />

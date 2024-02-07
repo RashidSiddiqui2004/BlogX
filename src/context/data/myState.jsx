@@ -164,7 +164,7 @@ function myState(props) {
         }
     };
 
-    const deleteBlog = async (userID, blogId ) => {
+    const deleteBlog = async ( blogId ) => {
         setLoading(true);
 
         try {
@@ -172,10 +172,10 @@ function myState(props) {
             const blogDoc = await getDoc(doc(fireDB, 'blogs', blogId));
 
             // Check if the user is the author
-            if (blogDoc.exists() && blogDoc.data().authorId === userID) {
+            // if (blogDoc.exists() && blogDoc.data().authorId === userID) {
+                if (blogDoc.exists()) {
                 await deleteDoc(doc(fireDB, 'blogs', blogId));
-                toast.success('Blog deleted!');
-                // getAllBlogs();  
+                toast.success('Blog deleted!'); 
             } else {
                 toast.error('You do not have permission to delete this blog');
             }
@@ -207,7 +207,6 @@ function myState(props) {
             return false;
         }
     };
- 
 
     
     const getTrendingBlogs = async () => {
@@ -520,6 +519,24 @@ function myState(props) {
         return followersCount;
     }
 
+    const fetchNumPosts = async () => {
+        const querySnapshot = await getDocs(collection(fireDB, 'blogs'));
+        return querySnapshot.size 
+    };
+
+    // Function to fetch number of users
+    const fetchNumUsers = async () => {
+        const querySnapshot = await getDocs(collection(fireDB, 'users'));
+        return querySnapshot.size 
+    };
+
+    const fetchPosts = async () => {
+        const querySnapshot = await getDocs(collection(fireDB, 'blogs'));
+        const fetchedPosts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        return fetchedPosts; 
+    };
+
     const [searchkey, setSearchkey] = useState('')
     const [department, setDepartment] = useState('');
 
@@ -535,6 +552,7 @@ function myState(props) {
             clapBlog, commentOnBlog, comments, setComments,
             followAuthor, getFollowersCount,
             getCommentsForBlog,
+            fetchNumPosts, fetchNumUsers,fetchPosts
         }}>
             {props.children}
         </MyContext.Provider>
