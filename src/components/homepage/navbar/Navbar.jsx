@@ -25,47 +25,32 @@ const Navbar = () => {
     };
 
     const [userId, setUserId] = useState(null);
+    const [isAuthor, setIsAuthor] = useState(false);
+
 
     // check if user is authenticated and authorised or not
 
     useEffect(() => {
-
         const fetchUserData = async () => {
             try {
                 const uid = await getUserID();
-
-                if (uid === -1) {
-                    return;
+                if (uid !== -1) {
+                    setUserId(uid);
+                    const isUseraAuthor = await isBlogXAuthor(uid);
+                    setIsAuthor(isUseraAuthor);
                 }
-
-                // if (username) { 
-                setUserId(uid);
-                // }
-            } catch (error) {
-                return 0;
+            } catch (err) {
+                console.log(err);
             }
         };
-
+    
         fetchUserData();
     }, []);
-
+    
 
     const toggleHam = () => {
         setham(!ham);
     };
-
-    const [isAuthor, setIsAuthor] = useState(false);
-
-    useEffect(() => {
-
-        const checkifAuthor = async () =>{
-            isBlogXAuthor(userId).then((data)=> setIsAuthor(data))
-            .catch((err) => console.log(err));
-        }
-
-        checkifAuthor();
-        
-    }, [])
 
     const Ham_menu = () => {
         return (<div className={`flex-col fixed md:hidden w-[70%] left-0 top-0
@@ -126,8 +111,7 @@ const Navbar = () => {
                 <span className="text-[#0096FF]">
                     X
                 </span>
-            </div>
-
+            </div> 
    
             {
                 (isAuthor)

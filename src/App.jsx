@@ -14,6 +14,7 @@ import AddBlogLayout from './components/addBlog/AddBlogLayout';
 import FeaturedSection from './components/homepage/featured/FeaturedSection';
  
 import UpdateBlogLayout from "./components/updateblog/UpdateBlogLayout";
+import AboutUs from "./components/aboutus/AboutUs";
 
 // import UserDashboard from './components/user-forms/UserDashboard';
 // import AdminDashboard from './components/admin/AdminDashboard';
@@ -33,7 +34,7 @@ function App() {
 
           <Route path='/update-blog/:id' element={<UpdateBlogLayout/>} />
 
-      
+          <Route path="/about-us" element={<AboutUs />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
