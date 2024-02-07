@@ -4,15 +4,11 @@ import Navbar from "./navbar/Navbar";
 
 import FeaturedSection from './featured/FeaturedSection';
 import CategorySection from './categories/Categories';
- 
- 
-
-
 import TrendingBlogs from "./trending/Trending";
 
 import Footer from "./footer/Footer";
 
- 
+
 const Homepage = () => {
   return (
     <div className="">
@@ -32,8 +28,7 @@ const Homepage = () => {
       </div>
       
       <Footer/>
-    </div>
-    </div>
+    </div> 
   );
 
 }

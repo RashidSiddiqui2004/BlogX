@@ -92,9 +92,11 @@ const Blog = () => {
 
       <Navbar />
 
-      <h1 className='text-4xl font-bold md:mx-[20%] mt-8 mb-6'>{blogState?.title}</h1>
+      {/* <div className='ml-20'> */}
+        <h1 className='text-3xl md:text-5xl text-left font-bold mx-6 md:mx-[26%] mt-8 mb-6'>{blogState?.title}</h1>
+      {/* </div> */}
 
-      <div className='md:w-[55%] md:mx-[25%] my-4 py-5'>
+      <div className='md:w-[55%] mx-12 md:mx-[25%] my-4 py-5'>
         <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
       </div>
 

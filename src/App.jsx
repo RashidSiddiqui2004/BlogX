@@ -11,7 +11,6 @@ import NoPage from './components/nopage/NoPage';
 import Blog from './components/blog/Blog'; 
 import AddBlogLayout from './components/addBlog/AddBlogLayout';
  
-import FeaturedSection from './components/homepage/featured/FeaturedSection';
  
 import UpdateBlogLayout from "./components/updateblog/UpdateBlogLayout";
 import AboutUs from "./components/aboutus/AboutUs";

@@ -2,12 +2,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import myContext from '../../context/data/myContext';
 import { Editor } from '@tinymce/tinymce-react';
-import getUsernameByUID from '../.././utilities/userData/GetUser';
 import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
-import getUserID from '../../utilities/userData/GetUserID';
 import { Link, useParams } from 'react-router-dom';
 import departmentsInDevComm from '../../utilities/departments/departmentsInDevComm.JS';
-import BtnTemplate from '../../utilities/minutesRead/BtnTemplate';
+import BtnTemplate from '../../utilities/BtnTemplate2/BtnTemplate';
 
 const UpdateBlog = () => {
     const context = useContext(myContext);
@@ -21,20 +19,20 @@ const UpdateBlog = () => {
 
     const [tags, setTags] = useState([]);
 
-    useEffect(() => { 
+    useEffect(() => {
         const fetchBlogData = async () => {
             try {
                 // Fetch blog data
                 const blogData = await getBlogData(blogId);
                 setblogState(blogData);
-                setTags(blogData?.tags)
+                setTags(blogData?.tags) 
 
             } catch (error) {
                 // handle error
             }
         }
 
-        fetchBlogData(); 
+        fetchBlogData();
     }, []);
 
     const [useImageUrl, setUseImageUrl] = useState(false);
@@ -69,10 +67,10 @@ const UpdateBlog = () => {
     };
 
     const handleTagRemove = (index) => {
-        const updatedTags = [...tags];    
+        const updatedTags = [...tags];
         updatedTags.splice(index, 1);
-    
-        setTags(updatedTags); 
+
+        setTags(updatedTags);
 
         setblogState((prevBlog) => {
             const updatedTags = [...prevBlog.tags];
@@ -81,7 +79,7 @@ const UpdateBlog = () => {
         });
     };
 
- 
+
 
     // Reference to the TinyMCE editor
     const blogEditor = useRef(null);
@@ -119,7 +117,7 @@ const UpdateBlog = () => {
         return postUploadstate;
     }
 
-   
+
     return (
         <div>
             <div className='flex justify-center items-center postbg py-8'>
@@ -250,21 +248,17 @@ const UpdateBlog = () => {
                     </div>
 
                     {/* blog department selection */}
-
-                    <div>
-                        <input type="text"
-                            value={blogState.department}
-                            onChange={(e) => setblogState({ ...blogState, department: e.target.value })}
-                            name='category'
-                            className=' bg-gray-600 mb-4 px-2 py-2 w-full   rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
-                            placeholder='Set Category'
-                        />
-                    </div>
+ 
 
                     <div className="items-center justify-center h-full">
                         <div className="text-center">
                             <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Select Department</h2>
+                            {blogState?.department === '' ? '' :
+                                <div className='flex justify-start mb-5'>
+                                    <BtnTemplate header={blogState?.department} />
+                                </div>
 
+                            }
                             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-5">
                                 {departmentsInDevComm.map((dept) => (
                                     <div
@@ -286,6 +280,14 @@ const UpdateBlog = () => {
 
                             <h2 className='text-white flex justify-start text-xl mb-2
                             font-semibold ml-3 italic'>What's Quick Read Estimate ?</h2>
+
+                            {blogState?.minutesRead === 0 ? '' :
+                                <div className='flex justify-start mb-5'>
+                                    <BtnTemplate header={blogState?.minutesRead} msg='mins' />
+                                </div>
+
+                            }
+
 
                             <div className='flex flex-row gap-x-2 mb-4'>
                                 <h3 className='text-white flex justify-start text-xl mb-4 mt-2

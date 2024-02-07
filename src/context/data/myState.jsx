@@ -51,15 +51,19 @@ function myState(props) {
     });
 
     const createBlog = async () => {
-        if (blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>" || blog.tags.length < 1) {
+        if (blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>" || 
+        blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1) {
             return toast.error("All fields are required")
         }
 
         setLoading(true)
 
         try {
-            const blogRef = collection(fireDB, 'blogs');
+            const blogRef = collection(fireDB, 'blogs')
             await addDoc(blogRef, blog)
+
+            const permanentBlogRef = collection(fireDB, 'recoveryBlogs')
+            await addDoc(permanentBlogRef, blog)
             
             toast.success('Blog added', {
                 position: 'top-right',

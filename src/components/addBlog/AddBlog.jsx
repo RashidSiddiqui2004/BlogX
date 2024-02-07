@@ -6,7 +6,7 @@ import getUsernameByUID from '../.././utilities/userData/GetUser';
 import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
 import getUserID from '../../utilities/userData/GetUserID';
 import departmentsInDevComm from '../../utilities/departments/departmentsInDevComm.JS';
-import BtnTemplate from '../../utilities/minutesRead/BtnTemplate';
+import BtnTemplate from '../../utilities/BtnTemplate2/BtnTemplate';
 
 function AddBlog() {
 
@@ -41,7 +41,6 @@ function AddBlog() {
             setTags([...tags, currentTag.trim()]);
             setBlog((prevBlog) => ({ ...prevBlog, tags: [...prevBlog.tags, newTag] }));
             setCurrentTag('');
-            console.log(blog.tags);
         }
     };
 
@@ -127,7 +126,7 @@ function AddBlog() {
                     </div>
 
 
-                    {/* title */}
+                    {/* title of blog */}
                     <div>
                         <input type="text"
                             value={blog.title}
@@ -142,12 +141,12 @@ function AddBlog() {
                     {/* editor for blog content */}
                     <div>
                         <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Tell your story...</h2>
- 
+
                         <Editor
                             apiKey='aflhte2kchgwcgg6wo27mxqz79lhro2h443k16fftegeoo6x'
                             onInit={(evt, editor) => (blogEditor.current = editor)}
                             init={{
-                                menubar: false,
+                                menubar: 'favs file edit view format tools table',
                                 height: 500,
                                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                 toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
@@ -245,19 +244,16 @@ function AddBlog() {
 
                     {/* blog department selection */}
 
-                    <div>
-                        <input type="text"
-                            value={blog.department}
-                            onChange={(e) => setBlog({ ...blog, department: e.target.value })}
-                            name='category'
-                            className=' bg-gray-600 mb-4 px-2 py-2 w-full   rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
-                            placeholder='Set Category'
-                        />
-                    </div>
-
                     <div className="items-center justify-center h-full">
                         <div className="text-center">
-                            <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Select Department</h2>
+                            <h2 className='text-white flex justify-start text-xl mb-2 font-semibold ml-3'>Select Department</h2>
+
+                            {blog?.department === '' ? '' :
+                                <div className='flex justify-start mb-5'>
+                                    <BtnTemplate header={blog?.department} />
+                                </div>
+
+                            }
 
                             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-5">
                                 {departmentsInDevComm.map((dept) => (
@@ -279,6 +275,16 @@ function AddBlog() {
                         <div className="text-center">
                             <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Quick Read Estimate</h2>
 
+                            {blog?.minutesRead === 0 ? '' :
+                                <div className='flex justify-start mb-2'>
+                                    <h2 className='text-white flex mb-4 font-normal font-sans ml-3'>Estimated Blog read time is {blog?.minutesRead} mins.</h2>
+                                    {/* <BtnTemplate header={blog?.minutesRead} msg='mins'/> */}
+                                </div>
+
+                            }
+
+
+
                             <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-5">
                                 {[2, 5, 10, 15, 20].map((minutes) => (
                                     <div
@@ -288,19 +294,6 @@ function AddBlog() {
                                         }}>
                                         <BtnTemplate header={minutes} msg={"mins"} />
                                     </div>
-
-                                    // <button
-                                    //     key={minutes}
-                                    //     onClick={() => { 
-                                    //         setBlog({ ...blog, minutesRead: minutes }); 
-                                    //     }}
-                                    //     className={`rounded-full py-2 px-4 text-white ${blog.minutes === minutes
-                                    //         ? 'bg-blue-500'
-                                    //         : 'bg-gray-400 hover:bg-gray-500'
-                                    //         }`}
-                                    // >
-                                    //     {minutes} mins
-                                    // </button>
                                 ))}
                             </div>
                         </div>
@@ -309,7 +302,9 @@ function AddBlog() {
                     {/* tags associated with blogs input */}
 
                     <div className="mt-4">
-                        <div className="flex flex-wrap gap-2 mb-3">
+                        <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Blog Tags</h2>
+
+                        <div className="flex flex-wrap gap-2 mb-4">
                             {tags.map((tag, index) => (
                                 <div className='rounded-full bg-slate-500 py-1 px-4 shadow-md shadow-green-300
                     hover:scale-95 transition-all' key={index}>
@@ -341,7 +336,8 @@ function AddBlog() {
                             <div className='flex items-center justify-center mb-3 mt-7'>
                                 <button
                                     onClick={handleFirstCheck}
-                                    className='w-[60%] md:w-[40%] bg-slate-500 text-white shadow-md
+                                    className='w-[60%] md:w-[40%] bg-slate-500
+                                     text-white shadow-md hover:scale-95 transition-all
                                      shadow-green-400 font-bold px-2 py-2 rounded-lg'
                                 >
                                     Publish Blog
