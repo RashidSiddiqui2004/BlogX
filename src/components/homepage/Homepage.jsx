@@ -28,7 +28,9 @@ const Homepage = () => {
       </div>
       
       <Footer/>
-    </div> 
+ 
+    </div>
+     
   );
 
 }

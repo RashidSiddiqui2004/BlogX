@@ -45,22 +45,12 @@ function TrendingBlogs() {
           <div className="text-sm text-sky-500 uppercase max-md:max-w-full ">
             Trending Topics
           </div>
-          <div className="mt-2 text-5xl text-start  space-around tracking-tight leading-12  max-md:max-w-full max-md:text-4xl max-md:leading-10">
+          <div className="mt-2 text-5xl text-start  space-around tracking-tight leading-12  ma-md:max-text-sm max-md:max-w-full max-md:text-4xl max-md:leading-10">
             Stay Updated with Our <br /> Latest Insights
           </div>
         </div>
       </div>
-      <div className="flex flex-col">
-        <div
-          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
-            ? "bg-customBlue rounded-lg text-white border-neutral-50"
-            : "bg-neutral-80 text-zinc-800"
-            } border-opacity-40 max-md:px-10 max-md:mt-10 `}
-          style={{ transform: "translateX(-30px)" }}
-        >
-          <button onClick={handleSeeMoreClick}>See More</button>
-        </div>
-      </div>
+
 
 
       <div className="px-5 mt-10 w-full max-md:max-w-full">
@@ -99,7 +89,17 @@ function TrendingBlogs() {
         
         </div>
       </div>
-
+                <div className="flex flex-col">
+        <div
+          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
+            ? "bg-customBlue rounded-lg text-white border-neutral-50"
+            : "bg-neutral-80 text-zinc-800"
+            } border-opacity-40 max-md:px-10 max-md:mt-10 `}
+          style={{ transform: "translateX(-30px)" }}
+        >
+          <button onClick={handleSeeMoreClick}>See More</button>
+        </div>
+      </div>
 
     </div>
   );
