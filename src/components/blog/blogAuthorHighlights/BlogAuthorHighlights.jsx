@@ -11,12 +11,13 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
 
   const isDarkTheme = (mode=="dark");
 
-  const { authorID, author, claps, minutesRead, date } = blog;
+  const { authorId, author, claps, minutesRead, date } = blog;
 
   // function for allowing users to follow author
   const followUser = async () => { 
     // followerId, followingId, followingUsername 
-    await followAuthor(userId, authorID, authorName);
+    console.log(userId, " ", author, authorId);
+    await followAuthor(userId, authorId, author);
   }
 
   return (

@@ -1,6 +1,5 @@
 
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react"; 
 import { GoArrowRight } from "react-icons/go";
 import myContext from "../../../context/data/myContext";
 import RenderHTMLContent from '../../../utilities/htmlRenderer/RenderHTMLContent'
@@ -9,24 +8,18 @@ import { Link } from 'react-router-dom'
 
 const BlogCard = ({
     blogid,
-    title,
-    description,
-    summary,
-    author,
-    authorId,
+    title, 
+    summary, 
     department,
-    blogPoster,
-    tags,
-    claps,
-    minutesRead,
-    date }) => {
+    blogPoster, 
+    minutesRead, }) => {
 
     const context = useContext(myContext);
     const { mode } = context;
 
     return (
         <div
-            className={`flex flex-col max-md:ml-0 max-md:w-full ${mode === "dark"
+            className={`flex flex-col max-md:ml-0 max-md:w-full flex-grow h-full ${mode === "dark"
                 ? "bg-customBlue rounded-lg text-white"
                 : "bg-neutral-80 text-zinc-800"
                 }`}
@@ -41,14 +34,14 @@ const BlogCard = ({
                         {title}
                     </div>
                     <div className="mt-4 text-base font-light tracking-normal leading-6 text-opacity-80">
-                        {summary && <RenderHTMLContent htmlContent={summary} />}
+                        {summary && <RenderHTMLContent htmlContent={summary} />} 
                     </div>
                     <div className="flex gap-5 justify-between py-3 mt-4 w-full text-sm tracking-normal leading-4 text-sky-500 border-t  border-t-zinc-800 border-t-opacity-20">
                         <div className="flex gap-3 justify-between">
                             <div>{department}</div>
                             <div className="flex-auto">{minutesRead}min read</div>
                         </div>
-                        <Link to={`/blog/${blogid}`}>
+                        <Link to={`/blog/${title}/${blogid}`}>
                             <GoArrowRight />
                         </Link>
 

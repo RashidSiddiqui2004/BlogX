@@ -27,7 +27,7 @@ function App() {
  
           <Route path="/blog" element={<Blog />} />
  
-          <Route path='/blog/:id' element={<Blog/>} />
+          <Route path='/blog/:blogName/:blogID' element={<Blog/>} />
 
           <Route path='/add-blog' element={<AddBlogLayout/>} />
 

@@ -12,7 +12,7 @@ import BtnTemplate from '../../utilities/minutesRead/BtnTemplate';
 const UpdateBlog = () => {
     const context = useContext(myContext);
 
-    const { blog, setBlog, updateBlog, getBlogData } = context;
+    const { blog, updateBlog, getBlogData } = context;
 
     const params = useParams();
     const blogId = params.id;
@@ -21,27 +21,7 @@ const UpdateBlog = () => {
 
     const [tags, setTags] = useState([]);
 
-    useEffect(() => {
-
-        const fetchUserData = async () => {
-            try {
-                const uid = await getUserID();
-
-                if (uid === -1) {
-                    return;
-                }
-
-                const username = await getUsernameByUID(uid);
-
-                if (username) {
-                    setUser(username);
-                    setUserId(uid);
-                }
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        };
-
+    useEffect(() => { 
         const fetchBlogData = async () => {
             try {
                 // Fetch blog data
@@ -54,8 +34,7 @@ const UpdateBlog = () => {
             }
         }
 
-        fetchBlogData();
-        fetchUserData();
+        fetchBlogData(); 
     }, []);
 
     const [useImageUrl, setUseImageUrl] = useState(false);
@@ -90,19 +69,19 @@ const UpdateBlog = () => {
     };
 
     const handleTagRemove = (index) => {
-        const updatedTags = [...tags];
+        const updatedTags = [...tags];    
         updatedTags.splice(index, 1);
-        setTags(updatedTags);
-        setBlog((prevBlog) => {
+    
+        setTags(updatedTags); 
+
+        setblogState((prevBlog) => {
             const updatedTags = [...prevBlog.tags];
             updatedTags.splice(index, 1);
             return { ...prevBlog, tags: updatedTags };
         });
     };
 
-
-    const [u_name, setUser] = useState('');
-    const [userId, setUserId] = useState('');
+ 
 
     // Reference to the TinyMCE editor
     const blogEditor = useRef(null);
@@ -140,26 +119,7 @@ const UpdateBlog = () => {
         return postUploadstate;
     }
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const uid = await getUserID();
-    //             const username = await getUsernameByUID(uid);
-
-    //             if (username) {
-    //                 setUser(username);
-    //                 setUserId(uid);
-    //                 blog.authorId = uid;
-    //                 blog.author = username;
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching user data:', error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-
+   
     return (
         <div>
             <div className='flex justify-center items-center postbg py-8'>
@@ -403,7 +363,7 @@ const UpdateBlog = () => {
                                     className='w-[60%] md:w-[40%] bg-slate-500 text-white shadow-md
                                      shadow-green-400 font-bold px-2 py-2 rounded-lg'
                                 >
-                                    Publish Blog
+                                    Update Blog
                                 </button>
                             </div>
                         )}
@@ -415,7 +375,7 @@ const UpdateBlog = () => {
                                     className='w-[90%] text-sm md:w-[50%] bg-slate-500 text-white shadow-md
                                      shadow-green-400 font-bold md:text-lg px-2 py-2 rounded-lg'
                                 >
-                                    Confirm Blog to Community
+                                    Confirm Blog to BlogX community
                                 </button>
                             </div>
                         )}

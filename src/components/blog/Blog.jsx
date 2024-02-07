@@ -18,44 +18,36 @@ const Blog = () => {
 
   const context = useContext(myContext);
   const { mode, getBlogData, getFollowersCount, getCommentsForBlog } = context;
-  const isDarkTheme = (mode=="dark");
+  const isDarkTheme = (mode == "dark");
 
   const params = useParams();
-  const blogId = params.id;
+  const blogId = params.blogID;
 
   const [followersCnt, setfollowersCnt] = useState(0);
   const [blogState, setblogState] = useState('');
-
-
-  // const logout = () => {
-  //   localStorage.clear('user');
-  //   window.location.href = '/login'
-  // }
-
-  // logout();
 
   const [u_name, setUser] = useState('');
   const [userId, setUserId] = useState(null);
 
   const [comments, setComments] = useState([]);
-  const commentsCnt= comments.length;
+  const commentsCnt = comments.length;
 
 
   // get comments
-  useEffect(() => { 
-      async function fetchComments() {
-          const cmts = await getCommentsForBlog(blogId).then((commentsData) => {
-            setComments(commentsData);
-            // setCommentsCnt();
-          })  
-      }
+  useEffect(() => {
+    async function fetchComments() {
+      const cmts = await getCommentsForBlog(blogId).then((commentsData) => {
+        setComments(commentsData);
+        // setCommentsCnt();
+      })
+    }
 
-      fetchComments();
+    fetchComments();
   }, []);
 
-  // get blog and author data
+  // get blog, user and author data
   useEffect(() => {
- 
+
     const fetchUserData = async () => {
       try {
         const uid = await getUserID();
@@ -111,7 +103,7 @@ const Blog = () => {
       </div>
 
       {/* tags */}
-      <div className='mx-4 md:mx-[22%] mb-4'>
+      <div className='mx-4 md:mx-[22%] mb-4 mt-6'>
         <TagSection tagList={blogState?.tags} />
       </div>
 
@@ -153,7 +145,7 @@ const Blog = () => {
       </div>
 
       <div className={`${isDarkTheme ? 'bg-gray-900' : 'bg-gray-200'}`}>
-        <AuthorDetails userId={userId}  blog={blogState} followersCnt={followersCnt} />
+        <AuthorDetails userId={userId} blog={blogState} followersCnt={followersCnt} />
       </div>
 
       <Footer />
@@ -164,3 +156,11 @@ const Blog = () => {
 
 export default Blog
 
+
+
+// const logout = () => {
+//   localStorage.clear('user');
+//   window.location.href = '/login'
+// }
+
+// logout();

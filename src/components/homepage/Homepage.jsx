@@ -1,11 +1,17 @@
 import React from "react";
-import TrendingBlogs from "./trending/Trending";
  
 import Navbar from "./navbar/Navbar";
+
 import FeaturedSection from './featured/FeaturedSection';
 import CategorySection from './categories/Categories';
  
  
+
+
+import TrendingBlogs from "./trending/Trending";
+
+import Footer from "./footer/Footer";
+
  
 const Homepage = () => {
   return (
@@ -24,8 +30,12 @@ const Homepage = () => {
  
         <TrendingBlogs />
       </div>
+      
+      <Footer/>
+    </div>
     </div>
   );
-};
+
+}
 
 export default Homepage;
