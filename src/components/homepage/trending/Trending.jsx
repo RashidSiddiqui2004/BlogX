@@ -86,7 +86,7 @@ function TrendingBlogs() {
               shortSummary+= ' ...'
 
               return (
-                <Link to={`/blog/${id}`} key={index}>
+                <Link to={`/blog/${title}/${id}`}key={index}>
                   <BlogCard blogid={id} title={title} description={description}
                     summary={shortSummary} department={department} blogPoster={blogPoster}
                     author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />

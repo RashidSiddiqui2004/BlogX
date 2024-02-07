@@ -6,6 +6,9 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import blog_x from "./blogx_icon.svg";
 import blog_xd from "./blogx_icond.svg";
 import { useState } from 'react';
+import { FaPenToSquare } from "react-icons/fa6";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
 
 const Navbar = () => {
 
@@ -13,6 +16,12 @@ const Navbar = () => {
     const { mode, toggleMode } = context;
 
     const [ham, setham] = useState(false);
+
+    const navigate = useNavigate();
+
+    const handleHome = () => {
+        navigate("/");  
+    };
 
 
     const toggleHam = () => {
@@ -73,20 +82,30 @@ const Navbar = () => {
                 Trending
             </div>
             <div className="font-semibold text-[20px] flex-1 flex items-center 
-                justify-end md:justify-center">
+                justify-end ml-20 md:justify-center cursor-pointer" onClick={handleHome}>
                 Blog
                 <span className="text-[#0096FF]">
                     X
                 </span>
             </div>
+
+
+            <div className="mx-4 text-[14px] hidden md:flex items-center">
+                <Link to={'/add-blog'} className='md:flex md:gap-x-2'>
+                    <FaPenToSquare className='mt-[2px]' />
+                    Write Blog
+                </Link>
+            </div>
+
+
             <div className="mx-4 text-[14px] hidden md:flex items-center">
                 Contact
             </div>
             <div className={`mx-4 text-[14px] hidden md:flex items-center border-
                 ${(mode === "light" ? "[#333333]" : "white")} rounded-md border-2 py-2 px-4`}>
-                <button > About Us</button>
+                <button disabled={true}> About Us</button>
             </div>
-            <div className="mx-4 text-[14px] flex items-center">
+            <div className="mx-4 text-[14px] flex items-center cursor-pointer">
                 {mode === "light"
                     ?
                     <img src={blog_x} onClick={() => {

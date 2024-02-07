@@ -1,9 +1,10 @@
 import React from "react";
-import TrendingBlogs from "./trending/Trending";
  
 import Navbar from "./navbar/Navbar";
 import FeaturedSection from './featured/FeaturedSection'
- 
+import TrendingBlogs from "./trending/Trending";
+
+import Footer from "./footer/Footer";
  
 const Homepage = () => {
   return (
@@ -18,6 +19,8 @@ const Homepage = () => {
  
         <TrendingBlogs />
       </div>
+      
+      <Footer/>
     </div>
     </div>
   );

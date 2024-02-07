@@ -118,7 +118,7 @@ function AddBlog() {
 
     return (
         <div>
-            <div className='flex justify-center items-center postbg py-8'>
+            <div className='flex justify-center items-center postbg py-8' style={{ fontFamily: 'Nunito Sans, sans-serif' }}>
                 <div className='bg-gray-800 px-10 py-10 rounded-xl w-[90%] md:w-[80%]'>
                     <div className='flex gap-4 justify-center'>
                         <h1 className='text-center text-white text-xl mb-4 font-bold'>Publish Blog</h1>
@@ -133,7 +133,7 @@ function AddBlog() {
                             value={blog.title}
                             onChange={(e) => setBlog({ ...blog, title: e.target.value })}
                             name='title'
-                            className=' bg-gray-600 mb-4 px-2 py-2 w-full   rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
+                            className=' bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
                             placeholder='Add Post title'
                         />
                     </div>
@@ -142,8 +142,7 @@ function AddBlog() {
                     {/* editor for blog content */}
                     <div>
                         <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Tell your story...</h2>
-                        {/* <h3 className='text-center text-white text-xl mb-4 font-bold'>Add blog</h3> */}
-
+ 
                         <Editor
                             apiKey='aflhte2kchgwcgg6wo27mxqz79lhro2h443k16fftegeoo6x'
                             onInit={(evt, editor) => (blogEditor.current = editor)}
@@ -224,7 +223,7 @@ function AddBlog() {
                                     value={blog.imageUrl}
                                     onChange={(e) => setBlog({ ...blog, blogPoster: e.target.value })}
                                     name='imageurl'
-                                    className=' bg-gray-600 mb-4 px-2 py-3 my-2 w-full  rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
+                                    className=' bg-gray-600 mb-4 px-2 py-3 my-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
                                     placeholder='Add an Image Url'
                                 />
                             </div>

@@ -11,6 +11,7 @@ const AuthorDetails = ({ blog, followersCnt, userId }) => {
     const { authorId, author } = blog;
 
     // function for allowing users to follow author
+    
     const followUser = async () => {
         // followerId, followingId, followingUsername 
         await followAuthor(userId, authorId, author);

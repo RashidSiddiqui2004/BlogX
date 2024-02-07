@@ -21,7 +21,7 @@ const Blog = () => {
   const isDarkTheme = (mode=="dark");
 
   const params = useParams();
-  const blogId = params.id;
+  const blogId = params.blogID;
 
   const [followersCnt, setfollowersCnt] = useState(0);
   const [blogState, setblogState] = useState('');
@@ -111,7 +111,7 @@ const Blog = () => {
       </div>
 
       {/* tags */}
-      <div className='mx-4 md:mx-[22%] mb-4'>
+      <div className='mx-4 md:mx-[22%] mb-4 mt-6'>
         <TagSection tagList={blogState?.tags} />
       </div>
 

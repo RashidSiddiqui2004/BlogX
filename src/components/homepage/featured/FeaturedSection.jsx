@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom'
 
 function FeaturedSection() {
   const context = useContext(myContext);
-  const { mode, getFeaturedBlogs } = context;
-  const navigate = useNavigate();
+  const { mode, getFeaturedBlogs } = context; 
 
   const [featuredBlogs, setFeaturedBlogs] = useState([]);
   const numFeaturedBlogs = featuredBlogs.length;
@@ -41,7 +40,7 @@ function FeaturedSection() {
   };
 
   return (
-    <div className="mt-[5%]">
+    <div className=" mt-4 md:mt-[2%]">
       <div className="md:w-[6%] md:mt-10">
         <button className={`prev mr-3  ${mode === "dark"
           ? "bg- rounded-lg text-white"
@@ -52,11 +51,11 @@ function FeaturedSection() {
           : "bg-neutral-80 text-zinc-800"
           }`} onClick={handleNext}>→</button>
       </div>
-      <div className="flex flex-col-reverse md:flex-row py-12">
+      <div className="flex flex-col-reverse md:flex-row py-10 md:py-4">
         <div className="flex gap-5 justify-between mt-8 w-full max-md:flex-wrap max-md:max-w-full ">
           <div
             className={`flex text-start flex-col px-5 font-semibold max-md:max-w-full ${mode === "dark"
-              ? "bg- rounded-lg text-white"
+              ? "rounded-lg text-white"
               : "bg-neutral-80 text-zinc-800"
               }`}
           >
@@ -64,16 +63,19 @@ function FeaturedSection() {
               <div className="text-sm text-sky-500 uppercase max-md:max-w-full">
                 Featured Blogs
               </div>
-              <div className="text-sm text-white bg-slate-700 px-3 py-1 rounded-sm">
-                {featuredBlogs[currentIndex]?.department}
-                {/* Machine Learning */}
+              <div className={`text-sm px-3 py-1 rounded-sm
+                ${mode === "dark" ? 'bg-gray-200 text-slate-800' : 'bg-slate-700 text-white'}`}>
+                {featuredBlogs[currentIndex]?.department} 
               </div>
             </div>
 
             <div className="mt-2 text-3xl text-start space-around tracking-tight leading-12 max-md:max-w-full max-md:text-4xl max-md:leading-10 ">
               {featuredBlogs[currentIndex]?.title}
             </div>
-            <div className="text-lg text-start mt-7 space-around tracking-tight leading-12 md:max-w-full md:text-xl max-md:leading-10 font-light text-gray-400">
+            <div className={`text-lg text-start mt-7 space-around tracking-tight leading-12 md:max-w-full md:text-xl max-md:leading-10
+              font-light ${mode === "dark"
+              ? "rounded-lg text-white"
+              : "bg-neutral-80 text-zinc-800"}`}>
               {featuredBlogs[currentIndex]?.summary && <RenderHTMLContent htmlContent={featuredBlogs[currentIndex]?.summary} />}
             </div>
             <div
@@ -83,7 +85,7 @@ function FeaturedSection() {
                 } border-opacity-40 max-md:px-10 max-md:mt-10`}
               style={{ transform: "translateX(-30px)" }}
             >
-              <Link to={`/blog/${featuredBlogs[currentIndex]?.id}`}>
+              <Link to={`/blog/${featuredBlogs[currentIndex]?.title}/${featuredBlogs[currentIndex]?.id}`}>
                 <button>See More</button>
               </Link>
             </div>

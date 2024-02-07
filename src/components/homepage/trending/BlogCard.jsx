@@ -41,7 +41,7 @@ const BlogCard = ({
                             <div>{department}</div>
                             <div className="flex-auto">{minutesRead}min read</div>
                         </div>
-                        <Link to={`/blog/${blogid}`}>
+                        <Link to={`/blog/${title}/${blogid}`}>
                             <GoArrowRight />
                         </Link>
 
