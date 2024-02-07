@@ -33,7 +33,7 @@ const Homepage = () => {
       
       <Footer/>
     </div>
-    </div>
+    
   );
 
 }
