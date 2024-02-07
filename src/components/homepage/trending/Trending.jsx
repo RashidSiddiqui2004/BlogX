@@ -1,77 +1,46 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GoArrowRight } from "react-icons/go";
 import myContext from "../../../context/data/myContext";
-// const title = "hehhehhe"
-
-// this  is  only for the   skeleton purpose
-const BlogCard = ({title,description,summary, author, authorID, department ,claps,  minutesRead ,timeofcreation}) => {
-  const context = useContext(myContext);
-  const { mode, toggleMode } = context;
-  const navigate = useNavigate();
-//   const title = "hehhehhe";
-
-  const handleSeeMoreClick = () => {
-    navigate("/blog"); // Navigate to the blog page
-  };
-
-  return (
-    <div
-      className={`flex flex-col w-[33%] max-md:ml-0 max-md:w-full ${
-        mode === "dark"
-          ? "bg-customBlue rounded-lg text-white"
-          : "bg-neutral-80 text-zinc-800"
-      }`}
-    >
-      <div className="flex flex-col shrink p-2 w-full bg-neutral-80   rounded-lg  max-md:mt-4 transform transition-transform hover:scale-95    ">
-        <img
-          src="https://res.cloudinary.com/dk8y96rpu/image/upload/v1703790717/img1_fnim8m.jpg"
-          className="w-full aspect-[1.5] rounded-md fill-zinc-800"
-        />
-        <div className="flex flex-col   px-2 pt-2 mt-2">
-          <div className="text-2xl tracking-tight leading-6">
-            {title}
-          </div>
-          <div className="mt-4 text-base font-light tracking-normal leading-6 text-opacity-80">
-            {summary}
-            {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris. */}
-          </div>
-          <div className="flex gap-5 justify-between py-3 mt-4 w-full text-sm tracking-normal leading-4 text-sky-500 border-t  border-t-zinc-800 border-t-opacity-20">
-            <div className="flex gap-3 justify-between">
-              <div>{department}</div>
-              <div className="flex-auto">{minutesRead}</div>
-            </div>
-            <GoArrowRight />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
-
+import BlogCard from "./BlogCard";
+import { Link } from 'react-router-dom'
 
 function TrendingBlogs() {
   const context = useContext(myContext);
-  const { mode, toggleMode } = context;
+  const { mode, allBlogs, getTrendingBlogs } = context;
   const navigate = useNavigate();
 
   const handleSeeMoreClick = () => {
-    navigate("/blog"); // Navigate to the blog page
+    navigate("/trending-blogs"); // Navigate to the trending blogs page
   };
 
+  function extractFirst30Words(htmlString) {
+    // Remove HTML tags
+    const plainText = htmlString.replace(/<[^>]*>/g, '');
+
+    // Extract first 30 words
+    const words = plainText.split(/\s+/);
+    const first30Words = words.slice(0, 30).join(' ');
+
+    return first30Words;
+}
+
+  useEffect(() => {
+
+    const fetchAllTrendingBlogs = async () => {
+      await getTrendingBlogs();
+    }
+
+    fetchAllTrendingBlogs();
+  }, [])
+
   return (
-    <div className="flex flex-col py-12 ">
+    <div className="flex flex-col py-12">
       <div className="flex gap-5 justify-between mt-8 w-full max-md:flex-wrap max-md:max-w-full ">
         <div
-          className={`flex text-start flex-col px-5 font-semibold max-md:max-w-full ${
-            mode === "dark"
-              ? "bg- rounded-lg text-white"
-              : "bg-neutral-80 text-zinc-800"
-          }`}
+          className={`flex text-start flex-col px-5 font-semibold max-md:max-w-full ${mode === "dark"
+            ? "bg- rounded-lg text-white"
+            : "bg-neutral-80 text-zinc-800"
+            }`}
         >
           <div className="text-sm text-sky-500 uppercase max-md:max-w-full ">
             Trending Topics
@@ -81,39 +50,57 @@ function TrendingBlogs() {
           </div>
         </div>
       </div>
-      
 
-      {/* first row */}
+
+
       <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="flex gap-5 max-md:flex-col max-md:gap-0 max-md:">
-          <BlogCard 
-          title =" Who are you"
-          />
-          <BlogCard />
-          <BlogCard />
-        </div>
-      </div>
+        <div className="grid md:grid-cols-3">
+          {
+            allBlogs && allBlogs.map((item, index) => {
 
-      {/* second row */}
-      <div className="px-5 mt-8 w-full max-md:max-w-full">
-        <div className="flex gap-5 max-md:flex-col max-md:gap-0 max-md:">
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
+              const { title,
+                description,
+                summary,
+                author,
+                authorId,
+                department,
+                blogPoster,
+                tags,
+                claps,
+                minutesRead,
+                date,
+                id,
+              } = item;
+
+              let shortSummary = extractFirst30Words(summary);
+              shortSummary+= ' ...'
+
+              return (
+                <Link to={`/blog/${title}/${id}`}key={index}>
+                  <BlogCard blogid={id} title={title} description={description}
+                    summary={shortSummary} department={department} blogPoster={blogPoster}
+                    author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
+                </Link>
+              )
+
+            })
+          }
+
+        
         </div>
       </div>
-      <div className="flex flex-col">
+                <div className="flex flex-col">
         <div
-          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${
-            mode === "dark"
-              ? "bg-customBlue rounded-lg text-white border-neutral-50"
-              : "bg-neutral-80 text-black-800"
-          } border-opacity-40 max-md:px-10 max-md:mt-10 `}
+          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
+            ? "bg-customBlue rounded-lg text-white border-neutral-50"
+            : "bg-neutral-80 text-zinc-800"
+            } border-opacity-40 max-md:px-10 max-md:mt-10 `}
           style={{ transform: "translateX(-30px)" }}
         >
           <button onClick={handleSeeMoreClick}>See More</button>
         </div>
       </div>
+
     </div>
   );
 }

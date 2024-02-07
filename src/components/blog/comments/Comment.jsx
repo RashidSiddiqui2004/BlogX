@@ -1,15 +1,18 @@
 
 import React, { useContext } from 'react'
 import myContext from '../../../context/data/myContext';
+import { formatDistanceToNow } from 'date-fns';
 
 const Comment = ({ comment }) => {
 
     const context = useContext(myContext);
-    const { getCommentsForBlog, mode } = context;
+    const { mode } = context;
 
     const isDarkTheme = mode === 'dark';
 
-    const time = "12 minutes ago"
+    const commentTime = comment.timestamp.toDate();
+    const relativeTime = formatDistanceToNow(commentTime, { addSuffix: true });
+
     const userProfileImg = "https://res.cloudinary.com/drlkkozug/image/upload/v1705071144/y9evmbpdht5ezj3fkal9.jpg"
 
     return (
@@ -24,7 +27,7 @@ const Comment = ({ comment }) => {
                 />
                 <div className='justify-center flex flex-col mx-4'>
                     <h3 className="font-semibold">{comment.username}</h3>
-                    <h3 className="font-normal">{time}</h3>
+                    <h3 className="font-normal">{relativeTime}</h3>
                 </div>
 
             </div>

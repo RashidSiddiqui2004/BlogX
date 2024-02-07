@@ -10,10 +10,14 @@ import MyState from "./context/data/myState";
 import Homepage from "./components/homepage/Homepage";
 import Login from "./components/homepage/registration/Login";
 import Signup from "./components/homepage/registration/Signup";
-import { ToastContainer } from "react-toastify";
-import NoPage from "./components/nopage/NoPage";
-import Blog from "./components/blog/Blog";
-import AddBlogLayout from "./components/addBlog/AddBlogLayout";
+import { ToastContainer } from 'react-toastify'; 
+import NoPage from './components/nopage/NoPage';  
+import Blog from './components/blog/Blog'; 
+import AddBlogLayout from './components/addBlog/AddBlogLayout';
+ 
+import FeaturedSection from './components/homepage/featured/FeaturedSection';
+ 
+import UpdateBlogLayout from "./components/updateblog/UpdateBlogLayout";
 
 // import UserDashboard from './components/user-forms/UserDashboard';
 // import AdminDashboard from './components/admin/AdminDashboard';
@@ -26,16 +30,20 @@ function App() {
           <Route path="/" element={<Homepage />} />
 
           <Route path="/blog" element={<Blog />} />
+ 
+          <Route path='/blog/:blogName/:blogID' element={<Blog/>} />
 
           <Route path="/blog/:id" element={<Blog />} />
 
-          <Route path="/add-blog" element={<AddBlogLayout />} />
+          <Route path='/update-blog/:id' element={<UpdateBlogLayout/>} />
+
+      
 
           <Route path="/login" element={<Login />} />
           
           <Route path="/signup" element={<Signup />} />
 
-          <Route path="/*" element={<Blog />} />
+          <Route path="/*" element={<NoPage />} />
         </Routes>
 
         <ToastContainer />
