@@ -134,6 +134,17 @@ const Navbar = () => {
             <div className="mx-4 text-[14px] hidden md:flex items-center">
                 Contact
             </div>
+
+            {(userId === -1)
+                ?
+                <div className="mx-4 text-[14px] hidden md:flex items-center">
+                    <Link to={'/signup'}>
+                        Register
+                    </Link>
+                </div>
+                :
+                <></>}
+
             <div className={`mx-4 text-[14px] hidden md:flex items-center border-
                 ${(mode === "light" ? "[#333333]" : "white")} rounded-md border-2 py-2 px-4`}>
                 <button disabled={true}> About Us</button>

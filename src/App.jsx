@@ -19,10 +19,10 @@ import AddBlogLayout from './components/addBlog/AddBlogLayout';
 import UpdateBlogLayout from "./components/updateblog/UpdateBlogLayout";
 import AboutUs from "./components/aboutus/AboutUs";
 import AdminDashboard from "./components/admin/AdminDashboard";
-import { ADMIN_EMAIL } from "./utilities/admin/AdminDetails";
-import TrendingBlogs from "./components/homepage/trending/Trending";
+import { ADMIN_EMAIL } from "./utilities/admin/AdminDetails"; 
 import Layout from "./components/Layout";
 import TrendingPage from "./components/trendingBlogs.jsx/TrendingPage";
+import RegisterLayout from "./components/homepage/registration/RegisterLayout";
 
 // import AdminDashboard from './components/admin/AdminDashboard';
 
@@ -52,7 +52,13 @@ function App() {
 
           <Route path="/login" element={<Login />} />
 
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup" element={
+            <div>
+            <RegisterLayout>
+              <Signup />
+            </RegisterLayout>
+          </div>
+          } />
 
           <Route path="/*" element={<NoPage />} />
 

@@ -2,9 +2,9 @@ import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import myContext from '../../../context/data/myContext';
 import { toast } from 'react-toastify';
-import { createUserWithEmailAndPassword } from 'firebase/auth'; 
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Timestamp, addDoc, collection } from 'firebase/firestore'; 
+import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import { auth, fireDB } from '../../../firebase/FirebaseConfig';
 import Loader from '../../../utilities/loader/Loader';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +15,7 @@ function Signup() {
     const [password, setPassword] = useState("");
 
     const context = useContext(myContext);
-    const { loading, setLoading } = context; 
+    const { loading, setLoading } = context;
 
     const navigate = useNavigate();
 
@@ -72,7 +72,7 @@ function Signup() {
             const userRef = collection(fireDB, "users")
             await addDoc(userRef, user);
 
-    
+
             toast.success("Signup Succesfully", {
                 position: "top-right",
                 autoClose: 800,
@@ -83,7 +83,7 @@ function Signup() {
                 progress: undefined,
                 theme: "colored",
             });
-            
+
             setName("");
             setEmail("");
             setPassword("");
@@ -125,12 +125,15 @@ function Signup() {
     }
 
     return (
-        <div className='flex justify-center items-center h-screen'>
+        <div className='flex justify-center items-center h-screen bg-gray-800'>
             {loading && <Loader />}
 
-            <div className='bg-gray-800 px-10 rounded-xl py-10'>
-                <div className="flex justify-center merriweather mb-5"> 
-                    <h1 className="text-xl font-semibold mt-3 ml-2">BlogX</h1>
+            <div className='md:px-10 rounded-xl py-10'>
+                <div className="font-bold text-4xl mb-3 text-white">
+                    Blog
+                    <span className="text-[#0096FF]">
+                        X
+                    </span>
                 </div>
                 <div>
                     <h1 className='text-center text-white text-xl mb-4 font-bold'>Signup</h1>
