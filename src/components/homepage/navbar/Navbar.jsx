@@ -43,10 +43,10 @@ const Navbar = () => {
                 console.log(err);
             }
         };
-    
+
         fetchUserData();
     }, []);
-    
+
 
     const toggleHam = () => {
         setham(!ham);
@@ -102,17 +102,22 @@ const Navbar = () => {
             <div className="mx-4 text-[14px] hidden md:flex items-center">
                 Categories
             </div>
-            <div className="mx-4 text-[14px] hidden md:flex items-center">
-                Trending
-            </div>
+
+            <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
+                <div className="mx-4 text-[14px] hidden md:flex items-center">
+                    Trending
+                </div>
+            </Link>
+
+
             <div className="font-semibold text-[20px] flex-1 flex items-center 
                 justify-end ml-20 md:justify-center cursor-pointer" onClick={handleHome}>
                 Blog
                 <span className="text-[#0096FF]">
                     X
                 </span>
-            </div> 
-   
+            </div>
+
             {
                 (isAuthor)
                     ?

@@ -89,7 +89,7 @@ function AddBlog() {
         setPostPreview(true);
     };
 
-    const uploadBlog = async () => {
+    const uploadBlog = async () => { 
         const postUploadstate = await createBlog();
 
         return postUploadstate;

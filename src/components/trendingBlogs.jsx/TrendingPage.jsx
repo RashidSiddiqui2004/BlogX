@@ -1,14 +1,16 @@
+ 
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import myContext from "../../../context/data/myContext";
-import BlogCard from "./BlogCard";
+import { useNavigate } from "react-router-dom"; 
 import { Link } from 'react-router-dom'
+import myContext from "../../context/data/myContext";
+import BlogCard from "../homepage/trending/BlogCard";
 
-function TrendingBlogs() {
+function TrendingPage() {
+
   const context = useContext(myContext);
-  const { mode, allBlogs, getTrendingBlogs } = context;
+  const { mode, allBlogs } = context;
 
-  // const [trendingBlogs, setTrendingBlogs] = useState([]);
+  const [trendingBlogs, setTrendingBlogs] = useState(allBlogs); 
 
   const navigate = useNavigate();
 
@@ -25,16 +27,16 @@ function TrendingBlogs() {
     const first30Words = words.slice(0, 30).join(' ');
 
     return first30Words;
-  }
+}
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const fetchAllTrendingBlogs = async () => {
-      await getTrendingBlogs() 
-    };
+  //   const fetchAllTrendingBlogs = async () => {
+  //     await getTrendingBlogs();
+  //   }
 
-    fetchAllTrendingBlogs();
-  }, [])
+  //   fetchAllTrendingBlogs();
+  // }, [])
 
   return (
     <div className="flex flex-col py-12">
@@ -59,7 +61,7 @@ function TrendingBlogs() {
       <div className="px-5 mt-10 w-full max-md:max-w-full">
         <div className="grid md:grid-cols-3">
           {
-            allBlogs && allBlogs.slice(0,6).map((blog, index) => {
+            trendingBlogs && trendingBlogs.map((item, index) => {
 
               const { title,
                 description,
@@ -73,13 +75,13 @@ function TrendingBlogs() {
                 minutesRead,
                 date,
                 id,
-              } = blog;
+              } = item;
 
               let shortSummary = extractFirst30Words(summary);
-              shortSummary += ' ...'
+              shortSummary+= ' ...'
 
               return (
-                <Link to={`/blog/${title}/${id}`} key={index}>
+                <Link to={`/blog/${title}/${id}`}key={index}>
                   <BlogCard blogid={id} title={title} description={description}
                     summary={shortSummary} department={department} blogPoster={blogPoster}
                     author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
@@ -89,10 +91,10 @@ function TrendingBlogs() {
             })
           }
 
-
+        
         </div>
       </div>
-      <div className="flex flex-col">
+                <div className="flex flex-col">
         <div
           className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
             ? "bg-customBlue rounded-lg text-white border-neutral-50"
@@ -108,4 +110,4 @@ function TrendingBlogs() {
   );
 }
 
-export default TrendingBlogs;
+export default TrendingPage;

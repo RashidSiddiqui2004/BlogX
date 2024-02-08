@@ -15,8 +15,7 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
 
   // function for allowing users to follow author
   const followUser = async () => { 
-    // followerId, followingId, followingUsername 
-    console.log(userId, " ", author, authorId);
+    // followerId, followingId, followingUsername  
     await followAuthor(userId, authorId, author);
   }
 

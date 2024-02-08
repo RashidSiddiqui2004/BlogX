@@ -1,38 +1,40 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import myContext from "../../../context/data/myContext";
-import RenderHTMLContent from '../../../utilities/htmlRenderer/RenderHTMLContent'
 import { Link } from 'react-router-dom';
 import Card from './CardsCategory';
-import Image from './blogimage.svg';
+
+import WebDept from './WebDevelopment.png';
+import AppDept from './AppDev.png';
+import MLDept from './ML.png';
 
 function CategorySection() {
   const context = useContext(myContext);
   const { mode } = context;
   const navigate = useNavigate();
 
-  const DummyData = [
+  const departmentData = [
     {
       id: 1,
       title: "WebDev",
-      image: Image,
+      image: WebDept,
+      url: 'web-development'
     },
     {
       id: 2,
       title: "AppDev",
-      image: Image,
+      image: AppDept,
+      url: 'app-development'
     },
     {
       id: 3,
       title: "AI & ML",
-      image: Image,
+      image: MLDept,
+      url: 'machine-learning'
     },
   ];
 
-  
- 
 
-  
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -40,7 +42,7 @@ function CategorySection() {
     navigate("/blog");
   };
 
-  
+
 
   return (
     <div className="mt-[5%]">
@@ -61,7 +63,7 @@ function CategorySection() {
               ? "bg- rounded-lg text-white"
               : "bg-neutral-80 text-zinc-800"
               }`}
-            style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end" }} 
+            style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end" }}
           >
             <div className="flex flex-row gap-x-5">
               <div className="text-sm text-sky-500 uppercase max-md:max-w-full">
@@ -70,7 +72,7 @@ function CategorySection() {
             </div>
 
             <div className="mt-5 text-3xl text-start space-around tracking-tight leading-12 max-md:max-w-full max-md:leading-10 md:mb-0 mb-10 md:text-5xl">
-                Dive into <br className="hidden md:block"/> Tech <span className="text-blue-400 text-normal">&#10216; / &#10217;</span>
+              Dive into <br className="hidden md:block" /> Tech <span className="text-blue-400 text-normal">&#10216; / &#10217;</span>
             </div>
 
             <div
@@ -86,17 +88,22 @@ function CategorySection() {
             </div>
           </div>
         </div>
-        <div className="md:w-[65%] w-[90%] mx-auto md:ml-auto md:mr-5 flex justify-center items-center transition-transform duration-500 ease-in-out md:mb-[-3.5%]">
+        <div className="md:w-[65%] w-[90%] mx-auto mt-20 md:ml-auto md:mr-5 flex justify-center items-center transition-transform duration-500 ease-in-out md:mb-[-3.5%]">
           <div className={`grid grid-cols-3 gap-5 justify-between md:h-[80%] h-[240%] ${mode === "dark"
-          ? "bg- rounded-lg text-white"
-          : "bg-neutral-80 text-gray-500"
-          }`}>
-            {DummyData.map((item) => (
-              <Card
-                key={item.id}
-                title={item.title}
-                image={item.image}
-              />
+            ? "bg- rounded-lg text-white"
+            : "bg-neutral-80 text-gray-500"
+            }`}>
+            {departmentData.map((dept) => (
+              // <div>
+                <Link to={`/department/${dept.url}`}  
+                key={dept.id}>
+                  <Card
+                    title={dept.title}
+                    image={dept.image}
+                  />
+                </Link>
+
+              // </div>
             ))}
           </div>
         </div>

@@ -8,6 +8,7 @@ import {
 import { toast } from 'react-toastify';
 import { where } from 'firebase/firestore';
 import { fireDB } from '../../firebase/FirebaseConfig';
+import blogModel from './BlogModal';
 
 function myState(props) { 
  
@@ -26,29 +27,7 @@ function myState(props) {
 
     const [loading, setLoading] = useState(false);
 
-    const [blog, setBlog] = useState({
-        title: "",
-        description: "",
-        summary: "",
-        author: null,
-        authorId: "",
-        department: "",
-        blogPoster: "",
-        tags: [],
-        claps: 0,
-        views: 0,
-        minutesRead: 0,
-        isFeatured: false,
-        timeOfCreation: Timestamp.now(),
-        date: new Date().toLocaleString(
-            "en-US",
-            {
-                month: "short",
-                day: "2-digit",
-                year: "numeric",
-            }
-        )
-    });
+    const [blog, setBlog] = useState(blogModel);
 
     const createBlog = async () => {
         if (blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>" || 
@@ -215,10 +194,12 @@ function myState(props) {
         try {
             const q = query(
                 collection(fireDB, 'blogs'),
-                orderBy('views', 'desc'),
+                orderBy('views', 'desc'), 
             );
 
-            const data = onSnapshot(q, (QuerySnapshot) => {
+            // let blogArray = [];
+
+            const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
                 let blogArray = [];
                 QuerySnapshot.forEach((doc) => {
                     blogArray.push({ ...doc.data(), id: doc.id });
@@ -226,8 +207,9 @@ function myState(props) {
                 setAllBlogs(blogArray);
                 setLoading(false);
             });
-
-            return () => data;
+ 
+    
+            return unsubscribe;  
 
         } catch (error) {
             console.log(error)
@@ -552,7 +534,8 @@ function myState(props) {
             clapBlog, commentOnBlog, comments, setComments,
             followAuthor, getFollowersCount,
             getCommentsForBlog,
-            fetchNumPosts, fetchNumUsers,fetchPosts
+            fetchNumPosts, fetchNumUsers,fetchPosts,
+            searchkey, setSearchkey
         }}>
             {props.children}
         </MyContext.Provider>
