@@ -85,6 +85,9 @@ const Blog = () => {
     fetchUserData();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div style={{ color: mode === 'dark' ? 'white' : '' }}
@@ -100,7 +103,7 @@ const Blog = () => {
         <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
       </div>
 
-      <div className='md:mx-[20%]'>
+      <div className='mx-6 md:mx-[20%]'>
         <RenderHTMLContent htmlContent={blogState?.description} />
       </div>
 

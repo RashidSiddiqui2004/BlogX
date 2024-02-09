@@ -3,34 +3,38 @@ import { useNavigate } from "react-router-dom";
 import myContext from "../../../context/data/myContext";
 import BlogCard from "./BlogCard";
 import { Link } from 'react-router-dom'
+import extractFirstXWords from "../../../utilities/initials/fetchXWords";
 
 function TrendingBlogs() {
   const context = useContext(myContext);
   const { mode, allBlogs, getTrendingBlogs } = context;
 
-  // const [trendingBlogs, setTrendingBlogs] = useState([]);
-
   const navigate = useNavigate();
 
-  const handleSeeMoreClick = () => {
-    navigate("/trending-blogs"); // Navigate to the trending blogs page
-  };
+  // const handleSeeMoreClick = () => {
+  //   navigate("/trending-blogs"); // Navigate to the trending blogs page
+  // };
 
-  function extractFirst30Words(htmlString) {
-    // Remove HTML tags
-    const plainText = htmlString.replace(/<[^>]*>/g, '');
-
-    // Extract first 30 words
-    const words = plainText.split(/\s+/);
-    const first30Words = words.slice(0, 30).join(' ');
-
-    return first30Words;
-  }
+  const cards = [
+    {
+      title: 'Card 1',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.',
+    },
+    {
+      title: 'Card 2',
+      content: 'Sed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisi Sed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisiSed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisiSed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisiSed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisi.',
+    },
+    {
+      title: 'Card 3',
+      content: 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec feugiat odio.',
+    },
+    // Add more cards as needed
+  ];
 
   useEffect(() => {
 
     const fetchAllTrendingBlogs = async () => {
-      await getTrendingBlogs() 
+      await getTrendingBlogs()
     };
 
     fetchAllTrendingBlogs();
@@ -54,12 +58,22 @@ function TrendingBlogs() {
         </div>
       </div>
 
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {cards.map((card, index) => (
+          <div key={index} className="flex flex-col h-full">
+            <div className="bg-white shadow-md p-4 flex-grow"> 
+              <h3 className="text-xl font-bold mb-2">{card.title}</h3>
+              <p className="text-gray-600">{card.content}</p>
+            </div>
+          </div>
+        ))}
+      </div> */}
 
 
       <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="grid md:grid-cols-3">
+        <div className="grid md:grid-cols-3 h-full gap-x-4">
           {
-            allBlogs && allBlogs.slice(0,6).map((blog, index) => {
+            allBlogs && allBlogs.slice(0, 6).map((blog, index) => {
 
               const { title,
                 description,
@@ -75,7 +89,7 @@ function TrendingBlogs() {
                 id,
               } = blog;
 
-              let shortSummary = extractFirst30Words(summary);
+              let shortSummary = extractFirstXWords(summary, 30);
               shortSummary += ' ...'
 
               return (
@@ -92,7 +106,8 @@ function TrendingBlogs() {
 
         </div>
       </div>
-      <div className="flex flex-col">
+
+      {/* <div className="flex flex-col">
         <div
           className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
             ? "bg-customBlue rounded-lg text-white border-neutral-50"
@@ -102,7 +117,7 @@ function TrendingBlogs() {
         >
           <button onClick={handleSeeMoreClick}>See More</button>
         </div>
-      </div>
+      </div> */}
 
     </div>
   );

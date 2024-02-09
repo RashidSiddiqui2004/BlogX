@@ -60,26 +60,34 @@ const Navbar = () => {
                 onClick={toggleHam}>
                 <IoMdClose />
             </div>
-            <div className="my-4 mx-6 text-[14px] flex items-center
+
+            <Link to={'/featured-blogs'} className='md:flex md:gap-x-2'>
+                <div className="my-4 mx-6 text-[14px] flex items-center
         justify-start border-b-2 border-gray-600 py-4 w-[70%]">
-                Featured
-            </div>
+                    Featured
+                </div>
+            </Link> 
+
             <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
         border-b-2 border-gray-600 py-4 w-[70%]">
                 Categories
             </div>
-            <div className="my-4 mx-6 text-[14px] flex items-center justify-start
-        border-b-2 border-gray-600 py-4 w-[70%]">
-                Trending
-            </div>
+
+            <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
+                <div className="my-4 mx-6 text-[14px] flex items-center
+        justify-start border-b-2 border-gray-600 py-4 w-[70%]">
+                    Trending
+                </div>
+            </Link> 
+
             <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
         border-b-2 border-gray-600 py-4 w-[70%]">
                 Contact
             </div>
-            <div className="my-4 mx-6 text-[14px] flex items-center justify-start
+            {/* <div className="my-4 mx-6 text-[14px] flex items-center justify-start
         w-[70%] py-4">
                 About Us
-            </div>
+            </div> */}
         </div>
         );
     }
@@ -96,9 +104,13 @@ const Navbar = () => {
 
             {ham && <Ham_menu />}
 
-            <div className="mx-4 text-[14px] hidden md:flex items-center">
-                Featured
-            </div>
+            <Link to={'/featured-blogs'} className='md:flex md:gap-x-2'>
+                <div className="mx-4 text-[14px] hidden md:flex items-center">
+                    Featured
+                </div>
+            </Link>
+
+
             <div className="mx-4 text-[14px] hidden md:flex items-center">
                 Categories
             </div>
@@ -111,7 +123,7 @@ const Navbar = () => {
 
 
             <div className="font-semibold text-[20px] flex-1 flex items-center 
-                justify-end ml-20 md:justify-center cursor-pointer" onClick={handleHome}>
+                 md:ml-20 justify-center cursor-pointer" onClick={handleHome}>
                 Blog
                 <span className="text-[#0096FF]">
                     X
@@ -135,7 +147,7 @@ const Navbar = () => {
                 Contact
             </div>
 
-            {(userId === -1)
+            {(userId === null || userId === -1)
                 ?
                 <div className="mx-4 text-[14px] hidden md:flex items-center">
                     <Link to={'/signup'}>
@@ -145,10 +157,11 @@ const Navbar = () => {
                 :
                 <></>}
 
-            <div className={`mx-4 text-[14px] hidden md:flex items-center border-
+            {/* <div className={`mx-4 text-[14px] hidden md:flex items-center border-
                 ${(mode === "light" ? "[#333333]" : "white")} rounded-md border-2 py-2 px-4`}>
                 <button disabled={true}> About Us</button>
-            </div>
+            </div> */}
+
             <div className="mx-4 text-[14px] flex items-center cursor-pointer">
                 {mode === "light"
                     ?

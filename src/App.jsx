@@ -23,6 +23,7 @@ import { ADMIN_EMAIL } from "./utilities/admin/AdminDetails";
 import Layout from "./components/Layout";
 import TrendingPage from "./components/trendingBlogs.jsx/TrendingPage";
 import RegisterLayout from "./components/homepage/registration/RegisterLayout";
+import FeaturedPage from "./components/homepage/featured/FeaturedPage";
 
 // import AdminDashboard from './components/admin/AdminDashboard';
 
@@ -40,6 +41,8 @@ function App() {
           {/* <Route path='/department/:deptName' element={<DepartmentBlogs />} /> */}
 
           <Route path='/update-blog/:id' element={<UpdateBlogLayout />} />
+
+          <Route path='/featured-blogs' element={<FeaturedPage />} />
 
           <Route path="/trending-blogs" element={<div>
             <Layout>

@@ -10,7 +10,9 @@ const CommentForm = ({ blogId, userId, username}) => {
 
   const context = useContext(myContext);
 
-  const { commentOnBlog } = context;
+  const { mode, commentOnBlog } = context;
+
+  const isDarkTheme = (mode === 'dark');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,7 +49,8 @@ const CommentForm = ({ blogId, userId, username}) => {
         Comment
       </button>
       <button type="submit" className="flex md:hidden text-slate-900 text-2xl">
-        <IoMdSend className='my-[5px] ml-2 cursor-pointer' />
+        <IoMdSend className={`my-[5px] ml-2 cursor-pointer
+         ${isDarkTheme ? 'text-white' : 'text-slate-950'}`} />
       </button>
     </form>
   );

@@ -2,8 +2,14 @@
 import React from 'react'
 import RenderHTMLContent from '../../../utilities/htmlRenderer/RenderHTMLContent'
 import { Link } from 'react-router-dom' 
+import extractFirstXWords from "../../../utilities/initials/fetchXWords";
 
-const FeaturedBlog = ({featuredBlogs, currentIndex,mode}) => {
+const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
+
+    let shortSummary = extractFirstXWords(featuredBlogs[currentIndex]?.summary,60);
+    shortSummary += ' ...'
+
+
     return (
         <div className="flex flex-col-reverse md:flex-row py-10 md:py-4 transition-all">
 
@@ -19,20 +25,21 @@ const FeaturedBlog = ({featuredBlogs, currentIndex,mode}) => {
                         <div className="text-sm text-sky-500 uppercase max-md:max-w-full">
                             Featured Blogs
                         </div>
-                        <div className={`text-sm px-3 py-1 rounded-sm
+                        <div className={`text-sm px-3 py-1 rounded-sm ml-3 md:ml-0
             ${mode === "dark" ? 'bg-gray-200 text-slate-800' : 'bg-slate-700 text-white'}`}>
                             {featuredBlogs[currentIndex]?.department}
                         </div>
                     </div>
 
-                    <div className="mt-2 text-3xl text-start space-around tracking-tight leading-12 max-md:max-w-full max-md:text-4xl max-md:leading-10 ">
+                    <div className="mt-2 text-2xl md:text-3xl text-start space-around 
+                    tracking-tight leading-12 max-md:max-w-full max-md:leading-10 ">
                         {featuredBlogs[currentIndex]?.title}
                     </div>
                     <div className={`text-lg text-start mt-7 space-around tracking-tight leading-12 md:max-w-full md:text-xl max-md:leading-10
-          font-light ${mode === "dark"
+                 font-light ${mode === "dark"
                             ? "rounded-lg text-white"
                             : "bg-neutral-80 text-zinc-800"}`}>
-                        {featuredBlogs[currentIndex]?.summary && <RenderHTMLContent htmlContent={featuredBlogs[currentIndex]?.summary} />}
+                        {featuredBlogs[currentIndex]?.summary && <RenderHTMLContent htmlContent={shortSummary} />}
                     </div>
                     <div
                         className={`justify-center self-start ml-7 px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"

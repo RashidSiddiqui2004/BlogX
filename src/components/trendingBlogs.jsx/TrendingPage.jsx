@@ -1,5 +1,5 @@
  
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { Link } from 'react-router-dom'
 import myContext from "../../context/data/myContext";
@@ -59,9 +59,9 @@ function TrendingPage() {
 
 
       <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="grid md:grid-cols-3">
+        <div className="grid md:grid-cols-3 gap-3">
           {
-            trendingBlogs && trendingBlogs.map((item, index) => {
+            trendingBlogs && trendingBlogs.slice(0,9)?.map((item, index) => {
 
               const { title,
                 description,
