@@ -66,7 +66,7 @@ const Navbar = () => {
         justify-start border-b-2 border-gray-600 py-4 w-[70%]">
                     Featured
                 </div>
-            </Link> 
+            </Link>
 
             <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
         border-b-2 border-gray-600 py-4 w-[70%]">
@@ -78,12 +78,24 @@ const Navbar = () => {
         justify-start border-b-2 border-gray-600 py-4 w-[70%]">
                     Trending
                 </div>
-            </Link> 
+            </Link>
 
             <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
         border-b-2 border-gray-600 py-4 w-[70%]">
                 Contact
             </div>
+
+            {(userId === null || userId === -1)
+                ?
+                <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
+                border-b-2 border-gray-600 py-4 w-[70%]">
+                    <Link to={'/signup'}>
+                        Register
+                    </Link>
+                </div>
+                :
+                <></>}
+
             {/* <div className="my-4 mx-6 text-[14px] flex items-center justify-start
         w-[70%] py-4">
                 About Us

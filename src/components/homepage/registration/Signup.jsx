@@ -15,7 +15,9 @@ function Signup() {
     const [password, setPassword] = useState("");
 
     const context = useContext(myContext);
-    const { loading, setLoading } = context;
+    const { mode, loading, setLoading } = context;
+
+    const isDarkTheme = (mode === 'dark');
 
     const navigate = useNavigate();
 
@@ -125,11 +127,11 @@ function Signup() {
     }
 
     return (
-        <div className='flex justify-center items-center h-screen bg-gray-800'>
+        <div className={`flex justify-center items-center h-screen ${isDarkTheme ? 'bg-gray-800' :  'bg-slate-400'}`}>
             {loading && <Loader />}
 
             <div className='md:px-10 rounded-xl py-10'>
-                <div className="font-bold text-4xl mb-3 text-white">
+                <div className={`font-bold text-4xl mb-3 ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>
                     Blog
                     <span className="text-[#0096FF]">
                         X

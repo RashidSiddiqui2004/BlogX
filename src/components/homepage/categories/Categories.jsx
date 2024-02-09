@@ -4,9 +4,9 @@ import myContext from "../../../context/data/myContext";
 import { Link } from 'react-router-dom';
 import Card from './CardsCategory';
 
-import WebDept from './WebDevelopment.png';
-import AppDept from './AppDev.png';
-import MLDept from './ML.png';
+import WebDept from './WebDev.svg';
+import AppDept from './AppDev.svg';
+import MLDept from './MLDept.svg';
 
 function CategorySection() {
   const context = useContext(myContext);
@@ -38,9 +38,9 @@ function CategorySection() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleSeeMoreClick = () => {
-    navigate("/blog");
-  };
+  // const handleSeeMoreClick = () => {
+  //   navigate("/blog");
+  // };
 
 
 
@@ -83,18 +83,18 @@ function CategorySection() {
               style={{ transform: "translateX(-30px)" }}
             >
               <Link to={`/blog`}>
-                <button onClick={handleSeeMoreClick}>See More</button>
+                <button>See More</button>
               </Link>
             </div>
           </div>
         </div>
         <div className="md:w-[65%] w-[90%] mx-auto mt-20 md:ml-auto md:mr-5 flex justify-center items-center transition-transform duration-500 ease-in-out md:mb-[-3.5%]">
-          <div className={`grid grid-cols-3 gap-5 justify-between md:h-[80%] h-[240%] ${mode === "dark"
+          <div className={`grid grid-cols-3 gap-5 justify-between md:h-[80%] h-[140%] ${mode === "dark"
             ? "bg- rounded-lg text-white"
             : "bg-neutral-80 text-gray-500"
             }`}>
             {departmentData.map((dept) => (
-              // <div>
+           
                 <Link to={`/department/${dept.url}`}  
                 key={dept.id}>
                   <Card
@@ -102,8 +102,6 @@ function CategorySection() {
                     image={dept.image}
                   />
                 </Link>
-
-              // </div>
             ))}
           </div>
         </div>

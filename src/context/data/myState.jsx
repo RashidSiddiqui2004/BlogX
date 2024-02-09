@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { where } from 'firebase/firestore';
 import { fireDB } from '../../firebase/FirebaseConfig';
 import blogModel from './BlogModal';
+import deptMap from '../../utilities/departments/DepartmentMap';
 
 function myState(props) { 
  
@@ -31,7 +32,7 @@ function myState(props) {
 
     const createBlog = async () => {
         if (blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>" || 
-        blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1) {
+            blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1) {
             return toast.error("All fields are required")
         }
 
@@ -246,14 +247,17 @@ function myState(props) {
 
     const [deptBlogs, setDeptBlogs] = useState([]);
 
-    const getDepartmentBlogs = async ({ department }) => {
+    
+    const getDepartmentBlogs = async ( department ) => {
         setLoading(true)
+
+        const deptKey = deptMap.get(department)
 
         try {
             const q = query(
                 collection(fireDB, 'blogs'),
                 orderBy('timeOfCreation', 'desc'),
-                where('department', "==", department)
+                where('department', "==", deptKey)
             );
 
             const data = onSnapshot(q, (QuerySnapshot) => {
@@ -279,7 +283,7 @@ function myState(props) {
 
     const [authorSpecificBlogs, setAuthorBlogs] = useState([]);
 
-    const getAuthorBlogs = async ({ authorId }) => {
+    const getAuthorBlogs = async (authorId ) => {
         setLoading(true)
 
         try {

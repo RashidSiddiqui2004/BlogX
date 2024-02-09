@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import myContext from "../../../context/data/myContext";
 import BlogCard from "./BlogCard";
@@ -9,28 +9,12 @@ function TrendingBlogs() {
   const context = useContext(myContext);
   const { mode, allBlogs, getTrendingBlogs } = context;
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // const handleSeeMoreClick = () => {
   //   navigate("/trending-blogs"); // Navigate to the trending blogs page
   // };
-
-  const cards = [
-    {
-      title: 'Card 1',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.',
-    },
-    {
-      title: 'Card 2',
-      content: 'Sed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisi Sed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisiSed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisiSed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisiSed consequat eros eget magna varius, sed placerat justo blandit. Nulla facilisi.',
-    },
-    {
-      title: 'Card 3',
-      content: 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec feugiat odio.',
-    },
-    // Add more cards as needed
-  ];
-
+ 
   useEffect(() => {
 
     const fetchAllTrendingBlogs = async () => {
