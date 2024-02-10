@@ -25,7 +25,7 @@ const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
                         <div className="text-sm text-sky-500 uppercase max-md:max-w-full">
                             Featured Blogs
                         </div>
-                        <div className={`text-sm px-3 py-1 rounded-sm ml-3 md:ml-0
+                        <div className={`text-sm px-3 py-1 rounded-sm  md:ml-0
             ${mode === "dark" ? 'bg-gray-200 text-slate-800' : 'bg-slate-700 text-white'}`}>
                             {featuredBlogs[currentIndex]?.department}
                         </div>

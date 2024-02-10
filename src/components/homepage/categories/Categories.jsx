@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import myContext from "../../../context/data/myContext";
 import { Link } from 'react-router-dom';
 import Card from './CardsCategory';
@@ -11,7 +10,6 @@ import MLDept from './MLDept.svg';
 function CategorySection() {
   const context = useContext(myContext);
   const { mode } = context;
-  const navigate = useNavigate();
 
   const departmentData = [
     {
@@ -28,7 +26,7 @@ function CategorySection() {
     },
     {
       id: 3,
-      title: "AI & ML",
+      title: "Machine Learning",
       image: MLDept,
       url: 'machine-learning'
     },
@@ -38,15 +36,11 @@ function CategorySection() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // const handleSeeMoreClick = () => {
-  //   navigate("/blog");
-  // };
-
-
 
   return (
-    <div className="mt-[5%]">
-      <div className="md:w-[6%] md:mt-10 flex justify-around">
+    <div>
+
+      {/* <div className="md:w-[6%] flex justify-around">
         <button className={`prev mr-3 md:mr-0 hidden md:block ${mode === "dark"
           ? "bg- rounded-lg text-white"
           : "bg-neutral-80  text-gray-400"
@@ -55,9 +49,12 @@ function CategorySection() {
           ? "bg- rounded-lg text-white"
           : "bg-neutral-80 text-zinc-800"
           }`} >→</button>
-      </div>
-      <div className="flex flex-col justify-between md:flex-row md:py-12 md:h-[500px] h-[250px]">
-        <div className="flex gap-5 justify-between md:mt-8 md:w-[30%] max-md:flex-wrap ">
+      </div> */}
+
+
+      <div className="flex flex-col justify-between md:flex-row md:py-12 md:h-[500px]">
+
+        <div className="gap-5 mt-9  md:mt-[10%] md:w-[30%] max-md:flex-wrap">
           <div
             className={`flex text-start flex-col px-5 font-semibold max-md:max-w-full ${mode === "dark"
               ? "bg- rounded-lg text-white"
@@ -82,30 +79,30 @@ function CategorySection() {
                 } border-opacity-40 max-md:px-10 md:mt-10`}
               style={{ transform: "translateX(-30px)" }}
             >
-              <Link to={`/blog`}>
+              <Link to={`/departments`}>
                 <button>See More</button>
               </Link>
             </div>
           </div>
+
         </div>
-        <div className="md:w-[65%] w-[90%] mx-auto mt-20 md:ml-auto md:mr-5 flex justify-center items-center transition-transform duration-500 ease-in-out md:mb-[-3.5%]">
-          <div className={`grid grid-cols-3 gap-5 justify-between md:h-[80%] h-[140%] ${mode === "dark"
-            ? "bg- rounded-lg text-white"
-            : "bg-neutral-80 text-gray-500"
-            }`}>
+
+        <div className="md:w-[65%] w-[90%] mt-16 md:mt-2 mx-auto md:ml-auto md:mr-5 flex justify-center items-center transition-transform duration-500 ease-in-out md:mb-[-3.5%]">
+          <div className={`grid grid-cols-2 md:grid-cols-3 gap-5 justify-between md:h-[80%] h-[140%] ${mode === "dark" ? "bg- rounded-lg text-white" : "bg-neutral-80 text-gray-500"}`}>
             {departmentData.map((dept) => (
-           
-                <Link to={`/department/${dept.url}`}  
-                key={dept.id}>
-                  <Card
-                    title={dept.title}
-                    image={dept.image}
-                  />
-                </Link>
+              <Link to={`/department/${dept.url}`} key={dept.id}>
+                <Card
+                  title={dept.title}
+                  image={dept.image}
+                />
+              </Link>
             ))}
           </div>
         </div>
+
       </div>
+
+
       <div className="border-b border-gray-300 md:mt-24 mt-24"></div>
     </div>
   );

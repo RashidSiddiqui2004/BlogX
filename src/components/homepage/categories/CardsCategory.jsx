@@ -2,12 +2,12 @@ import React from "react";
 
 const Card = ({ title, image }) => {
   return (
-    <div className="max-w-xs rounded md:rounded-xl overflow-hidden shadow-lg hover:shadow-2xl">
-      <div className="h-[80%]">
-        <img className="w-full bg-contain" src={image} alt="Card" />
+    <div className="max-w-xs rounded-lg shadow-lg min-h-40 hover:shadow-2xl">
+      <div className="aspect-w-16 aspect-h-9">
+        <img className="w-full h-full object-cover" src={image} alt="Card" />
       </div>
-      <div className="px-6 md:py-4 py-0">
-        <div className="md:text-xl text-xs mt-0 text-left font-normal">{title}</div> 
+      <div className="px-4 py-3">
+        <div className="text-lg font-semibold">{title}</div>
       </div>
     </div>
   );

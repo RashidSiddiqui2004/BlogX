@@ -68,10 +68,14 @@ const Navbar = () => {
                 </div>
             </Link>
 
-            <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
+
+
+            <Link to={'/departments'} className='md:flex md:gap-x-2'>
+                <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
         border-b-2 border-gray-600 py-4 w-[70%]">
-                Categories
-            </div>
+                    Categories
+                </div>
+            </Link>
 
             <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
                 <div className="my-4 mx-6 text-[14px] flex items-center
@@ -123,9 +127,11 @@ const Navbar = () => {
             </Link>
 
 
-            <div className="mx-4 text-[14px] hidden md:flex items-center">
-                Categories
-            </div>
+            <Link to={'/departments'} className='md:flex md:gap-x-2'>
+                <div className="mx-4 text-[14px] hidden md:flex items-center">
+                    Categories
+                </div>
+            </Link>
 
             <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
                 <div className="mx-4 text-[14px] hidden md:flex items-center">
