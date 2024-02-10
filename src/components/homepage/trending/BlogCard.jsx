@@ -17,7 +17,7 @@ const BlogCard = ({
 
     return (
         <div 
-           className = {`flex flex-col max-w-md mt-2 max-md:ml-0 max-md:w-full flex-grow h-full ${mode === "dark"
+           className = {`flex flex-col max-w-md mt-2 max-md:ml-0 max-md:w-full transform  transition-transform hover:scale-95 flex-grow h-full ${mode === "dark"
                  ? "bg-customBlue rounded-lg text-white"
                  : "bg-neutral-80 text-zinc-800"
                  }`}>
@@ -25,7 +25,7 @@ const BlogCard = ({
             <img
                 src={blogPoster}
                 alt={title}
-                className="w-full h-40 object-cover"
+                className="  rounded-sm   object-fill aspect-[1.8] "
             />
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">{title}</div>
