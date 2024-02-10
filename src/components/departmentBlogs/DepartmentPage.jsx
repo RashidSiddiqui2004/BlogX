@@ -7,9 +7,12 @@ import CategorySection from '../homepage/categories/Categories'
 const DepartmentPage = () => {
   return (
     <div>
-        <Navbar/>
-        <CategorySection/>
-        <Footer/>
+      <Navbar />
+
+      <CategorySection />
+      <div className='flex-grow'></div>
+
+      <Footer />
     </div>
   )
 }

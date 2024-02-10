@@ -28,11 +28,11 @@ const AuthorDetails = ({ blog, followersCnt, userId }) => {
                 <h2 className='font-semibold text-sm md:text-2xl'>Written by {author}</h2>
                 <h3>{followersCnt} Follower{followersCnt > 1 ? 's' : ''}</h3>
 
-                <button className="bg-gray-800 text-white px-6 py-4 mt-2 text-sm md:text-lg
+                {/* <button className="bg-gray-800 text-white px-6 py-4 mt-2 text-sm md:text-lg
                 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring
                  focus:border-blue-300">
                     More from {author}
-                </button>
+                </button> */}
 
             </div>
 

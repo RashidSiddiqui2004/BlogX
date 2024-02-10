@@ -1,42 +1,44 @@
- 
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom'
 import myContext from "../../context/data/myContext";
 import BlogCard from "../homepage/trending/BlogCard";
+import extractFirstXWords from "../../utilities/initials/fetchXWords";
 
 function TrendingPage() {
 
   const context = useContext(myContext);
-  const { mode, allBlogs } = context;
+  const { mode, trendingBlogs, getTrendingBlogs } = context;
 
-  const [trendingBlogs, setTrendingBlogs] = useState(allBlogs); 
+  // const [trendingBlogs, setTrendingBlogs] = useState(allBlogs);
 
   const navigate = useNavigate();
 
-  const handleSeeMoreClick = () => {
-    navigate("/trending-blogs"); // Navigate to the trending blogs page
-  };
+  useEffect(() => {
 
-  function extractFirst30Words(htmlString) {
-    // Remove HTML tags
-    const plainText = htmlString.replace(/<[^>]*>/g, '');
+    const fetchAllTrendingBlogs = async () => {
+      await getTrendingBlogs()
+    };
 
-    // Extract first 30 words
-    const words = plainText.split(/\s+/);
-    const first30Words = words.slice(0, 30).join(' ');
+    fetchAllTrendingBlogs();
+  }, [])
 
-    return first30Words;
-}
 
+  // optimisation
   // useEffect(() => {
 
-  //   const fetchAllTrendingBlogs = async () => {
-  //     await getTrendingBlogs();
+  // const fetchAllTrendingBlogs = async () => {
+  //   console.log(trendingBlogs);
+  //   if (trendingBlogs?.length === 0) {
+  //     const trending = await getTrendingBlogs();
+  //     setTrendingBlogs(allBlogs);
   //   }
+  // };
 
   //   fetchAllTrendingBlogs();
-  // }, [])
+  // }, []);
+
 
   return (
     <div className="flex flex-col py-12">
@@ -61,7 +63,7 @@ function TrendingPage() {
       <div className="px-5 mt-10 w-full max-md:max-w-full">
         <div className="grid md:grid-cols-3 gap-3">
           {
-            trendingBlogs && trendingBlogs.slice(0,9)?.map((item, index) => {
+            trendingBlogs && trendingBlogs.slice(0, 9)?.map((item, index) => {
 
               const { title,
                 description,
@@ -77,11 +79,11 @@ function TrendingPage() {
                 id,
               } = item;
 
-              let shortSummary = extractFirst30Words(summary);
-              shortSummary+= ' ...'
+              let shortSummary = extractFirstXWords(summary, 30);
+              shortSummary += ' ...'
 
               return (
-                <Link to={`/blog/${title}/${id}`}key={index}>
+                <Link to={`/blog/${title}/${id}`} key={index}>
                   <BlogCard blogid={id} title={title} description={description}
                     summary={shortSummary} department={department} blogPoster={blogPoster}
                     author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
@@ -91,10 +93,11 @@ function TrendingPage() {
             })
           }
 
-        
+
         </div>
       </div>
-                <div className="flex flex-col">
+
+      {/* <div className="flex flex-col">
         <div
           className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
             ? "bg-customBlue rounded-lg text-white border-neutral-50"
@@ -104,7 +107,7 @@ function TrendingPage() {
         >
           <button onClick={handleSeeMoreClick}>See More</button>
         </div>
-      </div>
+      </div> */}
 
     </div>
   );

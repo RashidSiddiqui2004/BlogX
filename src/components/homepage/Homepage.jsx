@@ -1,13 +1,10 @@
 import React from "react";
- 
-import Navbar from "./navbar/Navbar";
 
+import Navbar from "./navbar/Navbar";
 import FeaturedSection from './featured/FeaturedSection';
 import CategorySection from './categories/Categories';
 import TrendingBlogs from "./trending/Trending";
-
 import Footer from "./footer/Footer";
-
 
 const Homepage = () => {
   return (
