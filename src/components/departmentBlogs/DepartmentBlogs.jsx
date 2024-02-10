@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect } from 'react'
 import myContext from '../../context/data/myContext';
-import { Link, useParams } from 'react-router-dom'; 
+import { Link, useParams } from 'react-router-dom';
 import extractFirstXWords from '../../utilities/initials/fetchXWords'
 import deptMap from '../../utilities/departments/DepartmentMap'
 import RecentDeptBlogs from './RecentDeptBlogs';
@@ -27,7 +27,7 @@ const DepartmentBlogs = () => {
         const fetchDeptBlogs = async () => {
             try {
                 // Fetch dept blogs data
-                const deptBlogsData = await getDepartmentBlogs(departmentName); 
+                const deptBlogsData = await getDepartmentBlogs(departmentName);
 
             } catch (error) {
                 console.log(error);
@@ -119,13 +119,12 @@ const DepartmentBlogs = () => {
                 </div>
 
 
-
             </div>
 
             {
                 (deptBlogs.slice(3).length >= 1)
 
-                    ? 
+                    ?
 
                     <div className="mx-[5%] my-10">
 
@@ -177,7 +176,6 @@ const DepartmentBlogs = () => {
                     <>
                     </>
             }
-
 
 
         </div>

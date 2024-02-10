@@ -55,7 +55,7 @@ function TrendingBlogs() {
 
 
       <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="grid md:grid-cols-3 h-full gap-x-4">
+        <div className="grid md:grid-cols-3 h-full gap-x-2">
           {
             allBlogs && allBlogs.slice(0, 6).map((blog, index) => {
 

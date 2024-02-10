@@ -17,7 +17,7 @@ const BlogCard = ({
 
     return (
         <div 
-           className = {`flex flex-col max-w-md mt-2 max-md:ml-0 max-md:w-full flex-grow h-full ${mode === "dark"
+           className = {`flex flex-col max-w-md mt-2 max-md:ml-0 max-md:w-full flex-grow h-full transform transition-transform hover:scale-95   ${mode === "dark"
                  ? "bg-customBlue rounded-lg text-white"
                  : "bg-neutral-80 text-zinc-800"
                  }`}>
