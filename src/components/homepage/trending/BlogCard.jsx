@@ -49,6 +49,8 @@ const BlogCard = ({
                 </div>
             </div>
 
+            <div className="pb-10"></div>
+
         </div>
     );
 };
