@@ -26,7 +26,7 @@ const BlogCard = ({
             <img
                 src={blogPoster}
                 alt={title}
-                className="  rounded-sm   object-fill aspect-[1.8] "
+                className="  rounded-lg   object-fill aspect-[1.8] "
             />
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">{title}</div>
@@ -48,6 +48,8 @@ const BlogCard = ({
                     </Link>
                 </div>
             </div>
+
+            <div className="pb-10"></div>
 
         </div>
     );
