@@ -5,10 +5,12 @@ import CategorySection from '../homepage/categories/Categories';
 
 const DepartmentPage = () => {
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div>
       <Navbar />
+
       <CategorySection />
-      <div className='flex-grow'></div> 
+      <div className='flex-grow'></div>
+
       <Footer />
     </div>
   );

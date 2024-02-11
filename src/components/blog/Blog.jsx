@@ -99,7 +99,7 @@ const Blog = () => {
         <h1 className='text-3xl md:text-5xl text-left font-bold mx-6 md:mx-[26%] mt-8 mb-6'>{blogState?.title}</h1>
       {/* </div> */}
 
-      <div className='md:w-[55%] mx-12 md:mx-[25%] my-4 py-5'>
+      <div className='md:w-[55%] mx-6 md:mx-[25%] my-4 py-5'>
         <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
       </div>
 
@@ -149,7 +149,9 @@ const Blog = () => {
         <CommentSection comments={comments} />
       </div>
 
-      <div className={`${isDarkTheme ? 'bg-gray-900' : 'bg-gray-200'}`}>
+      <hr className="rounded-full shadow-md shadow-gray-500 my-8" />
+
+      <div>
         <AuthorDetails userId={userId} blog={blogState} followersCnt={followersCnt} />
       </div>
 

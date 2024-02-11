@@ -19,11 +19,11 @@ import AddBlogLayout from './components/addBlog/AddBlogLayout';
 import UpdateBlogLayout from "./components/updateblog/UpdateBlogLayout";
 import AboutUs from "./components/aboutus/AboutUs";
 import AdminDashboard from "./components/admin/AdminDashboard";
-import { ADMIN_EMAIL } from "./utilities/admin/AdminDetails"; 
+import { ADMIN_EMAIL } from "./utilities/admin/AdminDetails";
 import Layout from "./components/Layout";
 import TrendingPage from "./components/trendingBlogs.jsx/TrendingPage";
 import RegisterLayout from "./components/homepage/registration/RegisterLayout";
-import FeaturedPage from "./components/homepage/featured/FeaturedPage"; 
+import FeaturedPage from "./components/homepage/featured/FeaturedPage";
 import DeptBlogLayout from "./components/departmentBlogs/DeptBlogLayout";
 import DepartmentPage from "./components/departmentBlogs/DepartmentPage";
 
@@ -57,14 +57,21 @@ function App() {
 
           <Route path="/about-us" element={<AboutUs />} />
 
-          <Route path="/login" element={<Login />} />
+          <Route path="/login"
+            element={
+              <div>
+                <RegisterLayout>
+                  <Login />
+                </RegisterLayout>
+              </div>
+            } />
 
           <Route path="/signup" element={
             <div>
-            <RegisterLayout>
-              <Signup />
-            </RegisterLayout>
-          </div>
+              <RegisterLayout>
+                <Signup />
+              </RegisterLayout>
+            </div>
           } />
 
           <Route path="/*" element={<NoPage />} />

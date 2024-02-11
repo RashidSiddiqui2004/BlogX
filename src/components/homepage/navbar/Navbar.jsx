@@ -28,6 +28,12 @@ const Navbar = () => {
     const [isAuthor, setIsAuthor] = useState(false);
 
 
+    const logout = () => {
+        localStorage.clear('user');
+        window.location.href = '/login'
+    }
+
+
     // check if user is authenticated and authorised or not
 
     useEffect(() => {
@@ -86,7 +92,7 @@ const Navbar = () => {
 
             <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
         border-b-2 border-gray-600 py-4 w-[70%]">
-                Contact
+                Contact Us
             </div>
 
             {(userId === null || userId === -1)
@@ -140,8 +146,8 @@ const Navbar = () => {
             </Link>
 
 
-            <div className="font-semibold text-[20px] flex-1 flex items-center 
-                 md:ml-20 justify-center cursor-pointer" onClick={handleHome}>
+            <div className={`font-semibold text-[20px] flex-1 flex items-center 
+                justify-center ${ isAuthor ? 'md:ml-32' : ''} cursor-pointer`} onClick={handleHome}>
                 Blog
                 <span className="text-[#0096FF]">
                     X
@@ -161,16 +167,34 @@ const Navbar = () => {
                     ''
             }
 
-            <div className="mx-4 text-[14px] hidden md:flex items-center">
-                Contact
-            </div>
+
+            {!(userId === null && userId === -1)
+                ?
+                <div className={`mx-4 text-[14px] hidden md:flex items-center border-
+                ${(mode === "light" ? "[#333333]" : "white")} rounded-md border-2 py-2 px-4`}>
+                    {/* <Link to={'/contact-us'}> */}
+                        Contact Us
+                    {/* </Link> */}
+                </div>
+                :
+                <></>}
 
             {(userId === null || userId === -1)
                 ?
-                <div className="mx-4 text-[14px] hidden md:flex items-center">
+                <div className={`mx-4 text-[14px] hidden md:flex items-center border-
+                ${(mode === "light" ? "[#333333]" : "white")} rounded-md border-2 py-2 px-4 cursor-pointer hover:scale-95 transition-all`}>
                     <Link to={'/signup'}>
                         Register
                     </Link>
+                </div>
+                :
+                <></>}
+
+            {!(userId === null && userId === -1)
+                ?
+                <div className={`mx-4 text-[14px] hidden md:flex items-center cursor-pointer hover:scale-95 transition-all`}
+                    onClick={logout}>
+                    Logout
                 </div>
                 :
                 <></>}

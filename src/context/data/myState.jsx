@@ -189,23 +189,28 @@ function myState(props) {
     };
 
     
+    const [trendingBlogs, setTrendingBlogs] = useState([]);
+
+
     const getTrendingBlogs = async () => {
         setLoading(true)
+
+        if(trendingBlogs.length >= 1){
+            return;
+        } 
 
         try {
             const q = query(
                 collection(fireDB, 'blogs'),
                 orderBy('views', 'desc'), 
-            );
-
-            // let blogArray = [];
+            ); 
 
             const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
                 let blogArray = [];
                 QuerySnapshot.forEach((doc) => {
                     blogArray.push({ ...doc.data(), id: doc.id });
                 });
-                setAllBlogs(blogArray);
+                setTrendingBlogs(blogArray);
                 setLoading(false);
             });
  
@@ -532,7 +537,7 @@ function myState(props) {
             blog, allBlogs, setBlog, getBlogData,
             createBlog, updateBlog, deleteBlog,
             isBlogXAuthor,
-            getTrendingBlogs, getAllBlogs,
+            trendingBlogs, getTrendingBlogs, getAllBlogs,
             getDepartmentBlogs, deptBlogs, getFeaturedBlogs,
             getAuthorBlogs, authorSpecificBlogs,
             clapBlog, commentOnBlog, comments, setComments,
