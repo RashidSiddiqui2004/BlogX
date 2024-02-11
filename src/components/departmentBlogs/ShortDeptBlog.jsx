@@ -34,8 +34,8 @@ const ShortDeptBlog = ({
             <div className="flex flex-col w-full">
                 <div className="px-6 py-4 mt-auto flex justify-evenly w-full text-sm tracking-normal leading-4 text-sky-500">
                     <div className="flex justify-between gap-x-4 items-center">
-                        <div className="text-sm">{author}</div> 
-                        <div className="text-sm ml-6">{publishDate} </div>
+                        <div className="text-xs">{author}</div> 
+                        <div className="text-xs ml-6">{publishDate} </div>
                     </div>
                 </div>
 

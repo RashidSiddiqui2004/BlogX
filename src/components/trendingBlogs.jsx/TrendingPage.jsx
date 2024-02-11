@@ -1,6 +1,5 @@
 
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect } from "react"; 
 import { Link } from 'react-router-dom'
 import myContext from "../../context/data/myContext";
 import BlogCard from "../homepage/trending/BlogCard";
@@ -11,10 +10,6 @@ function TrendingPage() {
   const context = useContext(myContext);
   const { mode, trendingBlogs, getTrendingBlogs } = context;
 
-  // const [trendingBlogs, setTrendingBlogs] = useState(allBlogs);
-
-  const navigate = useNavigate();
-
   useEffect(() => {
 
     const fetchAllTrendingBlogs = async () => {
@@ -23,21 +18,6 @@ function TrendingPage() {
 
     fetchAllTrendingBlogs();
   }, [])
-
-
-  // optimisation
-  // useEffect(() => {
-
-  // const fetchAllTrendingBlogs = async () => {
-  //   console.log(trendingBlogs);
-  //   if (trendingBlogs?.length === 0) {
-  //     const trending = await getTrendingBlogs();
-  //     setTrendingBlogs(allBlogs);
-  //   }
-  // };
-
-  //   fetchAllTrendingBlogs();
-  // }, []);
 
 
   return (

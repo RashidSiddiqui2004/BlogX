@@ -14,6 +14,7 @@ function AddBlog() {
     const { blog, setBlog, createBlog } = context;
 
     const [tags, setTags] = useState([]);
+    const [codelinks, setCodelinks] = useState([]);
     const [useImageUrl, setUseImageUrl] = useState(false);
     const [imageFile, setImageFile] = useState(null);
 
@@ -55,6 +56,35 @@ function AddBlog() {
         });
     };
 
+    const [currentLink, setCurrentLink] = useState('');
+
+    const handleCodeInputChange = (e) => {
+        const newlink = e.target.value.trim();
+        setCurrentLink(newlink);
+    };
+
+    const handleLinkInputKeyDown = (e) => {
+        if (e.key === 'Enter' && currentLink.trim() !== '') {
+            const newLink = e.target.value.trim();
+
+            setCodelinks([...codelinks, currentLink.trim()]);
+
+            setBlog((prevBlog) => ({ ...prevBlog, codelinks: [...prevBlog.codelinks, newLink] }));
+            setCurrentLink('');
+        }
+    };
+
+    const handleLinkRemove = (index) => {
+        const updatedLinks = [...codelinks];
+        updatedLinks.splice(index, 1);
+        setCodelinks(updatedLinks);
+        setBlog((prevBlog) => {
+            const updatedLinks = [...prevBlog.codelinks];
+            updatedLinks.splice(index, 1);
+            return { ...prevBlog, codelinks: updatedLinks };
+        });
+    };
+
 
     const [u_name, setUser] = useState('');
     const [userId, setUserId] = useState('');
@@ -86,10 +116,15 @@ function AddBlog() {
             }
         }
 
-        setPostPreview(true);
+        if (!(blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>" ||
+            blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1)) {
+            setPostPreview(true);
+        }
+
+        return;
     };
 
-    const uploadBlog = async () => { 
+    const uploadBlog = async () => {
         const postUploadstate = await createBlog();
 
         return postUploadstate;
@@ -269,6 +304,36 @@ function AddBlog() {
                         </div>
                     </div>
 
+                    {/* codelinks associated with blogs */}
+                    <div className="mt-4">
+                        <h2 className='text-white flex justify-start text-xl mb-2 font-semibold ml-3'>Links for Code included in Blog (Optional)</h2>
+
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            {codelinks?.map((codelink, index) => (
+                                <div className='rounded-full bg-slate-500 py-1 px-4 shadow-md shadow-green-300
+                    hover:scale-95 transition-all' key={index}>
+                                    {codelink}
+                                    <button
+                                        onClick={() => handleLinkRemove(index)}
+                                        className={`rounded-full text-white px-3 py-1`}
+                                    >
+                                        &#x2715;
+                                    </button>
+                                </div>
+
+                            ))}
+                        </div>
+
+                        <input
+                            type="text"
+                            value={currentLink}
+                            onChange={handleCodeInputChange}
+                            onKeyDown={handleLinkInputKeyDown}
+                            placeholder="Type and press Enter to add Code links (example: wtools links)"
+                            className=' bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
+                        />
+                    </div>
+
 
                     {/* minutes read of blog */}
                     <div className="items-center justify-center h-full">
@@ -300,7 +365,6 @@ function AddBlog() {
                     </div>
 
                     {/* tags associated with blogs input */}
-
                     <div className="mt-4">
                         <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Blog Tags</h2>
 

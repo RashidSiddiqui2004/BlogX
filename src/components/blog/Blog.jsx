@@ -13,6 +13,7 @@ import Footer from '../homepage/footer/Footer';
 import AuthorDetails from './blogAuthorHighlights/AuthorDetails';
 import getUserID from '../../utilities/userData/GetUserID';
 import getUsernameByUID from '../../utilities/userData/GetUser';
+import CodeLinks from './codelinks/CodeLinks';
 
 const Blog = () => {
 
@@ -96,7 +97,7 @@ const Blog = () => {
       <Navbar />
 
       {/* <div className='ml-20'> */}
-        <h1 className='text-3xl md:text-5xl text-left font-bold mx-6 md:mx-[26%] mt-8 mb-6'>{blogState?.title}</h1>
+      <h1 className='text-3xl md:text-5xl text-left font-bold mx-6 md:mx-[26%] mt-8 mb-6'>{blogState?.title}</h1>
       {/* </div> */}
 
       <div className='md:w-[55%] mx-6 md:mx-[25%] my-4 py-5'>
@@ -106,6 +107,16 @@ const Blog = () => {
       <div className='mx-6 md:mx-[20%]'>
         <RenderHTMLContent htmlContent={blogState?.description} />
       </div>
+
+      {
+        blogState?.codelinks && blogState?.codelinks.length > 1
+          ?
+          <div className='mx-6 md:mx-[20%] my-4'>
+            <CodeLinks codeLinks={blogState?.codelinks} />
+          </div>
+          :
+          <></>
+      }
 
       {/* tags */}
       <div className='mx-4 md:mx-[22%] mb-4 mt-6'>

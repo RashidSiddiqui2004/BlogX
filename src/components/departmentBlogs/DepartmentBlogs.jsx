@@ -6,6 +6,7 @@ import extractFirstXWords from '../../utilities/initials/fetchXWords'
 import deptMap from '../../utilities/departments/DepartmentMap'
 import RecentDeptBlogs from './RecentDeptBlogs';
 import ShortDeptBlog from './ShortDeptBlog';
+import getEncodedTitle from '../../utilities/fetchURLTitle/GetEncodedTitle';
 
 const DepartmentBlogs = () => {
 
@@ -21,7 +22,6 @@ const DepartmentBlogs = () => {
     const department = deptMap.get(departmentName);
 
     // get dept specific blogs
-
     useEffect(() => {
 
         const fetchDeptBlogs = async () => {
@@ -70,8 +70,10 @@ const DepartmentBlogs = () => {
                                 let shortSummary = extractFirstXWords(summary, 40);
                                 shortSummary += ' ...'
 
+                                const encodedTitle = getEncodedTitle(title);
+
                                 return (
-                                    <Link to={`/blog/${title}/${id}`} key={index}>
+                                    <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
                                         <RecentDeptBlogs blogid={id} title={title}
                                             summary={shortSummary} blogPoster={blogPoster}
                                             author={author} tags={tags} claps={claps}
@@ -100,10 +102,12 @@ const DepartmentBlogs = () => {
                                 } = blog;
 
                                 let shortSummary = extractFirstXWords(summary, 15);
-                                shortSummary += ' ...'
+                                shortSummary += ' ...';
+
+                                const encodedTitle = getEncodedTitle(title);
 
                                 return (
-                                    <Link to={`/blog/${title}/${id}`} key={index}>
+                                    <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
                                         <ShortDeptBlog blogid={id} title={title}
                                             summary={shortSummary} blogPoster={blogPoster}
                                             author={author} tags={tags} claps={claps}
@@ -149,10 +153,12 @@ const DepartmentBlogs = () => {
                                         } = blog;
 
                                         let shortSummary = extractFirstXWords(summary, 40);
-                                        shortSummary += ' ...'
+                                        shortSummary += ' ...';
+
+                                        const encodedTitle = getEncodedTitle(title);
 
                                         return (
-                                            <Link to={`/blog/${title}/${id}`} key={index}>
+                                            <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
                                                 <RecentDeptBlogs blogid={id} title={title}
                                                     summary={shortSummary} blogPoster={blogPoster}
                                                     author={author} tags={tags} claps={claps}

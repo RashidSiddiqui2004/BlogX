@@ -40,12 +40,12 @@ const BlogCard = ({
                     <div className="text-sm">{minutesRead} min read</div>
                 </div>
                 <div className="flex items-center">
-                    <Link
+                    {/* <Link
                         to={`/blog/${title}/${blogid}`}
                         className="text-blue-500 hover:text-blue-700"
-                    >
+                    > */}
                         <GoArrowRight />
-                    </Link>
+                    {/* </Link> */}
                 </div>
             </div>
 

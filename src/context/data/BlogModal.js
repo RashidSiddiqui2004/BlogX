@@ -9,6 +9,7 @@ const blogModel = {
     department: "",
     blogPoster: "",
     tags: [],
+    codelinks: [],
     claps: 0,
     views: 0,
     minutesRead: 0,

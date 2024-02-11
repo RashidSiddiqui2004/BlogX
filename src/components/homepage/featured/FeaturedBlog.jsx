@@ -3,11 +3,14 @@ import React from 'react'
 import RenderHTMLContent from '../../../utilities/htmlRenderer/RenderHTMLContent'
 import { Link } from 'react-router-dom' 
 import extractFirstXWords from "../../../utilities/initials/fetchXWords";
+import getEncodedTitle from '../../../utilities/fetchURLTitle/GetEncodedTitle';
 
 const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
 
     let shortSummary = extractFirstXWords(featuredBlogs[currentIndex]?.summary,60);
-    shortSummary += ' ...'
+    shortSummary += ' ...';
+
+    const encodedTitle = getEncodedTitle(featuredBlogs[currentIndex]?.title);
 
 
     return (
@@ -48,7 +51,7 @@ const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
                             } border-opacity-40 max-md:px-10 max-md:mt-10`}
                         style={{ transform: "translateX(-30px)" }}
                     >
-                        <Link to={`/blog/${featuredBlogs[currentIndex]?.title}/${featuredBlogs[currentIndex]?.id}`}>
+                        <Link to={`/blog/${encodedTitle}/${featuredBlogs[currentIndex]?.id}`}>
                             <button>See More</button>
                         </Link>
                     </div>

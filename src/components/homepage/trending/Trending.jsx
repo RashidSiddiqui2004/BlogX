@@ -1,19 +1,13 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect } from "react"; 
 import myContext from "../../../context/data/myContext";
 import BlogCard from "./BlogCard";
 import { Link } from 'react-router-dom'
 import extractFirstXWords from "../../../utilities/initials/fetchXWords";
+import getEncodedTitle from "../../../utilities/fetchURLTitle/GetEncodedTitle";
 
 function TrendingBlogs() {
   const context = useContext(myContext);
   const { mode, trendingBlogs, getTrendingBlogs } = context;
-
-  // const navigate = useNavigate();
-
-  // const handleSeeMoreClick = () => {
-  //   navigate("/trending-blogs"); // Navigate to the trending blogs page
-  // };
  
   useEffect(() => {
 
@@ -42,18 +36,7 @@ function TrendingBlogs() {
         </div>
       </div>
 
-      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {cards.map((card, index) => (
-          <div key={index} className="flex flex-col h-full">
-            <div className="bg-white shadow-md p-4 flex-grow"> 
-              <h3 className="text-xl font-bold mb-2">{card.title}</h3>
-              <p className="text-gray-600">{card.content}</p>
-            </div>
-          </div>
-        ))}
-      </div> */}
-
-
+  
       <div className="px-5 mt-10 w-full max-md:max-w-full">
         <div className="grid md:grid-cols-3 h-full gap-x-2">
           {
@@ -73,11 +56,13 @@ function TrendingBlogs() {
                 id,
               } = blog;
 
+              const encodedTitle = getEncodedTitle(title);
+
               let shortSummary = extractFirstXWords(summary, 30);
               shortSummary += ' ...'
 
               return (
-                <Link to={`/blog/${title}/${id}`} key={index}>
+                <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
                   <BlogCard blogid={id} title={title} description={description}
                     summary={shortSummary} department={department} blogPoster={blogPoster}
                     author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
