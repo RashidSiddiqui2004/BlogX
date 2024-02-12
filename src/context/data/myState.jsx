@@ -13,17 +13,17 @@ import deptMap from '../../utilities/departments/DepartmentMap';
 
 function myState(props) { 
  
-    const [mode, setMode] = useState('light');
+    const [mode, setMode] = useState('dark');
 
     const toggleMode = () => {
-        if (mode === 'light') {
-            setMode('dark'); 
-            document.body.style.backgroundColor = "rgb(42, 44, 56)"
-        }
-        else {
-            setMode('light'); 
-            document.body.style.backgroundColor = "white"
-        }
+        // if (mode === 'light') {
+        //     setMode('dark'); 
+        //     document.body.style.backgroundColor = "rgb(42, 44, 56)"
+        // }
+        // else {
+        //     setMode('light'); 
+        //     document.body.style.backgroundColor = "white"
+        // }
     }
 
     const [loading, setLoading] = useState(false);
@@ -188,7 +188,7 @@ function myState(props) {
         }
     };
 
-    
+  
     const [trendingBlogs, setTrendingBlogs] = useState([]);
 
 
@@ -528,6 +528,14 @@ function myState(props) {
         return fetchedPosts; 
     };
 
+    const fetchUsersListforCreatorSelection = async () => {
+        const querySnapshot = await getDocs(collection(fireDB, 'users'));
+
+        const fetchedUsers = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        return fetchedUsers; 
+    }
+
     const [searchkey, setSearchkey] = useState('')
     const [department, setDepartment] = useState('');
 
@@ -544,6 +552,7 @@ function myState(props) {
             followAuthor, getFollowersCount,
             getCommentsForBlog,
             fetchNumPosts, fetchNumUsers,fetchPosts,
+            fetchUsersListforCreatorSelection,
             searchkey, setSearchkey
         }}>
             {props.children}

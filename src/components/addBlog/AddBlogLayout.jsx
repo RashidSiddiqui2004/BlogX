@@ -2,6 +2,7 @@
 import React, { useContext } from 'react'
 import AddBlog from './AddBlog'
 import Navbar from '../homepage/navbar/Navbar'
+import Footer from '../homepage/footer/Footer'
 import myContext from '../../context/data/myContext';
 
 const AddBlogLayout = () => {
@@ -16,6 +17,7 @@ const AddBlogLayout = () => {
             <div className={`${isLightMode ? ' bg-slate-800' : ''}`}>
                 <AddBlog />
             </div>
+            <Footer/>
         </div>
     )
 }

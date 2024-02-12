@@ -1,4 +1,4 @@
 
 // will change it later
 
-export const ADMIN_EMAIL = 'rashid@gmail.com'
+export const ADMIN_EMAIL = 'siddiqui20042007@gmail.com'

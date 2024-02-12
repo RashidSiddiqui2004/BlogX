@@ -30,7 +30,7 @@ const DepartmentBlogs = () => {
                 const deptBlogsData = await getDepartmentBlogs(departmentName);
 
             } catch (error) {
-                console.log(error);
+                return;
             }
         }
 
@@ -46,97 +46,112 @@ const DepartmentBlogs = () => {
 
             <h1 className={`text-2xl md:text-5xl justify-center font-semibold my-3 py-3 border-y ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>{department}</h1>
 
-            <div className="mx-[5%]">
-
-                <h2 className={`text-lg flex justify-start font-semibold ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>Recent blog posts</h2>
-
-                <div className='grid md:grid-cols-2 h-full gap-x-8 mb-6'>
-
-                    <div>
-                        {
-                            deptBlogs && deptBlogs?.slice(0, 1)?.map((blog, index) => {
-
-                                const { title,
-                                    summary,
-                                    author,
-                                    blogPoster,
-                                    tags,
-                                    claps,
-                                    minutesRead,
-                                    date,
-                                    id,
-                                } = blog;
-
-                                let shortSummary = extractFirstXWords(summary, 40);
-                                shortSummary += ' ...'
-
-                                const encodedTitle = getEncodedTitle(title);
-
-                                return (
-                                    <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
-                                        <RecentDeptBlogs blogid={id} title={title}
-                                            summary={shortSummary} blogPoster={blogPoster}
-                                            author={author} tags={tags} claps={claps}
-                                            publishDate={date} minutesRead={minutesRead}
-                                        />
-                                    </Link>
-                                )
-
-                            })
-                        }
-                    </div>
-
-                    <div>
-                        {
-                            deptBlogs && deptBlogs?.slice(1, 3)?.map((blog, index) => {
-
-                                const { title,
-                                    summary,
-                                    author,
-                                    blogPoster,
-                                    tags,
-                                    claps,
-                                    minutesRead,
-                                    date,
-                                    id,
-                                } = blog;
-
-                                let shortSummary = extractFirstXWords(summary, 15);
-                                shortSummary += ' ...';
-
-                                const encodedTitle = getEncodedTitle(title);
-
-                                return (
-                                    <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
-                                        <ShortDeptBlog blogid={id} title={title}
-                                            summary={shortSummary} blogPoster={blogPoster}
-                                            author={author} tags={tags} claps={claps}
-                                            publishDate={date} minutesRead={minutesRead}
-                                        />
-                                    </Link>
-                                )
-
-                            })
-                        }
-                    </div>
-
-                </div>
-
-
-            </div>
-
             {
-                (deptBlogs.slice(3).length >= 1)
+                deptBlogs && deptBlogs?.length > 0
 
                     ?
 
-                    <div className="mx-[5%] my-10">
+                    <div className="mx-[5%]">
 
-                        <h2 className={`text-lg flex justify-start font-semibold ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>All blog posts</h2>
+                        <h2 className={`text-lg flex justify-start font-semibold ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>Recent blog posts</h2>
 
-                        <div className='grid md:grid-cols-2 h-full gap-x-8'>
+                        <div className='grid md:grid-cols-2 h-full gap-x-8 mb-6'>
 
                             <div>
+                                {
+                                    deptBlogs && deptBlogs?.slice(0, 1)?.map((blog, index) => {
+
+                                        const { title,
+                                            summary,
+                                            author,
+                                            blogPoster,
+                                            tags,
+                                            claps,
+                                            minutesRead,
+                                            date,
+                                            id,
+                                        } = blog;
+
+                                        let shortSummary = extractFirstXWords(summary, 30);
+                                        shortSummary += ' ...'
+
+                                        const encodedTitle = getEncodedTitle(title);
+
+                                        return (
+                                            <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
+                                                <RecentDeptBlogs blogid={id} title={title}
+                                                    summary={shortSummary} blogPoster={blogPoster}
+                                                    author={author} tags={tags} claps={claps}
+                                                    publishDate={date} minutesRead={minutesRead}
+                                                />
+                                            </Link>
+                                        )
+
+                                    })
+                                }
+                            </div>
+
+                            <div>
+                                {
+                                    deptBlogs && deptBlogs?.slice(1, 3)?.map((blog, index) => {
+
+                                        const { title,
+                                            summary,
+                                            author,
+                                            blogPoster,
+                                            tags,
+                                            claps,
+                                            minutesRead,
+                                            date,
+                                            id,
+                                        } = blog;
+
+                                        let shortSummary = extractFirstXWords(summary, 15);
+                                        shortSummary += ' ...';
+
+                                        const encodedTitle = getEncodedTitle(title);
+
+                                        return (
+                                            <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
+                                                <ShortDeptBlog blogid={id} title={title}
+                                                    summary={shortSummary} blogPoster={blogPoster}
+                                                    author={author} tags={tags} claps={claps}
+                                                    publishDate={date} minutesRead={minutesRead}
+                                                />
+                                            </Link>
+                                        )
+
+                                    })
+                                }
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    :
+
+                    <div>
+                        <h1 className='text-2xl md:text-4xl font-semibold text-center
+                         text-gray-700 mb-6'>No blogs in this department, apologies for the inconvenience</h1>
+                    </div>
+            }
+
+
+
+            <div>
+
+                {
+                    (deptBlogs.slice(3).length >= 1)
+
+                        ?
+
+                        <div className="mx-[5%] my-10">
+
+                            <h2 className={`text-lg flex justify-start font-semibold ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>All blog posts</h2>
+
+                            <div className='grid md:grid-cols-2 h-full gap-x-8'>
 
                                 {
                                     deptBlogs && deptBlogs?.slice(3)?.map((blog, index) => {
@@ -152,7 +167,7 @@ const DepartmentBlogs = () => {
                                             id,
                                         } = blog;
 
-                                        let shortSummary = extractFirstXWords(summary, 40);
+                                        let shortSummary = extractFirstXWords(summary, 25);
                                         shortSummary += ' ...';
 
                                         const encodedTitle = getEncodedTitle(title);
@@ -170,18 +185,17 @@ const DepartmentBlogs = () => {
                                     })
                                 }
 
-                            </div>
 
+                            </div>
 
                         </div>
 
-                    </div>
+                        :
 
-                    :
-
-                    <>
-                    </>
-            }
+                        <>
+                        </>
+                }
+            </div>
 
 
         </div>

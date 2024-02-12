@@ -73,7 +73,7 @@ const DepartmentBlogsMobile = () => {
                                             id,
                                         } = blog;
 
-                                        let shortSummary = extractFirstXWords(summary, 40);
+                                        let shortSummary = extractFirstXWords(summary, 15);
                                         shortSummary += ' ...';
 
                                         const encodedTitle = getEncodedTitle(title);

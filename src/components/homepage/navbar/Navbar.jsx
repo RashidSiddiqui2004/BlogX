@@ -126,7 +126,7 @@ const Navbar = () => {
 
             {ham && <Ham_menu />}
 
-            <Link to={'/featured-blogs'} className='md:flex md:gap-x-2'>
+            {/* <Link to={'/featured-blogs'} className='md:flex md:gap-x-2'>
                 <div className="mx-4 text-[14px] hidden md:flex items-center">
                     Featured
                 </div>
@@ -137,17 +137,19 @@ const Navbar = () => {
                 <div className="mx-4 text-[14px] hidden md:flex items-center">
                     Categories
                 </div>
-            </Link>
+            </Link> */}
 
             <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
-                <div className="mx-4 text-[14px] hidden md:flex items-center">
+                <div className="md:mx-20 text-[14px] hidden md:flex items-center">
                     Trending
                 </div>
             </Link>
 
 
+
+
             <div className={`font-semibold text-[20px] flex-1 flex items-center 
-                justify-center ${ isAuthor ? 'md:ml-32' : ''} cursor-pointer`} onClick={handleHome}>
+                justify-center ${isAuthor ? 'md:ml-20' : ''} cursor-pointer`} onClick={handleHome}>
                 Blog
                 <span className="text-[#0096FF]">
                     X
@@ -168,16 +170,18 @@ const Navbar = () => {
             }
 
 
-            {!(userId === null && userId === -1)
+
+
+            {/* {!(userId === null && userId === -1)
                 ?
                 <div className={`mx-4 text-[14px] hidden md:flex items-center border-
                 ${(mode === "light" ? "[#333333]" : "white")} rounded-md border-2 py-2 px-4`}>
-                    {/* <Link to={'/contact-us'}> */}
+                    <Link to={'/contact-us'}>
                         Contact Us
-                    {/* </Link> */}
+                    </Link>
                 </div>
                 :
-                <></>}
+                <></>} */}
 
             {(userId === null || userId === -1)
                 ?
@@ -190,7 +194,7 @@ const Navbar = () => {
                 :
                 <></>}
 
-            {!(userId === null && userId === -1)
+            {!(userId === null)
                 ?
                 <div className={`mx-4 text-[14px] hidden md:flex items-center cursor-pointer hover:scale-95 transition-all`}
                     onClick={logout}>

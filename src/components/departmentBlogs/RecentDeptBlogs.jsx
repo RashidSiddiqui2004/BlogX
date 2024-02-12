@@ -29,8 +29,7 @@ const RecentDeptBlogs = ({
                 className="w-full h-56 object-cover"
             />
 
-            <div className="px-6 py-4 mt-auto flex justify-around md:justify-evenly w-full text-sm tracking-normal 
-            leading-4 text-sky-500 border-t border-t-zinc-800 border-t-opacity-20">
+            <div className="px-6 py-4 mt-auto flex justify-evenly w-full text-sm tracking-normal leading-4 text-sky-500 border-t border-t-zinc-800 border-t-opacity-20">
                 <div className="flex justify-between gap-x-4 items-center">
                     <div className="text-xs md:text-sm">{author}</div>
                     <div className="text-xs md:text-sm ml-3 md:ml-6">{minutesRead} min read</div>

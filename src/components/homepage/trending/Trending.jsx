@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"; 
+import React, { useContext, useEffect } from "react";
 import myContext from "../../../context/data/myContext";
 import BlogCard from "./BlogCard";
 import { Link } from 'react-router-dom'
@@ -8,7 +8,7 @@ import getEncodedTitle from "../../../utilities/fetchURLTitle/GetEncodedTitle";
 function TrendingBlogs() {
   const context = useContext(myContext);
   const { mode, trendingBlogs, getTrendingBlogs } = context;
- 
+
   useEffect(() => {
 
     const fetchAllTrendingBlogs = async () => {
@@ -19,7 +19,7 @@ function TrendingBlogs() {
   }, [])
 
   return (
-    <div className="flex flex-col py-12">
+    <div className="flex flex-col py-12 md:mx-[6%]">
       <div className="flex gap-5 justify-between mt-8 w-full max-md:flex-wrap max-md:max-w-full ">
         <div
           className={`flex text-start flex-col px-5 font-semibold max-md:max-w-full ${mode === "dark"
@@ -36,9 +36,9 @@ function TrendingBlogs() {
         </div>
       </div>
 
-  
+
       <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="grid md:grid-cols-3 h-full gap-x-2">
+        <div className="grid md:grid-cols-2 h-full gap-x-16 gap-y-6">
           {
             trendingBlogs && trendingBlogs.slice(0, 6).map((blog, index) => {
 
@@ -58,15 +58,18 @@ function TrendingBlogs() {
 
               const encodedTitle = getEncodedTitle(title);
 
-              let shortSummary = extractFirstXWords(summary, 30);
+              let shortSummary = extractFirstXWords(summary, 15);
+              shortSummary += ' ...'
+
+              let shortTitle = extractFirstXWords(title, 5);
               shortSummary += ' ...'
 
               return (
-                <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
-                  <BlogCard blogid={id} title={title} description={description}
+                <div key={index}>
+                  <BlogCard blogid={id} title={shortTitle} description={description}
                     summary={shortSummary} department={department} blogPoster={blogPoster}
                     author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
-                </Link>
+                </div>
               )
 
             })

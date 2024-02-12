@@ -26,8 +26,7 @@ import RegisterLayout from "./components/homepage/registration/RegisterLayout";
 import FeaturedPage from "./components/homepage/featured/FeaturedPage";
 import DeptBlogLayout from "./components/departmentBlogs/DeptBlogLayout";
 import DepartmentPage from "./components/departmentBlogs/DepartmentPage";
-
-// import AdminDashboard from './components/admin/AdminDashboard';
+ 
 
 function App() {
   return (

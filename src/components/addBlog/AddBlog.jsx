@@ -7,6 +7,7 @@ import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
 import getUserID from '../../utilities/userData/GetUserID';
 import departmentsInDevComm from '../../utilities/departments/departmentsInDevComm.JS';
 import BtnTemplate from '../../utilities/BtnTemplate2/BtnTemplate';
+import { toast } from 'react-toastify';
 
 function AddBlog() {
 
@@ -94,7 +95,7 @@ function AddBlog() {
 
     const blogSummaryEditor = useRef(null);
 
-    const handleFirstCheck = async () => {
+    const checkIfAllFieldsAreFilled = async () => {
 
         const content = await blogEditor.current.getContent();
         const blogSummary = await blogSummaryEditor.current.getContent();
@@ -119,6 +120,17 @@ function AddBlog() {
         if (!(blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>" ||
             blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1)) {
             setPostPreview(true);
+        }
+        else{
+            toast.info("All fields are required!", {
+                position: 'top-right',
+                autoClose: 800,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
 
         return;
@@ -399,7 +411,7 @@ function AddBlog() {
                         {!postPreview && (
                             <div className='flex items-center justify-center mb-3 mt-7'>
                                 <button
-                                    onClick={handleFirstCheck}
+                                    onClick={checkIfAllFieldsAreFilled}
                                     className='w-[60%] md:w-[40%] bg-slate-500
                                      text-white shadow-md hover:scale-95 transition-all
                                      shadow-green-400 font-bold px-2 py-2 rounded-lg'

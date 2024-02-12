@@ -11,7 +11,7 @@ const RegisterLayout = ({ children }) => {
             <Navbar />
             <div className='md:flex md:flex-row'>
 
-                <div>
+                <div className='w-[100%] md:w-[50%]'>
                     <RegisterDesign />
                 </div>
 

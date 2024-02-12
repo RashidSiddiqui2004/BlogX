@@ -18,19 +18,24 @@ const BlogCard = ({
     return (
         <div
 
-            className={`flex flex-col max-w-md mt-2 max-md:ml-0 max-md:w-full flex-grow h-full transform transition-transform hover:scale-95   ${mode === "dark"
+            className={`flex flex-col max-w-md mt-2 max-md:ml-0 max-md:w-full flex-grow h-full px-4 py-2
+             transform transition-all hover:scale-[99%] border-[2px] border-slate-200 border-opacity-20   ${mode === "dark"
                 ? "bg-customBlue rounded-lg text-white"
                 : "bg-neutral-80 text-zinc-800"
                 }`}>
 
-            <img
-                src={blogPoster}
-                alt={title}
-                className="  rounded-lg   object-fill aspect-[1.8] "
-            />
+            <Link to={`/blog/${title}/${blogid}`}>
+                <img
+                    src={blogPoster}
+                    alt={title}
+                    className="  rounded-lg   object-fill aspect-[1.8] "
+                />
+            </Link>
             <div className="px-6 py-4">
-                <div className="font-bold text-xl mb-2">{title}</div>
-                <p className="text-base mb-4 text-left">
+                <Link to={`/blog/${title}/${blogid}`}>
+                    <div className="font-bold text-xl mb-2">{title}</div>
+                </Link>
+                <p className="text-sm mb-4 text-left">
                     {summary}
                 </p>
             </div>
@@ -40,12 +45,12 @@ const BlogCard = ({
                     <div className="text-sm">{minutesRead} min read</div>
                 </div>
                 <div className="flex items-center">
-                    {/* <Link
+                    <Link
                         to={`/blog/${title}/${blogid}`}
                         className="text-blue-500 hover:text-blue-700"
-                    > */}
+                    >
                         <GoArrowRight />
-                    {/* </Link> */}
+                    </Link>
                 </div>
             </div>
 
