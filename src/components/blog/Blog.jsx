@@ -14,6 +14,7 @@ import AuthorDetails from './blogAuthorHighlights/AuthorDetails';
 import getUserID from '../../utilities/userData/GetUserID';
 import getUsernameByUID from '../../utilities/userData/GetUser';
 import CodeLinks from './codelinks/CodeLinks';
+import BlogNavigation from './BlogNavigation';
 
 const Blog = () => {
 
@@ -33,6 +34,14 @@ const Blog = () => {
   const [comments, setComments] = useState([]);
   const commentsCnt = comments.length;
 
+  const navigation = [
+    'Starting with React',
+    'useMemo Hook',
+    'useState Hook',
+    'useRef Hook',
+    'useState Hook',
+    'Context API'
+  ]
 
   // get comments
   useEffect(() => {
@@ -96,48 +105,65 @@ const Blog = () => {
 
       <Navbar />
 
-      {/* <div className='ml-20'> */}
-      <h1 className='text-3xl md:text-5xl text-left font-bold mx-6 md:mx-[26%] mt-8 mb-6'>{blogState?.title}</h1>
-      {/* </div> */}
+      <div className='flex flex-row'>
 
-      <div className='md:w-[55%] mx-6 md:mx-[25%] my-4 py-5'>
-        <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
-      </div>
+        {/* main blog content */}
+        <div className=' w-[80%] ml-5 md:w-[70%] md:ml-24'>
 
-      <div className='mx-6 md:mx-[20%]'>
-        <RenderHTMLContent htmlContent={blogState?.description} />
-      </div>
+          {/* title of blog */}
+          <h1 className='text-3xl md:text-5xl md:ml-20 text-left font-bold mx-6 mt-8 mb-6'>{blogState?.title}</h1>
 
-      {
-        blogState?.codelinks && blogState?.codelinks.length > 1
-          ?
-          <div className='mx-6 md:mx-[20%] my-4'>
-            <CodeLinks codeLinks={blogState?.codelinks} />
+          {/* author highlights */}
+          <div className='md:w-[75%] md:mx-[10%] mx-6 my-4 py-5'>
+            <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
           </div>
-          :
-          <></>
-      }
 
-      {/* tags */}
-      <div className='mx-4 md:mx-[22%] mb-4 mt-6'>
-        <TagSection tagList={blogState?.tags} />
-      </div>
+          <div className='mx-6 '>
+            <RenderHTMLContent htmlContent={blogState?.description} />
+          </div>
 
-      {/* claps and comment count */}
+          {
+            blogState?.codelinks && blogState?.codelinks.length > 1
+              ?
+              <div className='mx-6 my-4'>
+                <CodeLinks codeLinks={blogState?.codelinks} />
+              </div>
+              :
+              <></>
+          }
 
-      <div className={`md:ml-[25%] md:mr-[20%] my-10 border-2 border-l-0
+          {/* tags */}
+          <div className='mx-4 md:mx-[22%] mb-4 mt-6'>
+            <TagSection tagList={blogState?.tags} />
+          </div>
+
+          {/* claps and comment count */}
+
+          <div className={`my-10 md:mx-6 border-2 border-l-0
        border-r-0  ${isDarkTheme ? 'border-gray-800' : 'border-gray-100'}`}>
-        <BlogInteraction blogId={blogId} claps={blogState?.claps} commentsCount={commentsCnt}
-          userId={userId} blog={blogState} />
+            <BlogInteraction blogId={blogId} claps={blogState?.claps} commentsCount={commentsCnt}
+              userId={userId} blog={blogState} />
+          </div>
+
+
+        </div>
+
+        <div className='hidden md:block pl-10 mt-6'>
+          {/* blog navigation */}
+
+          <BlogNavigation navigation={navigation} />
+
+        </div>
+
       </div>
+      
 
       {/* comment section */}
-      {/* render only when user is registered o/w hide */}
-
+      {/* unlock only when user is registered o/w locked section */}
 
       {
         !(userId === null) ?
-          <div className='mx-4 md:mx-[20%]'>
+          <div className='mx-4 md:mx-32 md:w-[65%]'>
             <CommentForm blogId={blogId} userId={userId} username={u_name} />
           </div>
           :
@@ -156,13 +182,13 @@ const Blog = () => {
 
       <hr className="rounded-full shadow-md shadow-gray-500 my-8" />
 
-      <div className='md:mx-[20%]'>
+      <div className='md:mx-[20%]' id="Starting with React">
         <CommentSection comments={comments} />
       </div>
 
       <hr className="rounded-full shadow-md shadow-gray-500 my-8" />
 
-      <div>
+      <div id="Task-1">
         <AuthorDetails userId={userId} blog={blogState} followersCnt={followersCnt} />
       </div>
 
@@ -173,12 +199,3 @@ const Blog = () => {
 }
 
 export default Blog
-
-
-
-// const logout = () => {
-//   localStorage.clear('user');
-//   window.location.href = '/login'
-// }
-
-// logout();

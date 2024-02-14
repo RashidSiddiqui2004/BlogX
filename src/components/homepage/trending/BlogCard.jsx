@@ -18,10 +18,10 @@ const BlogCard = ({
     return (
         <div
 
-            className={`flex flex-col max-w-md mt-2 max-md:ml-0 max-md:w-full flex-grow h-full px-4 py-2
+            className={`flex flex-col max-w-md mt-2 max-md:ml-0 max-md:w-full flex-grow h-full px-4 pt-3
              transform transition-all hover:scale-[99%] border-[2px] border-slate-200 border-opacity-20   ${mode === "dark"
-                ? "bg-customBlue rounded-lg text-white"
-                : "bg-neutral-80 text-zinc-800"
+                    ? "bg-customBlue rounded-lg text-white"
+                    : "bg-neutral-80 text-zinc-800"
                 }`}>
 
             <Link to={`/blog/${title}/${blogid}`}>
@@ -33,7 +33,7 @@ const BlogCard = ({
             </Link>
             <div className="px-6 py-4">
                 <Link to={`/blog/${title}/${blogid}`}>
-                    <div className="font-bold text-xl mb-2">{title}</div>
+                    <div className="font-bold text-xl mb-2 hover:underline">{title}</div>
                 </Link>
                 <p className="text-sm mb-4 text-left">
                     {summary}
@@ -54,7 +54,7 @@ const BlogCard = ({
                 </div>
             </div>
 
-            <div className="pb-10"></div>
+            <div className="pb-5"></div>
 
         </div>
     );

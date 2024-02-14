@@ -16,7 +16,7 @@ function AddBlog() {
 
     const [tags, setTags] = useState([]);
     const [codelinks, setCodelinks] = useState([]);
-    const [useImageUrl, setUseImageUrl] = useState(false);
+    const [useImageUrl, setUseImageUrl] = useState(true);
     const [imageFile, setImageFile] = useState(null);
 
     const [postPreview, setPostPreview] = useState(false);
@@ -90,10 +90,37 @@ function AddBlog() {
     const [u_name, setUser] = useState('');
     const [userId, setUserId] = useState('');
 
+    // reference to title input
+
+    const titleRef = useRef(null);
+
     // Reference to the TinyMCE editor
     const blogEditor = useRef(null);
 
     const blogSummaryEditor = useRef(null);
+
+
+    const [sections, setSections] = useState([{ id: 1 }]);
+    const editorRefs = useRef([]);
+
+    const handleAddNewSection = () => {
+        const newSection = { id: sections.length + 1 };
+        setSections([...sections, newSection]);
+    };
+
+    const handleEditorInit = (editor, index) => {
+        editorRefs.current[index] = editor;
+    };
+
+    const handleSaveContent = () => {
+
+        console.log(blog);
+
+        editorRefs.current.forEach(async (editor, index) => {
+            const content = await editor.getContent();
+            console.log(`Content of editor ${index + 1}:`, content);
+        });
+    };
 
     const checkIfAllFieldsAreFilled = async () => {
 
@@ -121,7 +148,7 @@ function AddBlog() {
             blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1)) {
             setPostPreview(true);
         }
-        else{
+        else {
             toast.info("All fields are required!", {
                 position: 'top-right',
                 autoClose: 800,
@@ -159,6 +186,7 @@ function AddBlog() {
             }
         };
 
+        titleRef.current.focus();
         fetchData();
     }, []);
 
@@ -176,17 +204,18 @@ function AddBlog() {
                     {/* title of blog */}
                     <div>
                         <input type="text"
+                            ref={titleRef}
                             value={blog.title}
                             onChange={(e) => setBlog({ ...blog, title: e.target.value })}
                             name='title'
-                            className=' bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
-                            placeholder='Add Post title'
+                            className='bg-inherit text-3xl mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
+                            placeholder='Post title'
                         />
                     </div>
 
 
                     {/* editor for blog content */}
-                    <div>
+                    {/* <div>
                         <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Tell your story...</h2>
 
                         <Editor
@@ -200,7 +229,82 @@ function AddBlog() {
                             }}
                             initialValue="Write blog"
                         />
+                    </div> */}
+
+
+                    {/* <div className='mt-6 mb-3 flex justify-start'>
+                        <button
+                            //   onClick={onClick}
+                            className="bg-blue-950 text-white px-4 py-2 text-2xl
+                            rounded-md hover:bg-blue-900 shadow-md shadow-green-200
+                            hover:scale-95 transition-all"
+                        >
+                            Add New Section
+                        </button>
+                    </div> */}
+
+                    <div>
+                        {sections.map((section, index) => (
+                            <div key={section.id}>
+
+                                <div>
+                                    <input type="text"
+                                        ref={titleRef}
+                                        value={blog.sectionTitles[index]}
+                                        onChange={(e, i) => {
+                                            setBlog({
+                                              ...blog,
+                                              sectionTitles: blog.sectionTitles.map((sectionTitle, index) =>
+                                                index === i ? e.target.value : sectionTitle
+                                              )
+                                            });
+                                          }}
+                                          
+                                        // onChange={(e) => setBlog({ ...blog, sectionTitles: [...blog.sectionTitles, e.target.value] })}
+                                        name='title'
+                                        className='bg-inherit text-3xl mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
+                                        placeholder={`Section ${index+1} title`}
+                                    />
+                                </div>
+
+                                {/* <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Tell your story...</h2> */}
+
+                                <Editor
+                                    apiKey='aflhte2kchgwcgg6wo27mxqz79lhro2h443k16fftegeoo6x'
+                                    onInit={(evt, editor) => (editorRefs.current[index] = editor)}
+                                    init={{
+                                        menubar: 'favs file edit view format tools table',
+                                        height: 500,
+                                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                                    }}
+                                    initialValue="Write blog"
+                                />
+                            </div>
+                        ))}
+
+
+                        <div className='mt-6 mb-3 flex justify-between'>
+                            <button
+                                onClick={handleAddNewSection}
+                                className="bg-blue-950 text-white px-4 py-2 text-2xl
+                    rounded-md hover:bg-blue-900 shadow-md shadow-green-200
+                    hover:scale-95 transition-all"
+                            >
+                                Add New Section
+                            </button>
+                            <button
+                                onClick={handleSaveContent}
+                                className="bg-blue-950 text-white px-4 py-2 text-2xl
+                    rounded-md hover:bg-blue-900 shadow-md shadow-green-200
+                    hover:scale-95 transition-all"
+                            >
+                                Save Sections
+                            </button>
+                        </div>
+
                     </div>
+
 
                     {/* editor for blog summary */}
                     <div className='my-4'>
@@ -317,6 +421,7 @@ function AddBlog() {
                     </div>
 
                     {/* codelinks associated with blogs */}
+
                     <div className="mt-4">
                         <h2 className='text-white flex justify-start text-xl mb-2 font-semibold ml-3'>Links for Code included in Blog (Optional)</h2>
 
@@ -402,7 +507,7 @@ function AddBlog() {
                             onChange={handleInputChange}
                             onKeyDown={handleInputKeyDown}
                             placeholder="Type and press Enter to add tags"
-                            className=' bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
+                            className=' bg-inherit mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
                         />
                     </div>
 

@@ -2,6 +2,7 @@ import { Timestamp } from "firebase/firestore";
 
 const blogModel = {
     title: "",
+    sectionTitles: [],
     description: "",
     summary: "",
     author: null,
