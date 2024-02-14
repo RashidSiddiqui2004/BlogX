@@ -26,6 +26,7 @@ import RegisterLayout from "./components/homepage/registration/RegisterLayout";
 import FeaturedPage from "./components/homepage/featured/FeaturedPage";
 import DeptBlogLayout from "./components/departmentBlogs/DeptBlogLayout";
 import DepartmentPage from "./components/departmentBlogs/DepartmentPage";
+import Code_Editor from "./components/code-editor/Editor";
  
 
 function App() {
@@ -80,6 +81,8 @@ function App() {
               <AdminDashboard />
             </ProtectedRouteForAdmin>
           } />
+
+          <Route path="/Editor" element={<Code_Editor />} />
 
         </Routes>
 
