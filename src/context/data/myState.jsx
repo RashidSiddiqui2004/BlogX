@@ -31,8 +31,9 @@ function myState(props) {
     const [blog, setBlog] = useState(blogModel);
 
     const createBlog = async () => {
-        if (blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>" || 
-            blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1) {
+        if (blog.title == "" || blog.department == "" ||
+        //  blog.description == "<p>Write blog</p>" || 
+            blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1 || blog.minutesRead === 0) {
             return toast.error("All fields are required")
         }
 

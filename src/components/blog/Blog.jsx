@@ -15,6 +15,8 @@ import getUserID from '../../utilities/userData/GetUserID';
 import getUsernameByUID from '../../utilities/userData/GetUser';
 import CodeLinks from './codelinks/CodeLinks';
 import BlogNavigation from './BlogNavigation';
+import { Editor as CodeEditor } from '@monaco-editor/react';
+import OutputCode from '../code-editor/OutputCode';
 
 const Blog = () => {
 
@@ -118,9 +120,27 @@ const Blog = () => {
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
           </div>
 
-          <div className='mx-6 '>
+          {/* <div className='mx-6 '>
             <RenderHTMLContent htmlContent={blogState?.description} />
-          </div>
+          </div> */}
+
+          {
+            blogState?.blogContent?.map((section,index) => {
+
+              const {title, content, code} = section;
+
+              return (
+                <div key={index}>
+                  <h2 className='text-3xl md:text-3xl md:ml-20 text-left 
+                  font-semibold mx-6 mt-8 mb-6'>{title}</h2>
+                  <RenderHTMLContent htmlContent={content} />
+
+                  <OutputCode lang={"javascript"} code={code}/>
+                </div>
+              )
+            })
+          }
+
 
           {
             blogState?.codelinks && blogState?.codelinks.length > 1
@@ -148,15 +168,14 @@ const Blog = () => {
 
         </div>
 
+
+        {/* blog navigation */}
         <div className='hidden md:block pl-10 mt-6'>
-          {/* blog navigation */}
-
-          <BlogNavigation navigation={navigation} />
-
+          <BlogNavigation navigation={blogState?.sectionTitles} />
         </div>
 
       </div>
-      
+
 
       {/* comment section */}
       {/* unlock only when user is registered o/w locked section */}

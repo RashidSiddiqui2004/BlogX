@@ -4,6 +4,7 @@ const blogModel = {
     title: "",
     sectionTitles: [],
     description: "",
+    blogContent: [],
     summary: "",
     author: null,
     authorId: "",

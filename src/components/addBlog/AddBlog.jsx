@@ -8,11 +8,16 @@ import getUserID from '../../utilities/userData/GetUserID';
 import departmentsInDevComm from '../../utilities/departments/departmentsInDevComm.JS';
 import BtnTemplate from '../../utilities/BtnTemplate2/BtnTemplate';
 import { toast } from 'react-toastify';
+import { Editor as CodeEditor } from '@monaco-editor/react';
+import isValidUrl from './CheckIfUrl'; 
 
 function AddBlog() {
 
     const context = useContext(myContext);
     const { blog, setBlog, createBlog } = context;
+
+    // for saving blog content if user has not published it yet -> for user convenience
+    // smooth experience on website
 
     const [tags, setTags] = useState([]);
     const [codelinks, setCodelinks] = useState([]);
@@ -57,6 +62,9 @@ function AddBlog() {
         });
     };
 
+
+    // for adding links (resources) in blog
+
     const [currentLink, setCurrentLink] = useState('');
 
     const handleCodeInputChange = (e) => {
@@ -64,14 +72,24 @@ function AddBlog() {
         setCurrentLink(newlink);
     };
 
+    const [showWrongURLMsg, setShowWrongURLMsg] = useState(false);
+
     const handleLinkInputKeyDown = (e) => {
         if (e.key === 'Enter' && currentLink.trim() !== '') {
             const newLink = e.target.value.trim();
 
-            setCodelinks([...codelinks, currentLink.trim()]);
+            if (isValidUrl(newLink) == true) {
+                setCodelinks([...codelinks, currentLink.trim()]);
 
-            setBlog((prevBlog) => ({ ...prevBlog, codelinks: [...prevBlog.codelinks, newLink] }));
-            setCurrentLink('');
+                setBlog((prevBlog) => ({ ...prevBlog, codelinks: [...prevBlog.codelinks, newLink] }));
+                setCurrentLink('');
+                setShowWrongURLMsg(false);
+            }
+
+            else {
+                setShowWrongURLMsg(true);
+                return;
+            }
         }
     };
 
@@ -87,6 +105,8 @@ function AddBlog() {
     };
 
 
+    // author details
+
     const [u_name, setUser] = useState('');
     const [userId, setUserId] = useState('');
 
@@ -99,7 +119,6 @@ function AddBlog() {
 
     const blogSummaryEditor = useRef(null);
 
-
     const [sections, setSections] = useState([{ id: 1 }]);
     const editorRefs = useRef([]);
 
@@ -108,27 +127,129 @@ function AddBlog() {
         setSections([...sections, newSection]);
     };
 
-    const handleEditorInit = (editor, index) => {
-        editorRefs.current[index] = editor;
-    };
+    // implement
+    const handleRemoveSection = () => {
+        return;
+    }
 
-    const handleSaveContent = () => {
+    const [checksCodeblock, setChecksCodeblock] = useState([false]);
 
-        console.log(blog);
+    const handleCodeBlock = (index) => {
+        setChecksCodeblock((prevChecks) => {
+            const indexExists = prevChecks[index] !== undefined;
 
-        editorRefs.current.forEach(async (editor, index) => {
-            const content = await editor.getContent();
-            console.log(`Content of editor ${index + 1}:`, content);
+            // If index exists, toggle its value 
+            if (indexExists) {
+                return prevChecks.map((value, i) => (i === index ? !value : value));
+            } else {
+                // If index does not exist, add a new element with value true
+                const newChecks = [...prevChecks];
+                newChecks[index] = true;
+                return newChecks;
+            }
         });
     };
 
+
+    // add code block code below
+
+    const lang = "javascript";
+
+    const [languages, setLang] = useState(["javascript", "C++"]);
+    const [codes, setCodes] = useState([""]);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const codeEditorRefs = useRef([]);
+
+    const handleLanguageChange = (e) => {
+        setLang(e.target.value);
+    };
+
+    const handleEditorDidMount = (editor, monaco, index) => {
+        codeEditorRefs.current[index] = editor;
+    };
+
+    const handleCodeChange = (val, index) => {
+        const newCodes = [...codes];
+        newCodes[index] = val;
+        setCodes(newCodes);
+    };
+
+    const submitCode = (index) => {
+        const savedCode = codeEditorRefs.current[index].getValue();
+        setIsSubmitted(true);
+
+        setCodes((prevCodes) => {
+            const newCodes = [...prevCodes];
+
+            // Check if there are missing elements up to the specified index
+            for (let i = newCodes.length; i <= index; i++) {
+                // Add null values for missing elements
+                newCodes[i] = null;
+            }
+
+            // Add the saved code at the specified index
+            newCodes[index] = savedCode;
+
+            return newCodes;
+        });
+
+        console.log(codes);
+    };
+
+
+    // use this
+    // const editor = editorRefs.current[0];
+    // const content2 = await editor.getContent();
+    // const newSection = new SectionClass(blog?.sectionTitles[0], content2);
+    // console.log(newSection);
+
+
+    // handle section save code
+
+    const handleSaveContent = async () => {
+        const updatedBlogContent = [...blog.blogContent];
+
+        // Create an array to store promises for each section update
+        const updatePromises = editorRefs.current.map(async (editor, index) => {
+            const content = await editor.getContent();
+
+            const codeForSection = codes[index];
+
+            const newSection = {
+                title: blog?.sectionTitles[index],
+                content: content,
+                code: codeForSection,
+            };
+
+            // Update or add the new section to the array
+            if (index >= 0 && index < updatedBlogContent.length) {
+                updatedBlogContent[index] = newSection;
+            } else {
+                updatedBlogContent.push(newSection);
+            }
+        });
+
+        await Promise.all(updatePromises);
+
+        setBlog({ ...blog, blogContent: updatedBlogContent });
+        localStorage.setItem('temporaryBlog', JSON.stringify(blog));
+
+        console.log(blog);
+    };
+
+
+
     const checkIfAllFieldsAreFilled = async () => {
 
-        const content = await blogEditor.current.getContent();
+        // const content = await blogEditor.current.getContent();
         const blogSummary = await blogSummaryEditor.current.getContent();
 
+        localStorage.setItem('temporaryBlog', JSON.stringify(blog));
+
         // Update state using the state updater function
-        setBlog((prevBlog) => ({ ...prevBlog, description: content, summary: blogSummary }));
+        setBlog((prevBlog) => ({ ...prevBlog, summary: blogSummary }));
+        // setBlog((prevBlog) => ({ ...prevBlog, description: content, summary: blogSummary }));
 
         if (!(imageFile == null)) {
             try {
@@ -144,7 +265,8 @@ function AddBlog() {
             }
         }
 
-        if (!(blog.title == "" || blog.department == "" || blog.description == "<p>Write blog</p>" ||
+        if (!(blog.title == "" || blog.department == "" ||
+            // blog.description == "<p>Write blog</p>" ||
             blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1)) {
             setPostPreview(true);
         }
@@ -158,6 +280,7 @@ function AddBlog() {
                 draggable: true,
                 progress: undefined,
             });
+            console.log(blog);
         }
 
         return;
@@ -166,8 +289,12 @@ function AddBlog() {
     const uploadBlog = async () => {
         const postUploadstate = await createBlog();
 
+        localStorage.removeItem('temporaryBlog');
+
         return postUploadstate;
     }
+
+    // update here
 
     useEffect(() => {
         const fetchData = async () => {
@@ -188,6 +315,13 @@ function AddBlog() {
 
         titleRef.current.focus();
         fetchData();
+
+        const savedBlog = localStorage.getItem("temporaryBlog");
+
+        if (savedBlog !== null) {
+            setBlog(JSON.parse(savedBlog));
+        }
+
     }, []);
 
     return (
@@ -195,7 +329,7 @@ function AddBlog() {
             <div className='flex justify-center items-center postbg py-8' style={{ fontFamily: 'Nunito Sans, sans-serif' }}>
                 <div className='bg-gray-800 px-10 py-10 rounded-xl w-[90%] md:w-[80%]'>
                     <div className='flex gap-4 justify-center'>
-                        <h1 className='text-center text-white text-xl mb-4 font-bold'>Publish Blog</h1>
+                        <h1 className='text-center text-white text-xl mb-4 font-bold'>Publish Blog on BlogX</h1>
 
                         <span className='-my-3'><img src="https://res.cloudinary.com/drlkkozug/image/upload/v1705042854/ynrer4jfk9ywantavge8.png" alt="New Post" width={50} srcSet="" /></span>
                     </div>
@@ -214,60 +348,31 @@ function AddBlog() {
                     </div>
 
 
-                    {/* editor for blog content */}
-                    {/* <div>
-                        <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Tell your story...</h2>
-
-                        <Editor
-                            apiKey='aflhte2kchgwcgg6wo27mxqz79lhro2h443k16fftegeoo6x'
-                            onInit={(evt, editor) => (blogEditor.current = editor)}
-                            init={{
-                                menubar: 'favs file edit view format tools table',
-                                height: 500,
-                                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                            }}
-                            initialValue="Write blog"
-                        />
-                    </div> */}
-
-
-                    {/* <div className='mt-6 mb-3 flex justify-start'>
-                        <button
-                            //   onClick={onClick}
-                            className="bg-blue-950 text-white px-4 py-2 text-2xl
-                            rounded-md hover:bg-blue-900 shadow-md shadow-green-200
-                            hover:scale-95 transition-all"
-                        >
-                            Add New Section
-                        </button>
-                    </div> */}
-
                     <div>
                         {sections.map((section, index) => (
                             <div key={section.id}>
 
                                 <div>
                                     <input type="text"
-                                        ref={titleRef}
                                         value={blog.sectionTitles[index]}
+
                                         onChange={(e, i) => {
-                                            setBlog({
-                                              ...blog,
-                                              sectionTitles: blog.sectionTitles.map((sectionTitle, index) =>
-                                                index === i ? e.target.value : sectionTitle
-                                              )
+                                            setBlog(prevBlog => {
+                                                const sectionTitlesCopy = [...prevBlog.sectionTitles];
+                                                // If index i is out of bounds, fill the array with empty strings up to index i
+                                                while (sectionTitlesCopy.length <= i) {
+                                                    sectionTitlesCopy.push('');
+                                                }
+                                                sectionTitlesCopy[index] = e.target.value;
+                                                return { ...prevBlog, sectionTitles: sectionTitlesCopy };
                                             });
-                                          }}
-                                          
-                                        // onChange={(e) => setBlog({ ...blog, sectionTitles: [...blog.sectionTitles, e.target.value] })}
-                                        name='title'
+                                        }}
+
+                                        name='sectionTitle'
                                         className='bg-inherit text-3xl mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
-                                        placeholder={`Section ${index+1} title`}
+                                        placeholder={`Section ${index + 1} title`}
                                     />
                                 </div>
-
-                                {/* <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Tell your story...</h2> */}
 
                                 <Editor
                                     apiKey='aflhte2kchgwcgg6wo27mxqz79lhro2h443k16fftegeoo6x'
@@ -278,8 +383,80 @@ function AddBlog() {
                                         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                                     }}
-                                    initialValue="Write blog"
+                                    initialValue={
+                                        blog?.blogContent[index]?.content ? blog?.blogContent[index]?.content : "Write blog"
+                                    }
                                 />
+
+                                {(checksCodeblock[index] === true)
+                                    ?
+                                    <div className="text-white mt-8">
+                                        <div className="flex flex-row ml-10 gap-x-4">
+                                            <h2 className='text-semibold  mt-2'>Select Language</h2>
+                                            <select className="bg-slate-700 px-3 text-white p-2 rounded-md
+                                                    focus:outline-none"
+                                                id="lang" onChange={handleLanguageChange}>
+                                                <option value="javascript">JavaScript</option>
+                                                <option value="cpp">C++</option>
+                                                <option value="python">Python</option>
+                                                <option value="kotlin">Kotlin</option>
+                                                <option value="java">Java</option>
+                                            </select>
+                                        </div>
+
+
+                                        {/* <CodeEditor
+                                            className='h-[50vh] m-auto p-10 bg-gray-800 text-white'
+                                            defaultLanguage="javascript"
+                                            defaultValue="// Write your code here..."
+                                            language={lang}
+                                            onChange={(val) => handleCodeChange(val, index)}
+                                            value={code}
+                                            onMount={(evt, editor) => (codeEditorRefs.current[index] = editor)}
+                                        /> */}
+
+
+                                        <div>
+                                            <CodeEditor
+                                                className="h-[50vh] m-auto p-10 bg-gray-800 text-white"
+                                                defaultLanguage={lang}
+                                                defaultValue="// Write your code here..."
+                                                language={languages[index]}
+                                                onChange={(val) => handleCodeChange(val, index)}
+                                                value={codes[index]}
+                                                onMount={(editor, monaco) => handleEditorDidMount(editor, monaco, index)}
+                                            />
+
+                                            <button
+                                                onClick={() => submitCode(index)}
+                                                className="bg-green-400 text-gray-900 rounded-md my-5 px-3 py-3"
+                                            >
+                                                Save Code Progress
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleCodeBlock(index)}
+                                                className="bg-red-400 text-gray-900 ml-5 rounded-md my-5 px-3 py-3"
+                                            >
+                                                Remove CodeBlock
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                    :
+                                    <>
+                                        <button
+                                            onClick={() => handleCodeBlock(index)}
+                                            className="bg-blue-700 text-white my-4 px-4 py-2 flex justify-end rounded-md
+                                             hover:bg-blue-900 focus:outline-none focus:ring
+                                              focus:ring-blue-400 hover:scale-95 transition-all duration-300"
+                                        >
+                                            Add Code Block
+                                        </button>
+
+                                    </>
+                                }
+
                             </div>
                         ))}
 
@@ -287,15 +464,34 @@ function AddBlog() {
                         <div className='mt-6 mb-3 flex justify-between'>
                             <button
                                 onClick={handleAddNewSection}
-                                className="bg-blue-950 text-white px-4 py-2 text-2xl
+                                className="bg-blue-950 text-white px-4 py-2 text-xl
                     rounded-md hover:bg-blue-900 shadow-md shadow-green-200
                     hover:scale-95 transition-all"
                             >
                                 Add New Section
                             </button>
+
+                            <button
+                                onClick={handleRemoveSection}
+                                className="bg-blue-950 text-white px-4 py-2 text-xl
+                    rounded-md hover:bg-blue-900 shadow-md shadow-green-200
+                    hover:scale-95 transition-all"
+                            >
+                                Remove this section
+                            </button>
+
+                            {/* <button
+                                onClick={ () => handleCodeBlock(index)}
+                                className="bg-blue-950 text-white px-4 py-2 text-xl
+                    rounded-md hover:bg-blue-900 shadow-md shadow-green-200
+                    hover:scale-95 transition-all"
+                            >
+                                Add Code Block
+                            </button> */}
+
                             <button
                                 onClick={handleSaveContent}
-                                className="bg-blue-950 text-white px-4 py-2 text-2xl
+                                className="bg-blue-950 text-white px-4 py-2 text-xl
                     rounded-md hover:bg-blue-900 shadow-md shadow-green-200
                     hover:scale-95 transition-all"
                             >
@@ -322,16 +518,7 @@ function AddBlog() {
                         />
                     </div>
 
-
-                    {/* <div>
-                        <input type="text"
-                            value={posts.imageUrl}
-                            onChange={(e) => setPosts({ ...posts, imageUrl: e.target.value })}
-                            name='imageurl'
-                            className=' bg-gray-600 mb-4 px-2 py-3 my-2 w-full  rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
-                            placeholder='Add an Image Url'
-                        />
-                    </div> */}
+                    {/* to add blog poster image */}
 
                     <div className='mt-6'>
 
@@ -374,7 +561,7 @@ function AddBlog() {
                                     onChange={(e) => setBlog({ ...blog, blogPoster: e.target.value })}
                                     name='imageurl'
                                     className=' bg-gray-600 mb-4 px-2 py-3 my-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
-                                    placeholder='Add an Image Url'
+                                    placeholder='Add Blog Poster'
                                 />
                             </div>
                         ) : (
@@ -449,6 +636,15 @@ function AddBlog() {
                             placeholder="Type and press Enter to add Code links (example: wtools links)"
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
                         />
+
+                        {
+                            showWrongURLMsg
+                                ?
+                                <h3 className='text-red-600 text-left mb-3'>
+                                    Pls add a valid URL
+                                </h3>
+                                : ""
+                        }
                     </div>
 
 
@@ -548,3 +744,65 @@ function AddBlog() {
 
 export default AddBlog
 
+
+
+
+{/* editor for blog content */ }
+{/* <div>
+                        <h2 className='text-white flex justify-start text-xl mb-4 font-semibold ml-3'>Tell your story...</h2>
+
+                        <Editor
+                            apiKey='aflhte2kchgwcgg6wo27mxqz79lhro2h443k16fftegeoo6x'
+                            onInit={(evt, editor) => (blogEditor.current = editor)}
+                            init={{
+                                menubar: 'favs file edit view format tools table',
+                                height: 500,
+                                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                            }}
+                            initialValue="Write blog"
+                        />
+                    </div> */}
+
+
+
+// const handleSaveContent2 = async () => {
+
+//     const updatedBlogContent = [...blog.blogContent];
+
+//     editorRefs.current.forEach(async (editor, index) => {
+
+//         const content = await editor.getContent();
+
+//         const codeeditor = codeEditorRefs?.current[index];
+//         // console.log(codeeditor);
+
+//         const codecontent = await codeeditor.getValue();
+
+//         // console.log(codecontent);
+
+
+//         const newSection = {
+//             title: blog?.sectionTitles[index],
+//             content: content,
+//             code: codecontent,
+//         }
+
+//         // Check if the blogContent array is empty
+//         if (updatedBlogContent.length === 0) {
+//             // If empty, add the new section to the array
+//             updatedBlogContent.push(newSection);
+//         } else {
+//             // If not empty, update the value at the specified index
+//             if (index >= 0 && index < updatedBlogContent.length) {
+//                 updatedBlogContent[index] = newSection;
+//             } else {
+//                 updatedBlogContent.push(newSection);
+//             }
+//         }
+//     });
+
+//     setBlog({ ...blog, blogContent: updatedBlogContent });
+
+//     localStorage.setItem('temporaryBlog', JSON.stringify(blog))
+// };

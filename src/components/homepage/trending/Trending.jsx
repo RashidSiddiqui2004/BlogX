@@ -65,13 +65,13 @@ function TrendingBlogs() {
               shortSummary += ' ...'
 
               return (
-                <center>
+                // <center>
                 <div key={index}>
                   <BlogCard blogid={id} title={shortTitle} description={description}
                     summary={shortSummary} department={department} blogPoster={blogPoster}
                     author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
                 </div>
-                </center>
+                // </center>
               )
 
             })

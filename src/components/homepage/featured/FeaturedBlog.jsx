@@ -4,6 +4,7 @@ import RenderHTMLContent from '../../../utilities/htmlRenderer/RenderHTMLContent
 import { Link } from 'react-router-dom' 
 import extractFirstXWords from "../../../utilities/initials/fetchXWords";
 import getEncodedTitle from '../../../utilities/fetchURLTitle/GetEncodedTitle';
+import dummyPoster from './blogimage.svg';
 
 const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
 
@@ -30,7 +31,7 @@ const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
                         </div>
                         <div className={`text-sm px-3 py-1 rounded-sm  md:ml-0
             ${mode === "dark" ? 'bg-gray-200 text-slate-800' : 'bg-slate-700 text-white'}`}>
-                            {featuredBlogs[currentIndex]?.department}
+                            {(featuredBlogs[currentIndex]) ? featuredBlogs[currentIndex]?.department : 'Department'}
                         </div>
                     </div>
 
@@ -43,6 +44,7 @@ const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
                             ? "rounded-lg text-white"
                             : "bg-neutral-80 text-zinc-800"}`}>
                         {featuredBlogs[currentIndex]?.summary && <RenderHTMLContent htmlContent={shortSummary} />}
+                        
                     </div>
                     <div
                         className={`justify-center self-start ml-7 px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
@@ -58,7 +60,17 @@ const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
                 </div>
             </div>
             <div className="md:w-[100%] md:ml-5 flex justify-center items-center transition-transform duration-500 ease-in-out">
-                <img src={featuredBlogs[currentIndex]?.blogPoster} alt="" className="max-w-full max-h-full" />
+                
+                {
+                    featuredBlogs[currentIndex] ?
+
+                    <img src={featuredBlogs[currentIndex]?.blogPoster} alt="" className="max-w-full max-h-full" />
+
+                    :
+
+                    <img src={dummyPoster} alt="" className="max-w-full max-h-full" />
+                }
+                
             </div>
         </div>
     )
