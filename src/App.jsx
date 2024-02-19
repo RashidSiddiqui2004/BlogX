@@ -27,7 +27,8 @@ import FeaturedPage from "./components/homepage/featured/FeaturedPage";
 import DeptBlogLayout from "./components/departmentBlogs/DeptBlogLayout";
 import DepartmentPage from "./components/departmentBlogs/DepartmentPage";
 import Code_Editor from "./components/code-editor/Editor";
- 
+import { useUser } from "./hooks/useUser";
+
 
 function App() {
   return (
@@ -36,9 +37,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
 
-          <Route path="/add-blog" element={<AddBlogLayout />} />
+          <Route path="/add-blog" element={
+            <ProtectedRouteForAuthors>
+              <AddBlogLayout />
+            </ProtectedRouteForAuthors>} />
 
-          <Route path='/blog/:blogName/:blogID' element={<Blog />} />
+          <Route path='/blog/:blogName/:blogID' element={
+            <Blog />
+          } />
 
           <Route path='/department/:deptName' element={<DeptBlogLayout />} />
 
@@ -114,5 +120,23 @@ const ProtectedRouteForAdmin = ({ children }) => {
   else {
     return <Navigate to={'/'} />
   }
+
+}
+
+
+// author verfication 
+const ProtectedRouteForAuthors = ({ children }) => {
+
+  const { userId, isAuthor } = useUser(); 
+
+  console.log(isAuthor);
+
+  // if (isAuthor === true) {
+    return children
+  // }
+
+  // else {
+    return <Navigate to={'/'} />
+  // }
 
 }

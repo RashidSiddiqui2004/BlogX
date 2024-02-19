@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import myContext from '../../../context/data/myContext'
 import { IoMdClose } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -7,14 +7,15 @@ import blog_x from "./blogx_icon.svg";
 import blog_xd from "./blogx_icond.svg";
 import { useState } from 'react';
 import { FaPenToSquare } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
-import getUserID from '../../../utilities/userData/GetUserID';
+import { Link, useNavigate } from "react-router-dom"; 
+import { useUser } from '../../../hooks/useUser';
+import Modal from '../../../utilities/modal/Modal';
 
 
 const Navbar = () => {
 
     const context = useContext(myContext);
-    const { mode, toggleMode, isBlogXAuthor } = context;
+    const { mode, toggleMode } = context;
 
     const [ham, setham] = useState(false);
 
@@ -24,35 +25,18 @@ const Navbar = () => {
         navigate("/");
     };
 
-    const [userId, setUserId] = useState(null);
-    const [isAuthor, setIsAuthor] = useState(false);
+    const { userId, isAuthor } = useUser();
 
+    const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+
+    const toggleLogoutModal = () => { 
+        setLogoutModalOpen((prev) => !prev);
+    };
 
     const logout = () => {
         localStorage.clear('user');
         window.location.href = '/login'
     }
-
-
-    // check if user is authenticated and authorised or not
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const uid = await getUserID();
-                if (uid !== -1) {
-                    setUserId(uid);
-                    const isUseraAuthor = await isBlogXAuthor(uid);
-                    setIsAuthor(isUseraAuthor);
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        };
-
-        fetchUserData();
-    }, []);
-
 
     const toggleHam = () => {
         setham(!ham);
@@ -110,6 +94,7 @@ const Navbar = () => {
         w-[70%] py-4">
                 About Us
             </div> */}
+
         </div>
         );
     }
@@ -149,7 +134,7 @@ const Navbar = () => {
 
 
             <div className={`font-semibold text-[20px] flex-1 flex items-center 
-                justify-center ${isAuthor ? 'md:ml-20' : ''} cursor-pointer`} onClick={handleHome}>
+                justify-center ${isAuthor ? 'md:ml-40' : 'md:ml-20'} cursor-pointer`} onClick={handleHome}>
                 Blog
                 <span className="text-[#0096FF]">
                     X
@@ -168,8 +153,6 @@ const Navbar = () => {
                     :
                     ''
             }
-
-
 
 
             {/* {!(userId === null && userId === -1)
@@ -197,16 +180,25 @@ const Navbar = () => {
             {!(userId === null)
                 ?
                 <div className={`mx-4 text-[14px] hidden md:flex items-center cursor-pointer hover:scale-95 transition-all`}
-                    onClick={logout}>
+                    onClick={toggleLogoutModal}>
                     Logout
                 </div>
                 :
                 <></>}
 
-            {/* <div className={`mx-4 text-[14px] hidden md:flex items-center border-
-                ${(mode === "light" ? "[#333333]" : "white")} rounded-md border-2 py-2 px-4`}>
+            <Modal
+                isOpen={isLogoutModalOpen}
+                onClose={() =>  {toggleLogoutModal();}}  
+                title="Are you really sure you want to logout"
+                onConfirm={() => logout()}
+            />
+
+            {/* border-${(mode === "light" ? "[#333333]" : "white")} rounded-md border-2  */}
+
+            <div className={`mx-4 text-[14px] hidden md:flex items-center
+                py-2 px-4`}>
                 <button disabled={true}> About Us</button>
-            </div> */}
+            </div>
 
             <div className="mx-4 text-[14px] flex items-center cursor-pointer">
                 {mode === "light"

@@ -1,19 +1,21 @@
 import { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 import { auth } from '../../../firebase/FirebaseConfig';
 import myContext from '../../../context/data/myContext';
 import Loader from '../../../utilities/loader/Loader';
 
 function Login() {
     const context = useContext(myContext)
-    const { loading, setLoading } = context;
+    const { mode, loading, setLoading } = context;
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const navigate = useNavigate();
+    const isDarkTheme = (mode === 'dark');
+
+    const navigate = useNavigate(); 
 
     const login = async () => {
         setLoading(true)
@@ -33,7 +35,7 @@ function Login() {
             navigate('/')
             setLoading(false)
 
-        } catch (error) { 
+        } catch (error) {
             toast.error("Login failed, Check your credentials!", {
                 position: "top-right",
                 autoClose: 800,
@@ -62,14 +64,16 @@ function Login() {
             {loading && <Loader />}
             <div className=' bg-gray-800 px-10 py-10 rounded-xl'>
 
-                <div className="flex justify-center merriweather">
-                    {/* <img src="/logo.jpg" alt="Urban Guard Logo"
-                        className="w-12 h-12 rounded-full mb-2 ml-10" /> */}
-                    <h1 className="text-xl font-semibold mt-3 ml-2">BlogX</h1>
+                <div className={`font-bold text-4xl mb-3 
+                ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>
+                    Blog
+                    <span className="text-[#0096FF]">
+                        X
+                    </span>
                 </div>
                 <div>
-                    <h1 className='text-center text-white text-xl mb-4 merriweather font-bold'>Login</h1>
-                </div>
+                    <h1 className='text-center text-white text-xl mb-4 font-bold'>Login</h1>
+                </div> 
                 <div>
                     <input type="email"
                         value={email}

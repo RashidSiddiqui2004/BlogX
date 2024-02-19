@@ -64,7 +64,6 @@ function AddBlog() {
 
 
     // for adding links (resources) in blog
-
     const [currentLink, setCurrentLink] = useState('');
 
     const handleCodeInputChange = (e) => {
@@ -115,7 +114,7 @@ function AddBlog() {
     const titleRef = useRef(null);
 
     // Reference to the TinyMCE editor
-    const blogEditor = useRef(null);
+    // const blogEditor = useRef(null);
 
     const blogSummaryEditor = useRef(null);
 
@@ -125,6 +124,27 @@ function AddBlog() {
     const handleAddNewSection = () => {
         const newSection = { id: sections.length + 1 };
         setSections([...sections, newSection]);
+
+        setBlog(prevBlog => {
+            const sectionTitlesCopy = [...prevBlog.sectionTitles]; 
+            while (sectionTitlesCopy.length <= sections.length) {
+                sectionTitlesCopy.push(null);
+            }
+            // sectionTitlesCopy[sections.length-1] = null;
+            return { ...prevBlog, sectionTitles: sectionTitlesCopy };
+        });
+
+        setCodes((prevCodes) => {
+            const newCodes = [...prevCodes];
+
+            // Check if there are missing elements up to the specified index
+            for (let i = newCodes.length; i <= sections.length; i++) { 
+                newCodes.push(null);
+            } 
+
+            return newCodes;
+        });
+
     };
 
     // implement
@@ -155,8 +175,8 @@ function AddBlog() {
 
     const lang = "javascript";
 
-    const [languages, setLang] = useState(["javascript", "C++"]);
-    const [codes, setCodes] = useState([""]);
+    const [languages, setLang] = useState(["javascript"]);
+    const [codes, setCodes] = useState([null]);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const codeEditorRefs = useRef([]);
@@ -185,28 +205,19 @@ function AddBlog() {
             // Check if there are missing elements up to the specified index
             for (let i = newCodes.length; i <= index; i++) {
                 // Add null values for missing elements
-                newCodes[i] = null;
+                newCodes.push(null);
             }
 
             // Add the saved code at the specified index
             newCodes[index] = savedCode;
 
             return newCodes;
-        });
-
-        console.log(codes);
+        }); 
     };
 
-
-    // use this
-    // const editor = editorRefs.current[0];
-    // const content2 = await editor.getContent();
-    // const newSection = new SectionClass(blog?.sectionTitles[0], content2);
-    // console.log(newSection);
-
+ 
 
     // handle section save code
-
     const handleSaveContent = async () => {
         const updatedBlogContent = [...blog.blogContent];
 
@@ -289,13 +300,13 @@ function AddBlog() {
     const uploadBlog = async () => {
         const postUploadstate = await createBlog();
 
+        console.log(blog);
+
         localStorage.removeItem('temporaryBlog');
 
         return postUploadstate;
     }
-
-    // update here
-
+ 
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -361,7 +372,7 @@ function AddBlog() {
                                                 const sectionTitlesCopy = [...prevBlog.sectionTitles];
                                                 // If index i is out of bounds, fill the array with empty strings up to index i
                                                 while (sectionTitlesCopy.length <= i) {
-                                                    sectionTitlesCopy.push('');
+                                                    sectionTitlesCopy.push(null);
                                                 }
                                                 sectionTitlesCopy[index] = e.target.value;
                                                 return { ...prevBlog, sectionTitles: sectionTitlesCopy };
@@ -369,8 +380,9 @@ function AddBlog() {
                                         }}
 
                                         name='sectionTitle'
-                                        className='bg-inherit text-3xl mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
-                                        placeholder={`Section ${index + 1} title`}
+                                        className='bg-inherit text-3xl mb-4 px-2 py-2 w-full rounded-lg inputbox
+                                         text-white placeholder:text-gray-200 placeholder:text-xl outline-none'
+                                        placeholder={`Section ${index + 1} title (leave empty if want to continue with previous section)`}
                                     />
                                 </div>
 
@@ -403,17 +415,6 @@ function AddBlog() {
                                                 <option value="java">Java</option>
                                             </select>
                                         </div>
-
-
-                                        {/* <CodeEditor
-                                            className='h-[50vh] m-auto p-10 bg-gray-800 text-white'
-                                            defaultLanguage="javascript"
-                                            defaultValue="// Write your code here..."
-                                            language={lang}
-                                            onChange={(val) => handleCodeChange(val, index)}
-                                            value={code}
-                                            onMount={(evt, editor) => (codeEditorRefs.current[index] = editor)}
-                                        /> */}
 
 
                                         <div>

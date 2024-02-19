@@ -15,8 +15,8 @@ import getUserID from '../../utilities/userData/GetUserID';
 import getUsernameByUID from '../../utilities/userData/GetUser';
 import CodeLinks from './codelinks/CodeLinks';
 import BlogNavigation from './BlogNavigation';
-import { Editor as CodeEditor } from '@monaco-editor/react';
 import OutputCode from '../code-editor/OutputCode';
+import extractText from '../../utilities/initials/getContent';
 
 const Blog = () => {
 
@@ -116,7 +116,7 @@ const Blog = () => {
           <h1 className='text-3xl md:text-5xl md:ml-20 text-left font-bold mx-6 mt-8 mb-6'>{blogState?.title}</h1>
 
           {/* author highlights */}
-          <div className='md:w-[75%] md:mx-[10%] mx-6 my-4 py-5'>
+          <div className='md:w-[75%] md:mx-[10%] mx-6 mt-4 py-5'>
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
           </div>
 
@@ -125,17 +125,27 @@ const Blog = () => {
           </div> */}
 
           {
-            blogState?.blogContent?.map((section,index) => {
+            blogState?.blogContent?.map((section, index) => {
 
-              const {title, content, code} = section;
+              const { title, content, code } = section;
+
+              const sectionContent = extractText(content);
 
               return (
-                <div key={index}>
-                  <h2 className='text-3xl md:text-3xl md:ml-20 text-left 
-                  font-semibold mx-6 mt-8 mb-6'>{title}</h2>
-                  <RenderHTMLContent htmlContent={content} />
+                <div key={index} id={title} className='mx-6 mb-3 px-8'>
 
-                  <OutputCode lang={"javascript"} code={code}/>
+                  <h2 className="text-3xl md:text-3xl text-left 
+                  font-semibold mb-6 mt-2">{(title === null) ? '' : title}</h2>
+
+                  <p className="text-lg text-gray-100 text-left">{sectionContent}</p>
+                  {
+                    !(code === null)
+                      ?
+                      <OutputCode lang={"javascript"} code={code} />
+                      :
+                      <></>
+                  }
+
                 </div>
               )
             })
@@ -153,7 +163,7 @@ const Blog = () => {
           }
 
           {/* tags */}
-          <div className='mx-4 md:mx-[22%] mb-4 mt-6'>
+          <div className='mx-4 md:mx-14 mb-4 mt-6'>
             <TagSection tagList={blogState?.tags} />
           </div>
 

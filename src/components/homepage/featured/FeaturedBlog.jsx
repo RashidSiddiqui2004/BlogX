@@ -1,14 +1,14 @@
 
 import React from 'react'
 import RenderHTMLContent from '../../../utilities/htmlRenderer/RenderHTMLContent'
-import { Link } from 'react-router-dom' 
+import { Link } from 'react-router-dom'
 import extractFirstXWords from "../../../utilities/initials/fetchXWords";
 import getEncodedTitle from '../../../utilities/fetchURLTitle/GetEncodedTitle';
 import dummyPoster from './blogimage.svg';
 
-const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
+const FeaturedBlog = ({ featuredBlogs, currentIndex, mode }) => {
 
-    let shortSummary = extractFirstXWords(featuredBlogs[currentIndex]?.summary,60);
+    let shortSummary = extractFirstXWords(featuredBlogs[currentIndex]?.summary, 60);
     shortSummary += ' ...';
 
     const encodedTitle = getEncodedTitle(featuredBlogs[currentIndex]?.title);
@@ -37,14 +37,21 @@ const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
 
                     <div className="mt-2 text-2xl md:text-3xl text-start space-around 
                     tracking-tight leading-12 max-md:max-w-full max-md:leading-10 ">
-                        {featuredBlogs[currentIndex]?.title}
+                        {featuredBlogs[currentIndex]?.title ?
+
+                            <Link to={`/blog/${encodedTitle}/${featuredBlogs[currentIndex]?.id}`}>
+                                {featuredBlogs[currentIndex]?.title}
+                            </Link>
+
+                            : "Amazing Blog Title"}
                     </div>
                     <div className={`text-lg text-start mt-7 space-around tracking-tight leading-12 md:max-w-full md:text-xl max-md:leading-10
                  font-light ${mode === "dark"
                             ? "rounded-lg text-white"
                             : "bg-neutral-80 text-zinc-800"}`}>
+
                         {featuredBlogs[currentIndex]?.summary && <RenderHTMLContent htmlContent={shortSummary} />}
-                        
+
                     </div>
                     <div
                         className={`justify-center self-start ml-7 px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
@@ -54,23 +61,26 @@ const FeaturedBlog = ({featuredBlogs, currentIndex, mode}) => {
                         style={{ transform: "translateX(-30px)" }}
                     >
                         <Link to={`/blog/${encodedTitle}/${featuredBlogs[currentIndex]?.id}`}>
-                            <button>See More</button>
+                            <button>View Blog</button>
                         </Link>
                     </div>
                 </div>
             </div>
+
             <div className="md:w-[100%] md:ml-5 flex justify-center items-center transition-transform duration-500 ease-in-out">
-                
+
                 {
                     featuredBlogs[currentIndex] ?
 
-                    <img src={featuredBlogs[currentIndex]?.blogPoster} alt="" className="max-w-full max-h-full" />
+                        <Link to={`/blog/${encodedTitle}/${featuredBlogs[currentIndex]?.id}`}>
+                            <img src={featuredBlogs[currentIndex]?.blogPoster} alt="blog-poster"
+                                className="max-w-full max-h-full" />
+                        </Link>
 
-                    :
-
-                    <img src={dummyPoster} alt="" className="max-w-full max-h-full" />
+                        :
+                        <img src={dummyPoster} alt="" className="max-w-full max-h-full" />
                 }
-                
+
             </div>
         </div>
     )
