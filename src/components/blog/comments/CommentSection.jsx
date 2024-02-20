@@ -10,11 +10,13 @@ function CommentSection({comments}) {
 
     const isDarkTheme = (mode === 'dark');
 
+    const numComments = comments.length;
+
     return (
         <div className="my-6 mx-[2%] mb-11">
             <h2 className=
-                {`text-2xl font-semibold text-slate-800 underline mb-4 text-center
-            ${isDarkTheme ? 'text-white' : 'text-slate-950'}`}>Comments</h2>
+                {`text-2xl font-semibold text-slate-800 mb-4 text-start ml-6
+            ${isDarkTheme ? 'text-white' : 'text-slate-950'}`}>Response{numComments > 1 ? 's' : '' } ({numComments})</h2>
             <div className="space-y-4"> 
 
                 {(comments?.length > 0) ?

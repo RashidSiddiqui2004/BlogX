@@ -129,7 +129,7 @@ const ProtectedRouteForAuthors = ({ children }) => {
 
   const { userId, isAuthor } = useUser(); 
 
-  console.log(isAuthor);
+  // console.log(isAuthor);
 
   // if (isAuthor === true) {
     return children

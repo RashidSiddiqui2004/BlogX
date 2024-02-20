@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { FaCopy } from "react-icons/fa";
 import './codestyle.css'
@@ -12,8 +12,12 @@ const OutputCode = ({ lang, code }) => {
     }
 
     const copyCodeToClipboard = () => {
-        navigator.clipboard.writeText(code); 
+        navigator.clipboard.writeText(code);
     };
+
+    const numberOfLines = code.split('\n').length;
+    const lineHeight = 20;
+    const height = numberOfLines * lineHeight;
 
     return (
         <div className="code-editor-container">
@@ -32,7 +36,7 @@ const OutputCode = ({ lang, code }) => {
             </div>
             <div className="code-editor">
                 <Editor
-                    className='m-auto h-[50vh]'
+                    height={height}
                     language={lang}
                     value={code}
                     onMount={handleEditorDidMount}

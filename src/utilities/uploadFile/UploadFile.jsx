@@ -20,7 +20,7 @@ export const uploadFile = async (file) => {
         const customFormattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
         // Create a reference to the storage location (e.g., 'images/my-file.jpg')
-        const storageRef = ref(storage, `reports/${file.name}${customFormattedDateTime}`);
+        const storageRef = ref(storage, `resources/${customFormattedDateTime}-${file.name}`);
 
         // Upload the file
         const snapshot = await uploadBytes(storageRef, file);

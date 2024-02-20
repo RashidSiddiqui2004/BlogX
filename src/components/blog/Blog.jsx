@@ -12,8 +12,7 @@ import CommentSection from './comments/CommentSection'
 import Footer from '../homepage/footer/Footer';
 import AuthorDetails from './blogAuthorHighlights/AuthorDetails';
 import getUserID from '../../utilities/userData/GetUserID';
-import getUsernameByUID from '../../utilities/userData/GetUser';
-import CodeLinks from './codelinks/CodeLinks';
+import getUsernameByUID from '../../utilities/userData/GetUser'; 
 import BlogNavigation from './BlogNavigation';
 import OutputCode from '../code-editor/OutputCode';
 import extractText from '../../utilities/initials/getContent';
@@ -110,19 +109,25 @@ const Blog = () => {
       <div className='flex flex-row'>
 
         {/* main blog content */}
-        <div className=' w-[80%] ml-5 md:w-[70%] md:ml-24'>
+        <div className='w-[100%] md:w-[70%] md:ml-24'>
 
           {/* title of blog */}
-          <h1 className='text-3xl md:text-5xl md:ml-20 text-left font-bold mx-6 mt-8 mb-6'>{blogState?.title}</h1>
+          <h1 className='text-3xl md:text-5xl md:ml-16 text-left font-bold mx-6 mt-8 mb-6'>{blogState?.title}</h1>
 
           {/* author highlights */}
           <div className='md:w-[75%] md:mx-[10%] mx-6 mt-4 py-5'>
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
           </div>
 
-          {/* <div className='mx-6 '>
-            <RenderHTMLContent htmlContent={blogState?.description} />
-          </div> */}
+          {
+            blogState?.description ?
+              <div className='mx-6 '>
+                <RenderHTMLContent htmlContent={blogState?.description} />
+              </div>
+              :
+              <></>
+          }
+
 
           {
             blogState?.blogContent?.map((section, index) => {
@@ -132,12 +137,20 @@ const Blog = () => {
               const sectionContent = extractText(content);
 
               return (
-                <div key={index} id={title} className='mx-6 mb-3 px-8'>
+                <div key={index} id={title} className='md:mx-6 mb-3 px-8'>
 
-                  <h2 className="text-3xl md:text-3xl text-left 
+                  <h2 className="text-2xl md:text-3xl text-left 
                   font-semibold mb-6 mt-2">{(title === null) ? '' : title}</h2>
 
-                  <p className="text-lg text-gray-100 text-left">{sectionContent}</p>
+                  <p className="text-lg sm:text-lg text-gray-100 text-justify">
+                    {/* <span className="text-4xl font-bold">{sectionContent.charAt(1)}</span> */}
+                    {sectionContent}
+                  </p>
+
+                  {/* <div className='flex justify-start'>
+                    <RenderHTMLContent htmlContent={sectionContent} />
+                  </div> */}
+
                   {
                     !(code === null)
                       ?
@@ -151,8 +164,7 @@ const Blog = () => {
             })
           }
 
-
-          {
+          {/*       {
             blogState?.codelinks && blogState?.codelinks.length > 1
               ?
               <div className='mx-6 my-4'>
@@ -160,10 +172,10 @@ const Blog = () => {
               </div>
               :
               <></>
-          }
+          } */}
 
           {/* tags */}
-          <div className='mx-4 md:mx-14 mb-4 mt-6'>
+          <div className='mx-6 md:mx-14 mb-4 mt-6'>
             <TagSection tagList={blogState?.tags} />
           </div>
 

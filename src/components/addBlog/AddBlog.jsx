@@ -9,7 +9,8 @@ import departmentsInDevComm from '../../utilities/departments/departmentsInDevCo
 import BtnTemplate from '../../utilities/BtnTemplate2/BtnTemplate';
 import { toast } from 'react-toastify';
 import { Editor as CodeEditor } from '@monaco-editor/react';
-import isValidUrl from './CheckIfUrl'; 
+import isValidUrl from './CheckIfUrl';
+import PDF from './pdf.svg';
 
 function AddBlog() {
 
@@ -126,7 +127,7 @@ function AddBlog() {
         setSections([...sections, newSection]);
 
         setBlog(prevBlog => {
-            const sectionTitlesCopy = [...prevBlog.sectionTitles]; 
+            const sectionTitlesCopy = [...prevBlog.sectionTitles];
             while (sectionTitlesCopy.length <= sections.length) {
                 sectionTitlesCopy.push(null);
             }
@@ -137,10 +138,9 @@ function AddBlog() {
         setCodes((prevCodes) => {
             const newCodes = [...prevCodes];
 
-            // Check if there are missing elements up to the specified index
-            for (let i = newCodes.length; i <= sections.length; i++) { 
+            for (let i = newCodes.length; i <= sections.length; i++) {
                 newCodes.push(null);
-            } 
+            }
 
             return newCodes;
         });
@@ -152,10 +152,30 @@ function AddBlog() {
         return;
     }
 
+    const maxFilesPerSection = 4;
+
     const [checksCodeblock, setChecksCodeblock] = useState([false]);
 
     const handleCodeBlock = (index) => {
         setChecksCodeblock((prevChecks) => {
+            const indexExists = prevChecks[index] !== undefined;
+
+            // If index exists, toggle its value 
+            if (indexExists) {
+                return prevChecks.map((value, i) => (i === index ? !value : value));
+            } else {
+                // If index does not exist, add a new element with value true
+                const newChecks = [...prevChecks];
+                newChecks[index] = true;
+                return newChecks;
+            }
+        });
+    };
+
+    const [uploadFileBlock, setUploadFileBlock] = useState([false]);
+
+    const handleFileUploadBlock = (index) => {
+        setUploadFileBlock((prevChecks) => {
             const indexExists = prevChecks[index] !== undefined;
 
             // If index exists, toggle its value 
@@ -212,10 +232,10 @@ function AddBlog() {
             newCodes[index] = savedCode;
 
             return newCodes;
-        }); 
+        });
     };
 
- 
+
 
     // handle section save code
     const handleSaveContent = async () => {
@@ -250,17 +270,17 @@ function AddBlog() {
     };
 
 
-
+    // pre-upload checking
     const checkIfAllFieldsAreFilled = async () => {
 
-        // const content = await blogEditor.current.getContent();
+        await handleSaveContent();
+
         const blogSummary = await blogSummaryEditor.current.getContent();
 
         localStorage.setItem('temporaryBlog', JSON.stringify(blog));
 
         // Update state using the state updater function
-        setBlog((prevBlog) => ({ ...prevBlog, summary: blogSummary }));
-        // setBlog((prevBlog) => ({ ...prevBlog, description: content, summary: blogSummary }));
+        setBlog((prevBlog) => ({ ...prevBlog, summary: blogSummary, filesUpload: filesForSections }));
 
         if (!(imageFile == null)) {
             try {
@@ -277,7 +297,6 @@ function AddBlog() {
         }
 
         if (!(blog.title == "" || blog.department == "" ||
-            // blog.description == "<p>Write blog</p>" ||
             blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1)) {
             setPostPreview(true);
         }
@@ -291,22 +310,93 @@ function AddBlog() {
                 draggable: true,
                 progress: undefined,
             });
-            console.log(blog);
         }
 
         return;
     };
 
     const uploadBlog = async () => {
-        const postUploadstate = await createBlog();
+        const postUploadstate = await createBlog().then(() => localStorage.removeItem('temporaryBlog'));
 
         console.log(blog);
 
-        localStorage.removeItem('temporaryBlog');
-
         return postUploadstate;
     }
- 
+
+    // file upload feature code here
+
+    const [filesForSections, setFilesForSections] = useState([[]]);
+    const [fileName, setFileName] = useState('');
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
+
+    const handleDrop = (event, sectionIndex) => {
+        event.preventDefault();
+        const file = event.dataTransfer.files[0];
+        setFileName(file.name);
+        submitFileforSections(file, sectionIndex);
+    };
+
+    const submitFileforSections = async (file, sectionIndex) => {
+        let fileURL = null;
+
+        if (file) {
+            try {
+                // Handle file upload logic here
+                // For example, uploadFile is a function to upload the file to a server
+                const pdfURLfromFB = await uploadFile(file);
+
+                // Update state with the pdf URL
+                if (pdfURLfromFB !== null) {
+                    fileURL = pdfURLfromFB;
+                }
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
+        }
+
+        // Flatten the nested list structure into a single list
+        const flattenedFiles = filesForSections.flat();
+
+        // Find the index where to insert the file URL
+        const index = sectionIndex * maxFilesPerSection + flattenedFiles.length;
+
+        setFilesForSections((prevFiles) => {
+            const newFiles = [...prevFiles];
+
+            // Add the saved file URL at the specified index
+            newFiles[index] = fileURL;
+
+            return newFiles;
+        });
+
+        console.log(filesForSections);
+
+        // setFilesForSections((prevFiles) => {
+        //     const newFiles = [...prevFiles];
+
+        //     // Add null values for missing elements in the 2D array
+        //     while (newFiles.length <= sectionIndex) {
+        //         newFiles.push([]);
+        //     }
+
+        //     // Add the saved file URL at the specified index
+        //     newFiles[sectionIndex] = [...newFiles[sectionIndex], fileURL];
+
+        //     return newFiles;
+        // });
+
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        setFileName(file.name);
+        submitFileforSections(file);
+    };
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -359,6 +449,7 @@ function AddBlog() {
                     </div>
 
 
+                    {/* sections input code */}
                     <div>
                         {sections.map((section, index) => (
                             <div key={section.id}>
@@ -382,7 +473,7 @@ function AddBlog() {
                                         name='sectionTitle'
                                         className='bg-inherit text-3xl mb-4 px-2 py-2 w-full rounded-lg inputbox
                                          text-white placeholder:text-gray-200 placeholder:text-xl outline-none'
-                                        placeholder={`Section ${index + 1} title (leave empty if want to continue with previous section)`}
+                                        placeholder={`Section ${index + 1} title ${(index === 0 ? '' : '(leave empty if want to continue with previous section)')}`}
                                     />
                                 </div>
 
@@ -390,10 +481,10 @@ function AddBlog() {
                                     apiKey='aflhte2kchgwcgg6wo27mxqz79lhro2h443k16fftegeoo6x'
                                     onInit={(evt, editor) => (editorRefs.current[index] = editor)}
                                     init={{
-                                        menubar: 'favs file edit view format tools table',
+                                        menubar: 'favs edit view tools table',
                                         height: 500,
-                                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                                        plugins: 'anchor autolink charmap emoticons link lists searchreplace table wordcount',
+                                        toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist indent outdent | emoticons charmap | removeformat',
                                     }}
                                     initialValue={
                                         blog?.blogContent[index]?.content ? blog?.blogContent[index]?.content : "Write blog"
@@ -445,7 +536,7 @@ function AddBlog() {
                                         </div>
                                     </div>
                                     :
-                                    <>
+                                    <div className=' flex flex-row gap-x-9'>
                                         <button
                                             onClick={() => handleCodeBlock(index)}
                                             className="bg-blue-700 text-white my-4 px-4 py-2 flex justify-end rounded-md
@@ -455,11 +546,67 @@ function AddBlog() {
                                             Add Code Block
                                         </button>
 
+                                        <button
+                                            onClick={() => handleFileUploadBlock(index)}
+                                            className="bg-blue-700 text-white my-4 px-4 py-2 flex justify-end rounded-md
+                                             hover:bg-blue-900 focus:outline-none focus:ring
+                                              focus:ring-blue-400 hover:scale-95 transition-all duration-300"
+                                        >
+                                            Upload File
+                                        </button>
+
+                                    </div>
+                                }
+
+                                {(uploadFileBlock[index] === true)
+                                    ?
+                                    <div className="text-white mt-8">
+
+                                        <div>
+                                            <div className="bg-blue-200 w-[60%] mx-[20%] h-60 rounded-full border-2
+                                             border-black border-dotted flex items-center justify-center"
+                                                onDragOver={handleDragOver}
+                                                onDrop={(event) => handleDrop(event, index)}
+                                            >
+                                                <div className="rounded-full pt-2 pb-4">
+                                                    <div className="flex flex-col items-center">
+
+                                                        <h1 className='text-3xl mb-2 text-slate-900'>Upload resources here</h1>
+                                                        <label htmlFor={`fileInput-${index}`}>
+                                                            <img className="w-24 h-24 cursor-pointer" src={PDF} alt="PDF Icon" />
+                                                        </label>
+                                                        <input
+                                                            id={`fileInput-${index}`}
+                                                            type="file"
+                                                            className="hidden"
+                                                            accept="application/pdf"
+                                                            onChange={handleFileChange}
+                                                        />
+                                                        <span className="text-gray-500 text-sm mt-2">{fileName}</span>
+                                                        <span className="text-gray-500 text-xs mt-2">Icon by <a className="text-blue-900 hover:text-blue-700" target="_blank" rel="noopener noreferrer" href="https://www.svgrepo.com">svgrepo</a></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <button
+                                            onClick={() => handleFileUploadBlock(index)}
+                                            className="bg-red-400 text-gray-900 ml-5 rounded-md my-5 px-3 py-3"
+                                        >
+                                            Remove File Upload Block
+                                        </button>
+                                    </div>
+                                    :
+                                    <>
                                     </>
                                 }
 
+
+
                             </div>
                         ))}
+
 
 
                         <div className='mt-6 mb-3 flex justify-between'>
@@ -480,15 +627,6 @@ function AddBlog() {
                             >
                                 Remove this section
                             </button>
-
-                            {/* <button
-                                onClick={ () => handleCodeBlock(index)}
-                                className="bg-blue-950 text-white px-4 py-2 text-xl
-                    rounded-md hover:bg-blue-900 shadow-md shadow-green-200
-                    hover:scale-95 transition-all"
-                            >
-                                Add Code Block
-                            </button> */}
 
                             <button
                                 onClick={handleSaveContent}
@@ -512,8 +650,8 @@ function AddBlog() {
                             init={{
                                 menubar: false,
                                 height: 300,
-                                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                                plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace  wordcount',
+                                toolbar: 'undo redo | blocks fontsize | bold underline strikethrough | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                             }}
                             initialValue="Write blog summary"
                         />
@@ -549,6 +687,7 @@ function AddBlog() {
                                 onChange={handleCheckboxChange}
                                 className="mr-2 px-11 py-11 transform scale-150"
                             />
+
                         </div>
 
 
@@ -764,46 +903,3 @@ export default AddBlog
                             initialValue="Write blog"
                         />
                     </div> */}
-
-
-
-// const handleSaveContent2 = async () => {
-
-//     const updatedBlogContent = [...blog.blogContent];
-
-//     editorRefs.current.forEach(async (editor, index) => {
-
-//         const content = await editor.getContent();
-
-//         const codeeditor = codeEditorRefs?.current[index];
-//         // console.log(codeeditor);
-
-//         const codecontent = await codeeditor.getValue();
-
-//         // console.log(codecontent);
-
-
-//         const newSection = {
-//             title: blog?.sectionTitles[index],
-//             content: content,
-//             code: codecontent,
-//         }
-
-//         // Check if the blogContent array is empty
-//         if (updatedBlogContent.length === 0) {
-//             // If empty, add the new section to the array
-//             updatedBlogContent.push(newSection);
-//         } else {
-//             // If not empty, update the value at the specified index
-//             if (index >= 0 && index < updatedBlogContent.length) {
-//                 updatedBlogContent[index] = newSection;
-//             } else {
-//                 updatedBlogContent.push(newSection);
-//             }
-//         }
-//     });
-
-//     setBlog({ ...blog, blogContent: updatedBlogContent });
-
-//     localStorage.setItem('temporaryBlog', JSON.stringify(blog))
-// };
