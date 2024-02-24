@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import myContext from '../../../context/data/myContext';
 import { toast } from 'react-toastify';
@@ -160,6 +160,10 @@ function Signup() {
             }
         }
     }
+
+    useEffect(()=>{
+        setLoading(false);
+    },[])
 
     return (
         <div className={`flex justify-center items-center h-screen ${isDarkTheme ? 'bg-gray-800' : 'bg-slate-400'}`}>

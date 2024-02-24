@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import myContext from "../../../context/data/myContext";
-import BlogCard from "./BlogCard";
-import { Link } from 'react-router-dom'
+import BlogCard from "./BlogCard"; 
+// import { Link } from 'react-router-dom' 
 import extractFirstXWords from "../../../utilities/initials/fetchXWords";
 import getEncodedTitle from "../../../utilities/fetchURLTitle/GetEncodedTitle";
 
@@ -38,7 +38,7 @@ function TrendingBlogs() {
 
 
       <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="grid md:grid-cols-2 h-full gap-x-16 gap-y-6">
+        <div className="grid md:grid-cols-2 h-full gap-x-16 gap-y-10">
           {
             trendingBlogs && trendingBlogs.slice(0, 6).map((blog, index) => {
 
@@ -56,7 +56,7 @@ function TrendingBlogs() {
                 id,
               } = blog;
 
-              const encodedTitle = getEncodedTitle(title);
+              // const encodedTitle = getEncodedTitle(title);
 
               let shortSummary = extractFirstXWords(summary, 15);
               shortSummary += ' ...'

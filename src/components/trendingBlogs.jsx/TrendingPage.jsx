@@ -21,8 +21,9 @@ function TrendingPage() {
 
 
   return (
-    <div className="flex flex-col py-12">
-      <div className="flex gap-5 justify-between mt-8 w-full max-md:flex-wrap max-md:max-w-full ">
+    <div className="flex flex-col py-12 w-[90%] mx-[6%]">
+      <div className="flex gap-5 justify-between mt-8 w-full max-md:flex-wrap
+       max-md:max-w-full">
         <div
           className={`flex text-start flex-col px-5 font-semibold max-md:max-w-full ${mode === "dark"
             ? "bg- rounded-lg text-white"
@@ -38,10 +39,8 @@ function TrendingPage() {
         </div>
       </div>
 
-
-
       <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="grid md:grid-cols-3 gap-3">
+        <div className="grid md:grid-cols-2 h-full gap-x-16 gap-y-10">
           {
             trendingBlogs && trendingBlogs.slice(0, 9)?.map((item, index) => {
 

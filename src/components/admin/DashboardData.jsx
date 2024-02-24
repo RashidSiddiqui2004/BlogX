@@ -10,7 +10,8 @@ const DashboardContent = () => {
 
     const context = useContext(myContext);
 
-    const { fetchNumPosts, fetchNumUsers, fetchPosts, deleteBlog, fetchUsersListforCreatorSelection } = context;
+    const { fetchNumPosts, fetchNumUsers, fetchPosts, deleteBlog,
+        fetchUsersListforCreatorSelection, makeCreator } = context;
 
     const [numPosts, setNumPosts] = useState(0);
     const [numUsers, setNumUsers] = useState(0);
@@ -68,7 +69,7 @@ const DashboardContent = () => {
                 <h2 className="text-lg font-semibold">Number of Users: {numUsers}</h2>
             </div>
 
-            <h2 className='text-4xl text-left px-3 text-white my-3 font-bold'>Users On BlogX</h2>
+            <h2 className='text-4xl text-left px-3 text-white my-3 font-bold pb-4'>Users On BlogX</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {
@@ -76,7 +77,7 @@ const DashboardContent = () => {
 
                         return (
                             <div key={index}>
-                                <UserDetailCard {...userObject} />
+                                <UserDetailCard {...userObject} onMakeCreator={makeCreator} />
                             </div>
 
                         )
@@ -84,6 +85,7 @@ const DashboardContent = () => {
                 }
             </div>
 
+            <h2 className='text-4xl text-left px-3 text-white my-3 font-bold pb-4'>Blogs On BlogX</h2>
 
             {/* Grid layout for rendering posts */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

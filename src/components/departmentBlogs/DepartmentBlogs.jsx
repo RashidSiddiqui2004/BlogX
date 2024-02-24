@@ -106,7 +106,7 @@ const DepartmentBlogs = () => {
                                             id,
                                         } = blog;
 
-                                        let shortSummary = extractFirstXWords(summary, 15);
+                                        let shortSummary = extractFirstXWords(summary, 5);
                                         shortSummary += ' ...';
 
                                         const encodedTitle = getEncodedTitle(title);
