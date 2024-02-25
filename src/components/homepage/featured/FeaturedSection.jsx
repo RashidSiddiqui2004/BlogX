@@ -37,7 +37,7 @@ function FeaturedSection() {
   };
 
   return (
-    <div className=" mt-4 md:mt-[2%]">
+    <div className=" mt-4 md:mt-[8%]">
       <div className="md:w-[6%] md:mt-10">
         <button
           className={`prev mr-3 ${
@@ -61,7 +61,7 @@ function FeaturedSection() {
         <FeaturedBlog mode={mode} featuredBlogs={featuredBlogs} currentIndex={currentIndex} />
       </div>
 
-      <div className="border-b border-gray-300 mt-0 md:mt-24"></div>
+      <div className="border-b border-gray-300 mt-0 md:mt-12"></div>
     </div>
   );
 }

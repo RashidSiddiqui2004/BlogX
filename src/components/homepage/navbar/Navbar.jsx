@@ -23,17 +23,16 @@ const Navbar = () => {
 
     const handleHome = () => {
         navigate("/");
-    };
-
-    const[userId, setuid] = useState(null);
-    const[isAuthor, setauth] = useState(true);
+    }; 
+    
+    const { userId, isAuthor } = useUser();
 
     const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
     const toggleLogoutModal = () => { 
         setLogoutModalOpen((prev) => !prev);
     };
-
+ 
     const logout = () => {
         localStorage.clear('user');
         window.location.href = '/login'
@@ -44,7 +43,7 @@ const Navbar = () => {
     };
 
     const Ham_menu = () => {
-        return (<div className={`flex-col fixed md:hidden w-[70%] left-0 top-0
+        return (<div className={`flex-col md:hidden w-[70%]
          z-10 ${mode === "light" ? "bg-white" : "bg-[#2A2C38]"} h-[100%] shadow-2xl`}>
             <div className="mx-6 w-[70%] flex items-center
         justify-start font-extrabold text-[30px]  mt-4 "
@@ -112,7 +111,7 @@ const Navbar = () => {
     }
 
     return ( 
-        <div className={`w-[100%] mx-auto flex py-4 fixed bg-[#1b1c23] z-10
+        <div className={`w-[100%] mx-auto flex py-4 md:fixed bg-[#1b1c23] z-10
         border-${(mode === "light") ? "black" : "white"} text-${mode === "light" ? "black" : "white"} border-b-2`}
             style={{ fontFamily: 'Nunito Sans, sans-serif' }}>
 

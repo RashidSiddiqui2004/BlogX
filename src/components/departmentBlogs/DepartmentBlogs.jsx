@@ -42,9 +42,9 @@ const DepartmentBlogs = () => {
     }, []);
 
     return (
-        <div className="mt-10 w-full max-md:max-w-full min-h-screen">
+        <div className="w-full max-md:max-w-full min-h-screen md:py-24">
 
-            <h1 className={`text-2xl md:text-5xl justify-center font-semibold my-3 py-3 ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>{department}</h1>
+            <h1 className={`text-2xl md:text-5xl justify-center font-semibold mb-3 py-3 ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>{department}</h1>
 
             {
                 deptBlogs && deptBlogs?.length > 0

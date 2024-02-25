@@ -136,3 +136,43 @@
 //     }
 // };
 
+
+  {/* codelinks associated with blogs */}
+
+                    {/* <div className="mt-4">
+                        <h2 className='text-white flex justify-start text-xl mb-2 font-semibold ml-3'>Links for Code included in Blog (Optional)</h2>
+
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            {codelinks?.map((codelink, index) => (
+                                <div className='rounded-full bg-slate-500 py-1 px-4 shadow-md shadow-green-300
+                    hover:scale-95 transition-all' key={index}>
+                                    {codelink}
+                                    <button
+                                        onClick={() => handleLinkRemove(index)}
+                                        className={`rounded-full text-white px-3 py-1`}
+                                    >
+                                        &#x2715;
+                                    </button>
+                                </div>
+
+                            ))}
+                        </div>
+
+                        <input
+                            type="text"
+                            value={currentLink}
+                            onChange={handleCodeInputChange}
+                            onKeyDown={handleLinkInputKeyDown}
+                            placeholder="Type and press Enter to add Code links (example: wtools links)"
+                            className=' bg-gray-600 mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
+                        />
+
+                        {
+                            showWrongURLMsg
+                                ?
+                                <h3 className='text-red-600 text-left mb-3'>
+                                    Pls add a valid URL
+                                </h3>
+                                : ""
+                        }
+                    </div> */}

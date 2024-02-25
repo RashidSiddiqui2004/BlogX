@@ -41,8 +41,7 @@ const Blog = () => {
   useEffect(() => {
     async function fetchComments() {
       const cmts = await getCommentsForBlog(blogId).then((commentsData) => {
-        setComments(commentsData);
-        // setCommentsCnt();
+        setComments(commentsData); 
       })
     }
 
@@ -103,7 +102,7 @@ const Blog = () => {
       <div className='flex flex-row'>
 
         {/* main blog content */}
-        <div className='w-[100%] md:w-[70%] md:ml-24'>
+        <div className='w-[100%] md:w-[75%] md:ml-24 mt-20'>
 
           {/* title of blog */}
           <h1 className='text-3xl md:text-5xl md:ml-16 text-left font-bold mx-6 mt-8 mb-6'>{blogState?.title}</h1>
@@ -215,7 +214,7 @@ const Blog = () => {
 
 
         {/* blog navigation */}
-        <div className='hidden md:block md:w-[30%] pl-10 mt-6'>
+        <div className='hidden md:block md:w-[25%] pl-4 mt-24'>
           <BlogNavigation navigation={blogState?.sectionTitles} />
         </div>
 
