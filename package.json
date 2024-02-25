@@ -33,7 +33,7 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
-    "vite": "^5.0.8"
+    "vite": "^5.1.4"
   },
   "description": "Blog-X is a dynamic platform designed for sharing and exploring technical insights. With categories spanning web development, app development, data structures, and machine learning, users can create, publish, and engage with cutting-edge content. The site features a responsive design, allowing seamless access from various devices. Users can customize their experience with light and dark themes and stay updated with trending and recently added blogs.",
   "main": "postcss.config.js",

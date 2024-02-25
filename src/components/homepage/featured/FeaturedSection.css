@@ -1,0 +1,31 @@
+/* FeaturedSection.css */
+
+@keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  .featured-blog-container {
+    animation: fadeInOut 7.2s infinite; 
+    overflow: hidden;
+  }
+  
+  @media (min-width: 768px) {
+    .featured-blog-container {
+      height: 410px;
+    }
+  }
+  
+  
+  @media (max-width: 767px) {
+    .featured-blog-container {
+      height: 126vh; 
+    }
+  }
