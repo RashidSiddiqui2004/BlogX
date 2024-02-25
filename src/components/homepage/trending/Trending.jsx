@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import myContext from "../../../context/data/myContext";
-import BlogCard from "./BlogCard"; 
-// import { Link } from 'react-router-dom' 
+import BlogCard from "./BlogCard";  
 import extractFirstXWords from "../../../utilities/initials/fetchXWords";
 import getEncodedTitle from "../../../utilities/fetchURLTitle/GetEncodedTitle";
 
@@ -55,8 +54,7 @@ function TrendingBlogs() {
                 date,
                 id,
               } = blog;
-
-              // const encodedTitle = getEncodedTitle(title);
+ 
 
               let shortSummary = extractFirstXWords(summary, 15);
               shortSummary += ' ...'
@@ -64,10 +62,12 @@ function TrendingBlogs() {
               let shortTitle = extractFirstXWords(title, 5);
               shortSummary += ' ...'
 
+              const encodedTitle = getEncodedTitle(title);
+
               return (
                 // <center>
                 <div key={index}>
-                  <BlogCard blogid={id} title={shortTitle} description={description}
+                  <BlogCard blogid={id} title={shortTitle} urlTitle={encodedTitle} description={description}
                     summary={shortSummary} department={department} blogPoster={blogPoster}
                     author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
                 </div>

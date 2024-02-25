@@ -17,7 +17,9 @@ function Signup() {
 
     const [passwordLength, setPasswordLength] = useState(false);
     const [specialSymbol, setSpecialSymbol] = useState(false);
-    const [numbers, setNumbers] = useState(0);
+    const [numbers, setNumbers] = useState(false);
+
+    const isPasswordValid = passwordLength && specialSymbol && numbers;
 
     const handlePasswordChange = (e) => {
         const newPassword = e.target.value;
@@ -93,6 +95,7 @@ function Signup() {
     const signup = async () => {
         setLoading(true)
         if (name === "" || email === "" || password === "") {
+            setLoading(false)
             return toast.error("All fields are required")
         }
 
@@ -124,11 +127,9 @@ function Signup() {
             setName("");
             setEmail("");
             setPassword("");
-            setLoading(false)
             await login();
 
         } catch (error) {
-            console.log(error)
 
             if (password.length < 6) {
                 toast.info("Password should consist of atleast 6 chars", {
@@ -142,7 +143,6 @@ function Signup() {
                     theme: "colored",
                 });
 
-                setLoading(false);
             }
 
             else {
@@ -156,14 +156,15 @@ function Signup() {
                     progress: undefined,
                     theme: "colored",
                 });
-                setLoading(false);
             }
+        } finally {
+            setLoading(false)
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         setLoading(false);
-    },[])
+    }, [])
 
     return (
         <div className={`flex justify-center items-center h-screen ${isDarkTheme ? 'bg-gray-800' : 'bg-slate-400'}`}>
@@ -234,6 +235,7 @@ function Signup() {
                             </span>
                         </p>
                     </div>
+
                     {/* <div className="text-white mb-3">
                 <p className={`italic font-semibold ${passwordLength ? 'line-through' : ''}`}>
                     Password should be of at least 8 characters.
@@ -251,11 +253,22 @@ function Signup() {
 
                 </div>
                 <div className=' flex justify-center mb-3'>
-                    <button
-                        onClick={signup}
-                        className=' bg-red-500 w-full text-white font-bold  px-2 py-2 rounded-lg'>
-                        Signup
-                    </button>
+                    {
+                        isPasswordValid
+                            ?
+                            <button
+                                onClick={signup}
+                                className='bg-red-500 w-full text-white font-bold  px-2 py-2 rounded-lg'>
+                                Signup
+                            </button>
+                            :
+                            <button
+                                disabled={true}
+                                className='bg-slate-400 w-full text-slate-800 font-bold  px-2 py-2 rounded-lg'>
+                                Signup
+                            </button>
+                    }
+
                 </div>
                 <div>
                     <h2 className='text-white'>Have an account <Link className=' text-red-500 font-bold' to={'/login'}>Login</Link></h2>

@@ -15,9 +15,7 @@ import getUserID from '../../utilities/userData/GetUserID';
 import getUsernameByUID from '../../utilities/userData/GetUser';
 import BlogNavigation from './BlogNavigation';
 import OutputCode from '../code-editor/OutputCode';
-import extractText from '../../utilities/initials/getContent';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import extractText from '../../utilities/initials/getContent'; 
 import PDF from './pdfImage.svg'
 
 
@@ -38,15 +36,6 @@ const Blog = () => {
 
   const [comments, setComments] = useState([]);
   const commentsCnt = comments.length;
-
-  const navigation = [
-    'Starting with React',
-    'useMemo Hook',
-    'useState Hook',
-    'useRef Hook',
-    'useState Hook',
-    'Context API'
-  ]
 
   // get comments
   useEffect(() => {
@@ -104,7 +93,7 @@ const Blog = () => {
     window.scrollTo(0, 0);
   }, []);
 
- 
+
   return (
     <div style={{ color: mode === 'dark' ? 'white' : '' }}
       className='overflow-hidden'>
@@ -137,13 +126,11 @@ const Blog = () => {
           {
             blogState?.blogContent && blogState?.blogContent?.map((section, index) => {
 
-              const { title, content, code, resources } = section;
-
-              console.log(resources);
-
+              const { title, content, code, resources } = section; 
               const sectionContent = extractText(content);
 
               return (
+
                 <div key={index} id={title} className='md:mx-6 mb-3 px-8'>
 
                   <h2 className="text-2xl md:text-3xl text-left 
@@ -165,7 +152,7 @@ const Blog = () => {
 
                   <div className="container mx-auto py-4 flex flex-row justify-center gap-x-7
                    rounded-xl my-6">
-                     
+
                     {resources && Object.entries(resources).map(([index, file]) => (
 
                       <div key={index} className="mb-4">
@@ -177,13 +164,15 @@ const Blog = () => {
                                 <a href={file?.fileURL} target="_blank">
                                   <img className="w-24 h-24" src={PDF} alt="PDF Icon" />
                                 </a>
+ 
+                                {/* <FontAwesomeIcon icon={faFilePdf} className="text-red-500 mr-4 text-5xl" /> */}
 
+                                <a href={file?.fileURL} target="_blank" rel="noopener noreferrer" 
+                                className="hover:underline py-3 text-sm">{file?.filename}</a>
+
+                                {/* <p className="text-gray-200 text-sm">{file?.filename}</p> */}
+                              
                               </label>
-                              {/* <FontAwesomeIcon icon={faFilePdf} className="text-red-500 mr-4 text-5xl" /> */}
-                              <div>
-                                <a href={file?.fileURL} target="_blank" rel="noopener noreferrer" className="hover:underline">{file?.filename}</a>
-                                <p className="text-gray-200 text-sm">{file?.filename}</p>
-                              </div>
                             </>
                           ) : (
                             <span className="text-gray-500">No file uploaded</span>
@@ -226,7 +215,7 @@ const Blog = () => {
 
 
         {/* blog navigation */}
-        <div className='hidden md:block pl-10 mt-6'>
+        <div className='hidden md:block md:w-[30%] pl-10 mt-6'>
           <BlogNavigation navigation={blogState?.sectionTitles} />
         </div>
 

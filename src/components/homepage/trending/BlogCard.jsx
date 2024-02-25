@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 const BlogCard = ({
     blogid,
     title,
+    urlTitle,
     summary,
     department,
     blogPoster,
@@ -24,7 +25,7 @@ const BlogCard = ({
                     : "bg-neutral-80 text-zinc-800"
                 }`}>
 
-            <Link to={`/blog/${title}/${blogid}`}>
+            <Link to={`/blog/${urlTitle}/${blogid}`}>
                 <img
                     src={blogPoster}
                     alt={title}
@@ -32,7 +33,7 @@ const BlogCard = ({
                 />
             </Link>
             <div className="px-6 py-4">
-                <Link to={`/blog/${title}/${blogid}`}>
+                <Link to={`/blog/${urlTitle}/${blogid}`}>
                     <div className="font-bold text-xl mb-2 hover:underline">{title}</div>
                 </Link>
                 <p className="text-sm mb-4 text-left">
@@ -46,7 +47,7 @@ const BlogCard = ({
                 </div>
                 <div className="flex items-center">
                     <Link
-                        to={`/blog/${title}/${blogid}`}
+                        to={`/blog/${urlTitle}/${blogid}`}
                         className="text-blue-500 hover:text-blue-700"
                     >
                         <GoArrowRight />
