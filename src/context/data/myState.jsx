@@ -11,8 +11,8 @@ import { fireDB } from '../../firebase/FirebaseConfig';
 import blogModel from './BlogModal';
 import deptMap from '../../utilities/departments/DepartmentMap';
 
-function myState(props) { 
- 
+function myState(props) {
+
     const [mode, setMode] = useState('dark');
 
     const toggleMode = () => {
@@ -31,8 +31,7 @@ function myState(props) {
     const [blog, setBlog] = useState(blogModel);
 
     const createBlog = async () => {
-        if (blog.title == "" || blog.department == "" ||
-        //  blog.description == "<p>Write blog</p>" || 
+        if (blog.title === "" || blog.department === "" || blog.blogContent?.length === 0 ||
             blog.summary === "<p>Write blog summary</p>" || blog.tags.length < 1 || blog.minutesRead === 0) {
             return toast.error("All fields are required")
         }
@@ -45,7 +44,7 @@ function myState(props) {
 
             const permanentBlogRef = collection(fireDB, 'recoveryBlogs')
             await addDoc(permanentBlogRef, blog)
-            
+
             toast.success('Blog added', {
                 position: 'top-right',
                 autoClose: 800,
@@ -91,10 +90,10 @@ function myState(props) {
 
             return () => data;
 
-        } catch (error) {
-            console.log(error)
-            setLoading(false)
+        } catch (e) {
+            console.log(e);
         }
+        setLoading(false)
     }
 
 
@@ -123,14 +122,17 @@ function myState(props) {
             return data;
         } catch (error) {
             console.error('Error updating views count:', error);
+
         }
+        setLoading(false)
     };
 
 
     const updateBlog = async (blogId, updatedBlog) => {
+        setLoading(true)
         try {
             const blogRef = doc(fireDB, 'blogs', blogId);
-            await updateDoc(blogRef, updatedBlog); 
+            await updateDoc(blogRef, updatedBlog);
             toast.success("Blog updated", {
                 position: 'top-right',
                 autoClose: 800,
@@ -143,9 +145,10 @@ function myState(props) {
         } catch (error) {
             console.error('Error updating blog:', error);
         }
+        setLoading(false)
     };
 
-    const deleteBlog = async ( blogId ) => {
+    const deleteBlog = async (blogId) => {
         setLoading(true);
 
         try {
@@ -154,9 +157,9 @@ function myState(props) {
 
             // Check if the user is the author
             // if (blogDoc.exists() && blogDoc.data().authorId === userID) {
-                if (blogDoc.exists()) {
+            if (blogDoc.exists()) {
                 await deleteDoc(doc(fireDB, 'blogs', blogId));
-                toast.success('Blog deleted!'); 
+                toast.success('Blog deleted!');
             } else {
                 toast.error('You do not have permission to delete this blog');
             }
@@ -174,12 +177,12 @@ function myState(props) {
                 collection(fireDB, 'creators'),
                 where('creatorID', '==', userId)
             );
-    
+
             const querySnapshot = await getDocs(q);
 
             const authorData = querySnapshot.docs.map(doc => doc.data());
 
-            const isAuthor =  authorData.length >= 1;
+            const isAuthor = authorData.length >= 1;
 
             return isAuthor;
 
@@ -189,22 +192,22 @@ function myState(props) {
         }
     };
 
-  
+
     const [trendingBlogs, setTrendingBlogs] = useState([]);
 
 
     const getTrendingBlogs = async () => {
         setLoading(true)
 
-        if(trendingBlogs.length >= 1){
+        if (trendingBlogs.length >= 1) {
             return;
-        } 
+        }
 
         try {
             const q = query(
                 collection(fireDB, 'blogs'),
-                orderBy('views', 'desc'), 
-            ); 
+                orderBy('views', 'desc'),
+            );
 
             const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
                 let blogArray = [];
@@ -214,9 +217,9 @@ function myState(props) {
                 setTrendingBlogs(blogArray);
                 setLoading(false);
             });
- 
-    
-            return unsubscribe;  
+
+
+            return unsubscribe;
 
         } catch (error) {
             console.log(error)
@@ -253,8 +256,8 @@ function myState(props) {
 
     const [deptBlogs, setDeptBlogs] = useState([]);
 
-    
-    const getDepartmentBlogs = async ( department ) => {
+
+    const getDepartmentBlogs = async (department) => {
         setLoading(true)
 
         const deptKey = deptMap.get(department)
@@ -278,7 +281,7 @@ function myState(props) {
 
             });
 
-            return true; 
+            return true;
 
         } catch (error) {
             setLoading(false)
@@ -289,7 +292,7 @@ function myState(props) {
 
     const [authorSpecificBlogs, setAuthorBlogs] = useState([]);
 
-    const getAuthorBlogs = async (authorId ) => {
+    const getAuthorBlogs = async (authorId) => {
         setLoading(true)
 
         try {
@@ -319,7 +322,7 @@ function myState(props) {
         }
 
     }
-    
+
     const getFeaturedBlogs = async () => {
         try {
             const blogCollection = collection(fireDB, 'blogs');
@@ -429,7 +432,20 @@ function myState(props) {
     const followAuthor = async (followerId, followingId, followingUsername) => {
         try {
 
-            if (followerId == followingId) { 
+            if(followerId===null){
+                toast.info("Please login to follow authors", {
+                    position: 'top-right',
+                    autoClose: 800,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                return false;
+            }
+
+            if (followerId == followingId) {
                 toast.error("You can't follow yourself !", {
                     position: 'top-right',
                     autoClose: 800,
@@ -450,7 +466,7 @@ function myState(props) {
 
             const followingsSnapshot = await getDocs(followingsQuery);
 
-            if (!followingsSnapshot.empty) { 
+            if (!followingsSnapshot.empty) {
                 toast.info(`You are already following ${followingUsername}`, {
                     position: 'top-right',
                     autoClose: 800,
@@ -459,7 +475,7 @@ function myState(props) {
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                }); 
+                });
                 return false;
             }
 
@@ -488,12 +504,12 @@ function myState(props) {
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                }); 
+                });
 
                 return true;
             }
 
-        } catch (error) {  
+        } catch (error) {
             return false;
         }
     };
@@ -513,20 +529,20 @@ function myState(props) {
 
     const fetchNumPosts = async () => {
         const querySnapshot = await getDocs(collection(fireDB, 'blogs'));
-        return querySnapshot.size 
+        return querySnapshot.size
     };
 
     // Function to fetch number of users
     const fetchNumUsers = async () => {
         const querySnapshot = await getDocs(collection(fireDB, 'users'));
-        return querySnapshot.size 
+        return querySnapshot.size
     };
 
     const fetchPosts = async () => {
         const querySnapshot = await getDocs(collection(fireDB, 'blogs'));
         const fetchedPosts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-        return fetchedPosts; 
+        return fetchedPosts;
     };
 
     const fetchUsersListforCreatorSelection = async () => {
@@ -534,8 +550,52 @@ function myState(props) {
 
         const fetchedUsers = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-        return fetchedUsers; 
+        return fetchedUsers;
     }
+
+    const makeCreator = async (userid) => {
+        // Check if the user already exists as an author
+        setLoading(true);
+
+        const authorsRef = collection(fireDB, 'creators');
+        const querySnapshot = await getDocs(query(authorsRef, where('creatorID', '==', userid)));
+
+        // If the user is already an author, do not create a new entry
+        if (!querySnapshot.empty) {
+            toast.success("Already an author", {
+                position: 'top-right',
+                autoClose: 600,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            setLoading(false);
+            return;
+        }
+
+        // User is not an author, create a new entry
+        const creatorObject = {
+            'creatorID': userid,
+            timestamp: new Date(),
+        };
+
+        await setDoc(doc(authorsRef), creatorObject);
+
+        toast.success("New author created", {
+            position: 'top-right',
+            autoClose: 600,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+
+        setLoading(false);
+    };
+
 
     const [searchkey, setSearchkey] = useState('')
     const [department, setDepartment] = useState('');
@@ -552,8 +612,8 @@ function myState(props) {
             clapBlog, commentOnBlog, comments, setComments,
             followAuthor, getFollowersCount,
             getCommentsForBlog,
-            fetchNumPosts, fetchNumUsers,fetchPosts,
-            fetchUsersListforCreatorSelection,
+            fetchNumPosts, fetchNumUsers, fetchPosts,
+            makeCreator, fetchUsersListforCreatorSelection,
             searchkey, setSearchkey
         }}>
             {props.children}

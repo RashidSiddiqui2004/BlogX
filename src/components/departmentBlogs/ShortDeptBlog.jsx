@@ -17,12 +17,12 @@ const ShortDeptBlog = ({
 
     return (
         <div
-            className={`flex flex-row mt-2 max-md:ml-0 max-md:w-full ${mode === "dark"
+            className={`grid grid-cols-12 mt-2 max-md:ml-0 max-md:w-full ${mode === "dark"
                 ? "bg-customBlue rounded-lg text-white"
                 : "bg-neutral-80 text-zinc-800"
                 }`}>
 
-            <div className="flex">
+            <div className="flex col-span-7">
                 <img
                     src={blogPoster}
                     alt={title}
@@ -31,7 +31,7 @@ const ShortDeptBlog = ({
                 />
             </div>
 
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col w-full col-span-5">
                 <div className="px-6 py-4 mt-auto flex justify-evenly w-full text-sm tracking-normal leading-4 text-sky-500">
                     <div className="flex justify-between gap-x-4 items-center">
                         <div className="text-xs">{author}</div> 

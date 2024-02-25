@@ -3,7 +3,7 @@ import { Timestamp } from "firebase/firestore";
 const blogModel = {
     title: "",
     sectionTitles: [],
-    description: "",
+    // description: "",
     blogContent: [],
     summary: "",
     author: null,
@@ -11,7 +11,7 @@ const blogModel = {
     department: "",
     blogPoster: "",
     tags: [],
-    codelinks: [],
+    // codelinks: [],
     claps: 0,
     views: 0,
     minutesRead: 0,

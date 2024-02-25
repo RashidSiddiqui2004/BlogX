@@ -26,7 +26,7 @@ const RecentDeptBlogs = ({
             <img
                 src={blogPoster}
                 alt={title}
-                className="w-full h-56 object-cover"
+                className="w-full h-64 object-cover"
             />
 
             <div className="px-6 py-4 mt-auto flex justify-evenly w-full text-sm tracking-normal leading-4 text-sky-500 border-t border-t-zinc-800 border-t-opacity-20">

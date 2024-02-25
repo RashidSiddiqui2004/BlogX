@@ -13,7 +13,7 @@ const BlogNavigation = ({ navigation }) => {
 
           return isValidTitle && (
           <li key={index} className="mb-2">
-            <a href={`#${name}`} className="text-slate-300 hover:text-green-300 transition-all" onClick={() => smoothScroll(name)}>
+            <a href={`#${name}`} className="text-slate-200 hover:text-green-300 transition-all" onClick={() => smoothScroll(name)}>
               - {name}
             </a>
           </li>

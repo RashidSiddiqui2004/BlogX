@@ -1,11 +1,8 @@
 
-.code-editor-container {
-    /* background-color: #2d3748; */
-    border-radius: 8px;
-    /* padding: 20px; */
-    margin-top: 15px;
-    margin-bottom: 20px;
-    /* margin-left: 4vw; */
+.code-editor-container { 
+    border-radius: 8px; 
+    margin-top: 20px;
+    margin-bottom: 15px; 
 }
 
 .code-editor-header {

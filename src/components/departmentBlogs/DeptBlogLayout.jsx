@@ -1,4 +1,3 @@
-
 import React from 'react'
 import DepartmentBlogs from './DepartmentBlogs'
 import Navbar from './../homepage/navbar/Navbar'
@@ -8,7 +7,9 @@ import DepartmentBlogsMobile from './DepartmentBlogsMobile'
 const DeptBlogLayout = () => {
   return (
     <div>
+
       <Navbar />
+
       <div className='hidden md:block'>
         <DepartmentBlogs />
       </div>

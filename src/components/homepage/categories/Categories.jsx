@@ -72,7 +72,7 @@ function CategorySection() {
               Dive into <br className="hidden md:block" /> Tech <span className="text-blue-400 text-normal">&#10216; / &#10217;</span>
             </div>
 
-            <div
+            {/* <div
               className={`justify-center self-start ml-7 px-6 py-2 mt-4 hidden md:block md:mb-0 mb-10 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
                 ? "bg-customBlue rounded-lg text-white border-neutral-50"
                 : "bg-neutral-80 text-zinc-800"
@@ -82,7 +82,7 @@ function CategorySection() {
               <Link to={`/departments`}>
                 <button>See More</button>
               </Link>
-            </div>
+            </div> */}
           </div>
 
         </div>

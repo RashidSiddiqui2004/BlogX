@@ -23,9 +23,7 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
     <div className='cursor:default mt-2'>
 
       <div className='flex flex-row'>
-
-        {/* <div className='mx-[25%] md:mx-auto'> */}
-
+ 
           {/* author image */}
           <div className='mx-4 mb-3 mt-1'>
             <FaCircleUser className='text-3xl rounded-xl' />
@@ -34,14 +32,12 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
           {/* blog details */}
           <div className='text-sm md:text-lg'>
             {/* author details */}
+ 
             <div className='flex flex-row items-center space-x-4 justify-between'>
               <h2 className='text-lg font-extralight hover:underline cursor:default'>{author}</h2>
               <div className=''></div> {/* Centered Dot */}
               <button disabled={userId === null} onClick={followUser}>
-                <h2 className='text-green-700 font-semibold'>Follow</h2>
-              </button>
-              
-              
+        
 
             </div>
             {/* blog details */}
