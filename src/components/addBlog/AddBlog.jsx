@@ -5,7 +5,8 @@ import { Editor } from '@tinymce/tinymce-react';
 import getUsernameByUID from '../.././utilities/userData/GetUser';
 import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
 import getUserID from '../../utilities/userData/GetUserID';
-import departmentsInDevComm from '../../utilities/departments/departmentsInDevComm.JS';
+import departmentsInDevComm from "../../utilities/departments/departmentsInDevComm.js";
+
 import BtnTemplate from '../../utilities/BtnTemplate2/BtnTemplate';
 import { toast } from 'react-toastify';
 import { Editor as CodeEditor } from '@monaco-editor/react';

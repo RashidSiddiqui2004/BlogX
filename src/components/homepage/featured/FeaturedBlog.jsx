@@ -26,10 +26,10 @@ const FeaturedBlog = ({ featuredBlogs, currentIndex, mode }) => {
                         }`}
                 >
                     <div className="flex flex-row gap-x-5">
-                        <div className="text-sm text-sky-500 uppercase max-md:max-w-full">
+                        <div className="md:text-sm text-xs text-sky-500 uppercase max-md:max-w-full">
                             Featured Blogs
                         </div>
-                        <div className={`text-sm px-3 py-1 rounded-sm  md:ml-0
+                        <div className={`md:text-sm text-xs md:px-3 px-1 py-1 rounded-sm  md:ml-0
             ${mode === "dark" ? 'bg-gray-200 text-slate-800' : 'bg-slate-700 text-white'}`}>
                             {(featuredBlogs[currentIndex]) ? featuredBlogs[currentIndex]?.department : 'Department'}
                         </div>
@@ -45,8 +45,8 @@ const FeaturedBlog = ({ featuredBlogs, currentIndex, mode }) => {
 
                             : "Amazing Blog Title"}
                     </div>
-                    <div className={`text-lg text-start mt-7 space-around tracking-tight leading-12 md:max-w-full md:text-xl max-md:leading-10
-                 font-light ${mode === "dark"
+                    <div className={`text-md font-extralight text-start md:mt-7 mt-2 space-around tracking-tight leading-12 md:max-w-full md:text-xl max-md:leading-10
+                 md:font-light  ${mode === "dark"
                             ? "rounded-lg text-white"
                             : "bg-neutral-80 text-zinc-800"}`}>
 
