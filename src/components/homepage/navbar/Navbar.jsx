@@ -25,7 +25,8 @@ const Navbar = () => {
         navigate("/");
     };
 
-    const { userId, isAuthor } = useUser();
+    const[userId, setuid] = useState(null);
+    const[isAuthor, setauth] = useState(true);
 
     const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
@@ -51,21 +52,21 @@ const Navbar = () => {
                 <IoMdClose />
             </div>
 
-            <Link to={'/featured-blogs'} className='md:flex md:gap-x-2'>
+            {/* <Link to={'/featured-blogs'} className='md:flex md:gap-x-2'>
                 <div className="my-4 mx-6 text-[14px] flex items-center
         justify-start border-b-2 border-gray-600 py-4 w-[70%]">
                     Featured
                 </div>
-            </Link>
+            </Link> */}
 
 
 
-            <Link to={'/departments'} className='md:flex md:gap-x-2'>
+            {/* <Link to={'/departments'} className='md:flex md:gap-x-2'>
                 <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
         border-b-2 border-gray-600 py-4 w-[70%]">
                     Categories
                 </div>
-            </Link>
+            </Link> */}
 
             <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
                 <div className="my-4 mx-6 text-[14px] flex items-center
@@ -74,10 +75,21 @@ const Navbar = () => {
                 </div>
             </Link>
 
-            <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
+            {
+                isAuthor && 
+                <Link to={'/add-blog'} className='md:flex md:gap-x-2'>
+                <div className="my-4 mx-6 text-[14px] flex items-center
+        justify-start border-b-2 border-gray-600 py-4 w-[70%]">
+                    <FaPenToSquare className='mr-[6px]' />
+                    Write Blog
+                </div>
+            </Link>
+            }
+
+            {/* <div className="my-4 mx-6 text-[14px] flex items-center justify-start 
         border-b-2 border-gray-600 py-4 w-[70%]">
                 Contact Us
-            </div>
+            </div> */}
 
             {(userId === null || userId === -1)
                 ?
@@ -99,8 +111,8 @@ const Navbar = () => {
         );
     }
 
-    return (
-        <div className={`w-[100%] mx-auto flex py-4 
+    return ( 
+        <div className={`w-[100%] mx-auto flex py-4 fixed bg-[#1b1c23] z-10
         border-${(mode === "light") ? "black" : "white"} text-${mode === "light" ? "black" : "white"} border-b-2`}
             style={{ fontFamily: 'Nunito Sans, sans-serif' }}>
 
@@ -133,8 +145,8 @@ const Navbar = () => {
 
 
 
-            <div className={`font-semibold text-[20px] flex-1 flex items-center 
-                justify-center ${isAuthor ? 'md:ml-40' : 'md:ml-20'} cursor-pointer`} onClick={handleHome}>
+            <div className={`font-semibold text-[20px] flex-1 flex items-center ml
+                justify-center ${isAuthor ? 'md:ml-52' : 'md:ml-20'} cursor-pointer`} onClick={handleHome}>
                 Blog
                 <span className="text-[#0096FF]">
                     X
