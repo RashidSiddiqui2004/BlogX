@@ -87,10 +87,11 @@ const Blog = () => {
 
 
   return (
+
     <div style={{ color: mode === 'dark' ? 'white' : '' }} className='overflow-hidden'>
       <Navbar /> 
       <div className='flex flex-row mt-8'>
-        <div className='w-[100%] md:w-[70%] md:ml-48'>
+        <div className='w-[100%] md:w-[70%] md:ml-48 md:mt-14'>
           <h1 className='text-3xl md:text-6xl md:ml-0 text-left font-extrabold mx-6 mt-8 mb-6 pl-4'>{blogState?.title}</h1>
           <div className='md:w-[75%] mr-6 mt-4 pt-5'>
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
@@ -101,13 +102,71 @@ const Blog = () => {
             </div>
           )}
           {blogState?.blogContent?.map((section, index) => {
-            const { title, content, code } = section;
+            const { title, content, code, resources, images} = section;
+ 
             const sectionContent = extractText(content);
             return (
               <div key={index} id={title} className='md:ml-4 mb-3 text-left '>
                 <h2 className='text-2xl md:text-3xl text-left font-semibold mb-6 mt-2'>{title || ''}</h2>
                 <p className='text-lg sm:text-lg text-gray-100 text-justify'>{sectionContent}</p>
                 {code !== null && <OutputCode lang='javascript' code={code} />}
+
+                <div className="container mx-auto py-4 flex flex-row justify-center gap-x-7
+                   rounded-xl my-6">
+
+                    {resources && Object.entries(resources).map(([index, file]) => (
+
+                      <div key={index} className="mb-4">
+
+                        <div className="p-4 rounded-md flex items-center">
+                          {file && (
+                            <>
+                              <label>
+                                <a href={file?.fileURL} target="_blank">
+                                  <img className="w-24 h-24" src={PDF} alt="PDF Icon" />
+                                </a>
+ 
+                              
+                                <a href={file?.fileURL} target="_blank" rel="noopener noreferrer" 
+                                className="hover:underline py-3 text-sm">{file?.filename}</a>
+
+                                {/* <p className="text-gray-200 text-sm">{file?.filename}</p> */}
+                              
+                              </label>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+                  </div>
+
+                  <div className="container mx-auto py-4 flex flex-row justify-center gap-x-7
+                   rounded-xl my-6">
+
+                    {images && Object.entries(images).map(([index, file]) => (
+
+                      <div key={index} className="mb-4">
+
+                        <div className="p-4 rounded-md flex items-center">
+                          {file && (
+                            <>
+                              <label> 
+                                  <img className="w-64 h-auto" src={file?.imageURL} alt="PDF Icon" />
+                              
+  
+                                <a href={file?.imageURL} target="_blank" rel="noopener noreferrer" 
+                                className="hover:underline py-3 text-sm">{file?.imageName}</a>
+
+                                
+                              </label>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+                  </div>
  
               </div>
             );
@@ -123,11 +182,10 @@ const Blog = () => {
           </div>
         </div>
  
-        <div className='hidden md:block pl-10 mt-6'>
+        <div className='hidden md:block md:mt-20'>
  
  
-        {/* blog navigation */}
-//         <div className='hidden md:block md:w-[25%] pl-4 mt-24'>
+        {/* blog navigation */} 
  
           <BlogNavigation navigation={blogState?.sectionTitles} />
         </div>
