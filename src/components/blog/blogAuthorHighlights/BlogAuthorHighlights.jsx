@@ -20,34 +20,35 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
   }
 
   return (
-    <div>
+    <div className='cursor:default mt-2'>
 
       <div className='flex flex-row'>
  
           {/* author image */}
-          <div className='mx-4 my-3'>
+          <div className='mx-4 mb-3 mt-1'>
             <FaCircleUser className='text-3xl rounded-xl' />
           </div>
 
           {/* blog details */}
           <div className='text-sm md:text-lg'>
             {/* author details */}
-            <div className='flex flex-row items-center space-x-4'>
-              <h2 className='text-lg font-semibold hover:underline'>{author}</h2>
-              <div className=''>•</div> {/* Centered Dot */}
-              <button onClick={followUser}>
-                <h2 className='text-green-700 font-semibold'>Follow</h2>
-              </button>
+ 
+            <div className='flex flex-row items-center space-x-4 justify-between'>
+              <h2 className='text-lg font-extralight hover:underline cursor:default'>{author}</h2>
+              <div className=''></div> {/* Centered Dot */}
+              <button disabled={userId === null} onClick={followUser}>
+        
 
             </div>
             {/* blog details */}
             <div className='flex flex-row items-center space-x-1 md:space-x-4
-           mt-4 md:mt-0'>
+           mt-4 md:mt-1 justify-between'>
               {/* <h2 className=''>UI/UX Department</h2>
             <div className=''>•</div>  */}
-              <h2 className='w-[100px] text-sm'>{minutesRead} min Read</h2>
-              <div className=''>•</div> {/* Centered Dot */}
-              <h2 className='w-[125px] text-sm'>{date}</h2>
+              <h2 className='w-[110px] text-sm text-left'>{minutesRead} min Read</h2>
+              
+              <div className=''></div> {/* Centered Dot */}
+              <h2 className='w-[110px] text-right text-sm'>{date}</h2>
             </div>
           </div>
 
@@ -57,7 +58,7 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
 
       {/* claps and comments count */}
 
-      <div className={`my-10 border-2 border-l-0 
+      <div className={`my-10 ml-[0.9rem] border-2 border-l-0 
       border-r-0 ${isDarkTheme ? 'border-gray-800' : 'border-gray-100'}`}>
         <BlogInteraction blogId={blogId} claps={claps} commentsCount={commentsCount}
           userId={userId} blog={blog} />

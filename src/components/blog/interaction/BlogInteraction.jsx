@@ -36,14 +36,14 @@ const BlogInteraction = ({ blogId, claps, commentsCount, userId, blog }) => {
     }, 1500);
 
     return (
-        <div>
-            <div className='flex flex-row justify-between mx-8 md:mx-16 mt-5 mb-4 space-x-8 md:space-x-16'>
+        <div className='mt-[-1.2%] mb-[-1%]'>
+            <div className='flex flex-row justify-between mx-8 md:mx-0 mt-5 mb-4 space-x-8 md:space-x-16'>
                 <div className='flex flex-row space-x-3'>
                     <button disabled={(userId === null)} 
                     onClick={ () => {
                         throttleClapBlog(); 
                         }} >
-                        <PiHandsClappingBold className='text-2xl' />
+                        <PiHandsClappingBold className='text-2xl font-thin' />
                     </button>
                     <span className='text-lg font-semibold'>{claps}</span>
                 </div>
@@ -64,8 +64,8 @@ const BlogInteraction = ({ blogId, claps, commentsCount, userId, blog }) => {
                         progress: undefined,
                     });
                     }}>
-                    <MdIosShare className='text-2xl' />
-                    <span className='text-lg font-semibold hidden md:block'>Share this Blog</span>
+                    <MdIosShare className='text-2xl  text-sky-300' />
+                    <span className='text-md font-normal text-sky-300 hidden md:block'>Share this Blog</span>
                 </div>
             </div>
         </div>

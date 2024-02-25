@@ -17,7 +17,7 @@ const Comment = ({ comment }) => {
 
     return (
         <div
-            className={`text-sm md:text-md px-4 py-3 rounded-sm shadow-md
+            className={`text-sm md:text-md pr-4 pt-5 pb-3 rounded-sm shadow-md
          ${isDarkTheme ? 'text-white' : 'text-slate-900 '}`}>
             <div className="flex items-center">
                 <img
@@ -25,9 +25,11 @@ const Comment = ({ comment }) => {
                     alt='User Avatar'
                     className="w-10 h-10 rounded-full object-cover mr-2"
                 />
-                <div className='justify-center flex flex-col mx-4'>
-                    <h3 className="font-semibold">{comment.username}</h3>
-                    <h3 className="font-normal">{relativeTime}</h3>
+                <div className='justify-center flex flex-col mx-4 w-[100%]'>
+                    <div className='flex justify-between w-[100%]'>
+                        <h3 className="font-semibold">{comment.username}</h3>
+                        <h3 className="font-normal">{relativeTime}</h3>
+                    </div>
                 </div>
 
             </div>
