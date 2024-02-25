@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 import { Editor as CodeEditor } from '@monaco-editor/react';
 import isValidUrl from './CheckIfUrl';
 import PDF from './pdf.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons'; 
 
 function AddBlog() {
 
@@ -22,7 +24,7 @@ function AddBlog() {
     // smooth experience on website
 
     const [tags, setTags] = useState([]);
-    const [codelinks, setCodelinks] = useState([]);
+    // const [codelinks, setCodelinks] = useState([]);
     const [useImageUrl, setUseImageUrl] = useState(true);
     const [imageFile, setImageFile] = useState(null);
 
@@ -61,47 +63,6 @@ function AddBlog() {
             const updatedTags = [...prevBlog.tags];
             updatedTags.splice(index, 1);
             return { ...prevBlog, tags: updatedTags };
-        });
-    };
-
-
-    // for adding links (resources) in blog
-    const [currentLink, setCurrentLink] = useState('');
-
-    const handleCodeInputChange = (e) => {
-        const newlink = e.target.value.trim();
-        setCurrentLink(newlink);
-    };
-
-    const [showWrongURLMsg, setShowWrongURLMsg] = useState(false);
-
-    const handleLinkInputKeyDown = (e) => {
-        if (e.key === 'Enter' && currentLink.trim() !== '') {
-            const newLink = e.target.value.trim();
-
-            if (isValidUrl(newLink) == true) {
-                setCodelinks([...codelinks, currentLink.trim()]);
-
-                setBlog((prevBlog) => ({ ...prevBlog, codelinks: [...prevBlog.codelinks, newLink] }));
-                setCurrentLink('');
-                setShowWrongURLMsg(false);
-            }
-
-            else {
-                setShowWrongURLMsg(true);
-                return;
-            }
-        }
-    };
-
-    const handleLinkRemove = (index) => {
-        const updatedLinks = [...codelinks];
-        updatedLinks.splice(index, 1);
-        setCodelinks(updatedLinks);
-        setBlog((prevBlog) => {
-            const updatedLinks = [...prevBlog.codelinks];
-            updatedLinks.splice(index, 1);
-            return { ...prevBlog, codelinks: updatedLinks };
         });
     };
 
@@ -153,8 +114,6 @@ function AddBlog() {
         return;
     }
 
-    const maxFilesPerSection = 4;
-
     const [checksCodeblock, setChecksCodeblock] = useState([false]);
 
     const handleCodeBlock = (index) => {
@@ -191,9 +150,7 @@ function AddBlog() {
         });
     };
 
-
     // add code block code below
-
     const lang = "javascript";
 
     const [languages, setLang] = useState(["javascript"]);
@@ -236,10 +193,9 @@ function AddBlog() {
         });
     };
 
-
-
     // handle section save code
     const handleSaveContent = async () => {
+
         const updatedBlogContent = [...blog.blogContent];
 
         // Create an array to store promises for each section update
@@ -248,12 +204,22 @@ function AddBlog() {
 
             const codeForSection = codes[index];
 
+            let filesForThisSection = {};
+
+            let pos = 0;
+
+            filesForSections[index]?.forEach(element => {
+                filesForThisSection[pos] = (element);
+                pos++;
+            });
+
             const newSection = {
                 title: blog?.sectionTitles[index],
                 content: content,
                 code: codeForSection,
+                resources: filesForThisSection,
             };
-
+            
             // Update or add the new section to the array
             if (index >= 0 && index < updatedBlogContent.length) {
                 updatedBlogContent[index] = newSection;
@@ -264,7 +230,8 @@ function AddBlog() {
 
         await Promise.all(updatePromises);
 
-        setBlog({ ...blog, blogContent: updatedBlogContent });
+        setBlog({ ...blog, blogContent: updatedBlogContent, filesUpload: null });
+
         localStorage.setItem('temporaryBlog', JSON.stringify(blog));
 
         console.log(blog);
@@ -281,7 +248,7 @@ function AddBlog() {
         localStorage.setItem('temporaryBlog', JSON.stringify(blog));
 
         // Update state using the state updater function
-        setBlog((prevBlog) => ({ ...prevBlog, summary: blogSummary, filesUpload: filesForSections }));
+        setBlog((prevBlog) => ({ ...prevBlog, summary: blogSummary }));
 
         if (!(imageFile == null)) {
             try {
@@ -324,9 +291,9 @@ function AddBlog() {
         return postUploadstate;
     }
 
-    // file upload feature code here
+    const maxFilesPerSection = 4;
 
-    const [filesForSections, setFilesForSections] = useState([[]]);
+    const [filesForSections, setFilesForSections] = useState(Array.from({ length: 1 }, () => []));
     const [fileName, setFileName] = useState('');
 
     const handleDragOver = (event) => {
@@ -341,62 +308,59 @@ function AddBlog() {
     };
 
     const submitFileforSections = async (file, sectionIndex) => {
+
         let fileURL = null;
+
+        const filename = file.name;
 
         if (file) {
             try {
-                // Handle file upload logic here
-                // For example, uploadFile is a function to upload the file to a server
-                const pdfURLfromFB = await uploadFile(file);
-
-                // Update state with the pdf URL
-                if (pdfURLfromFB !== null) {
-                    fileURL = pdfURLfromFB;
+                const uploadedFileURL = await uploadFile(file);
+                if (uploadedFileURL) {
+                    fileURL = uploadedFileURL;
                 }
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
         }
 
-        // Flatten the nested list structure into a single list
-        const flattenedFiles = filesForSections.flat();
+        const sectionFiles = filesForSections[sectionIndex];
 
-        // Find the index where to insert the file URL
-        const index = sectionIndex * maxFilesPerSection + flattenedFiles.length;
+        if (sectionFiles && sectionFiles.length < maxFilesPerSection) {
+            const fileObject = {
+                filename: filename,
+                fileURL: fileURL
+            }
+            const updatedFiles = [...sectionFiles, fileObject];
+            const newFilesForSections = [...filesForSections];
+            newFilesForSections[sectionIndex] = updatedFiles;
+            setFilesForSections(newFilesForSections);
+        }
 
-        setFilesForSections((prevFiles) => {
-            const newFiles = [...prevFiles];
-
-            // Add the saved file URL at the specified index
-            newFiles[index] = fileURL;
-
-            return newFiles;
-        });
-
-        console.log(filesForSections);
-
-        // setFilesForSections((prevFiles) => {
-        //     const newFiles = [...prevFiles];
-
-        //     // Add null values for missing elements in the 2D array
-        //     while (newFiles.length <= sectionIndex) {
-        //         newFiles.push([]);
-        //     }
-
-        //     // Add the saved file URL at the specified index
-        //     newFiles[sectionIndex] = [...newFiles[sectionIndex], fileURL];
-
-        //     return newFiles;
-        // });
-
+        else if (sectionFiles === undefined) {
+            const updatedFiles = [fileURL];
+            const newFilesForSections = [...filesForSections];
+            newFilesForSections[sectionIndex] = updatedFiles;
+            setFilesForSections(newFilesForSections);
+        }
+        else {
+            alert('Maximum number of files reached for this section');
+        }
     };
 
-    const handleFileChange = (event) => {
+    const handleFileChange = (event, sectionIndex) => {
         const file = event.target.files[0];
         setFileName(file.name);
-        submitFileforSections(file);
+        submitFileforSections(file, sectionIndex);
     };
 
+    const removeFile = (sectionIndex, fileIndex) => {
+        const updatedFiles = [...filesForSections[sectionIndex]];
+        updatedFiles.splice(fileIndex, 1);
+        const newFilesForSections = [...filesForSections];
+        newFilesForSections[sectionIndex] = updatedFiles;
+        setFilesForSections(newFilesForSections);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -409,6 +373,7 @@ function AddBlog() {
                     setUserId(uid);
                     blog.authorId = uid;
                     blog.author = username;
+
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -483,7 +448,7 @@ function AddBlog() {
                                     onInit={(evt, editor) => (editorRefs.current[index] = editor)}
                                     init={{
                                         menubar: 'favs edit view tools table',
-                                        height: 500,
+                                        height: 400,
                                         plugins: 'anchor autolink charmap emoticons link lists searchreplace table wordcount',
                                         toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist indent outdent | emoticons charmap | removeformat',
                                     }}
@@ -522,16 +487,28 @@ function AddBlog() {
 
                                             <button
                                                 onClick={() => submitCode(index)}
-                                                className="bg-green-400 text-gray-900 rounded-md my-5 px-3 py-3"
+                                                className="bg-green-400 text-gray-900 rounded-md my-5 px-3 py-3
+                                                shadow-md shadow-green-200
+                                                hover:scale-95 transition-all"
                                             >
                                                 Save Code Progress
                                             </button>
 
                                             <button
                                                 onClick={() => handleCodeBlock(index)}
-                                                className="bg-red-400 text-gray-900 ml-5 rounded-md my-5 px-3 py-3"
+                                                className="bg-red-400 text-gray-900 ml-5 rounded-md my-5 px-3 py-3
+                                                shadow-md shadow-green-200 hover:scale-95 transition-all"
                                             >
                                                 Remove CodeBlock
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleFileUploadBlock(index)}
+                                                className="bg-blue-700 text-white my-4 px-4 py-2 flex justify-end rounded-md
+                                             hover:bg-blue-900 focus:outline-none focus:ring
+                                              focus:ring-blue-400 hover:scale-95 transition-all duration-300"
+                                            >
+                                                Upload File
                                             </button>
 
                                         </div>
@@ -561,35 +538,52 @@ function AddBlog() {
 
                                 {(uploadFileBlock[index] === true)
                                     ?
+
                                     <div className="text-white mt-8">
+                                        {/* {filesForSections[index].map((sectionFiles, sectionIndex) => ( */}
+                                        {/* <div key={sectionIndex}> */}
 
-                                        <div>
-                                            <div className="bg-blue-200 w-[60%] mx-[20%] h-60 rounded-full border-2
-                                             border-black border-dotted flex items-center justify-center"
-                                                onDragOver={handleDragOver}
-                                                onDrop={(event) => handleDrop(event, index)}
-                                            >
-                                                <div className="rounded-full pt-2 pb-4">
-                                                    <div className="flex flex-col items-center">
+                                        <div className="grid grid-cols-3 gap-4 mb-3">
+                                            {filesForSections[index] && filesForSections[index].map((fileURL, fileIndex) => (
+                                                <div key={fileIndex} className="p-4 border border-gray-300 rounded-md flex items-center">
+                                                    {fileURL ? (
+                                                        <>
+                                                            <FontAwesomeIcon icon={faFilePdf} className="text-red-500 mr-2" />
+                                                            {/* <a href={fileURL} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{fileURL}</a> */}
+                                                            <button onClick={() => removeFile(index, fileIndex)} className="ml-2 text-red-500 hover:text-red-700">Remove</button>
+                                                        </>
+                                                    ) : (
+                                                        <span className="text-gray-500">No file uploaded</span>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
 
-                                                        <h1 className='text-3xl mb-2 text-slate-900'>Upload resources here</h1>
-                                                        <label htmlFor={`fileInput-${index}`}>
-                                                            <img className="w-24 h-24 cursor-pointer" src={PDF} alt="PDF Icon" />
-                                                        </label>
-                                                        <input
-                                                            id={`fileInput-${index}`}
-                                                            type="file"
-                                                            className="hidden"
-                                                            accept="application/pdf"
-                                                            onChange={handleFileChange}
-                                                        />
-                                                        <span className="text-gray-500 text-sm mt-2">{fileName}</span>
-                                                        <span className="text-gray-500 text-xs mt-2">Icon by <a className="text-blue-900 hover:text-blue-700" target="_blank" rel="noopener noreferrer" href="https://www.svgrepo.com">svgrepo</a></span>
-                                                    </div>
+                                        <div className="bg-blue-200 w-[80%] mx-[10%] h-60 rounded-3xl border-2 border-black border-dotted flex items-center justify-center" onDragOver={handleDragOver} onDrop={(event) => handleDrop(event, sectionIndex)}>
+
+                                            <div className="rounded-full pt-2 pb-4">
+                                                <div className="flex flex-col items-center py-8"
+                                                    onDrop={(event) => handleDrop(event, index)}>
+
+                                                    <h1 className='text-3xl mb-2 text-slate-900 mt-2'>Drag and drop resources to upload</h1>
+                                                    <h1 className='text-xl mb-2 text-blue-600'>or Click here</h1>
+                                                    <label htmlFor={`fileInput-${index}`}>
+                                                        <img className="w-24 h-24 cursor-pointer" src={PDF} alt="PDF Icon" />
+                                                    </label>
+                                                    <input
+                                                        id={`fileInput-${index}`}
+                                                        type="file"
+                                                        className="hidden"
+                                                        accept="application/pdf"
+                                                        onChange={(e) => handleFileChange(e, index)}
+                                                    />
+                                                    <span className="text-gray-500 text-sm mt-2">{fileName}</span>
+                                                    <span className="text-gray-500 text-xs mt-2">Icon by <a className="text-blue-900 hover:text-blue-700" target="_blank" rel="noopener noreferrer" href="https://www.svgrepo.com">svgrepo</a></span>
                                                 </div>
                                             </div>
-
                                         </div>
+                                        <input id={`fileInput-${index}`} type="file" className="hidden" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={(event) => handleFileChange(event, sectionIndex)} />
+
 
                                         <button
                                             onClick={() => handleFileUploadBlock(index)}
@@ -597,13 +591,12 @@ function AddBlog() {
                                         >
                                             Remove File Upload Block
                                         </button>
+
                                     </div>
                                     :
                                     <>
                                     </>
                                 }
-
-
 
                             </div>
                         ))}
@@ -750,7 +743,7 @@ function AddBlog() {
 
                     {/* codelinks associated with blogs */}
 
-                    <div className="mt-4">
+                    {/* <div className="mt-4">
                         <h2 className='text-white flex justify-start text-xl mb-2 font-semibold ml-3'>Links for Code included in Blog (Optional)</h2>
 
                         <div className="flex flex-wrap gap-2 mb-4">
@@ -786,7 +779,7 @@ function AddBlog() {
                                 </h3>
                                 : ""
                         }
-                    </div>
+                    </div> */}
 
 
                     {/* minutes read of blog */}

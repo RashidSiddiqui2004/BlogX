@@ -23,9 +23,7 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
     <div>
 
       <div className='flex flex-row'>
-
-        {/* <div className='mx-[25%] md:mx-auto'> */}
-
+ 
           {/* author image */}
           <div className='mx-4 my-3'>
             <FaCircleUser className='text-3xl rounded-xl' />
@@ -37,7 +35,7 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
             <div className='flex flex-row items-center space-x-4'>
               <h2 className='text-lg font-semibold hover:underline'>{author}</h2>
               <div className=''>•</div> {/* Centered Dot */}
-              <button disabled={userId === null} onClick={followUser}>
+              <button onClick={followUser}>
                 <h2 className='text-green-700 font-semibold'>Follow</h2>
               </button>
 

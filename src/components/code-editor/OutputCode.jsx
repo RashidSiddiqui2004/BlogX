@@ -1,8 +1,10 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { FaCopy } from "react-icons/fa";
 import './codestyle.css'
+import { CiSquareCheck } from "react-icons/ci";
+
 
 const OutputCode = ({ lang, code }) => {
     const editorRef = useRef(null);
@@ -11,8 +13,15 @@ const OutputCode = ({ lang, code }) => {
         editorRef.current = editor;
     }
 
+    const [codeCopied, setCodeCopied] = useState(false);
+
     const copyCodeToClipboard = () => {
         navigator.clipboard.writeText(code);
+        setCodeCopied(true);
+
+        setTimeout(() => {
+            setCodeCopied(false);
+        }, 2000);
     };
 
     const numberOfLines = code.split('\n').length;
@@ -28,10 +37,10 @@ const OutputCode = ({ lang, code }) => {
                     <div className='bg-yellow-400 rounded-full h-3 w-3'></div>
                     <div className='bg-green-500 rounded-full h-3 w-3'></div>
                 </div>
-                <h2 className='mx-4'>{lang}</h2>
+                <h2 className='mx-4 text-xs'>{lang}</h2>
                 <button onClick={copyCodeToClipboard} className="copy-code-button">
-                    <FaCopy />
-                    <span>Copy Code</span>
+                   {codeCopied ? <CiSquareCheck/> : <FaCopy />} 
+                    <span className='italic'>{codeCopied ? 'Copied' : 'Copy Code'}</span>
                 </button>
             </div>
             <div className="code-editor">
@@ -42,7 +51,8 @@ const OutputCode = ({ lang, code }) => {
                     onMount={handleEditorDidMount}
                     options={{
                         readOnly: true,
-                        automaticLayout: true
+                        automaticLayout: true,
+                        scrollBeyondLastLine:false,
                     }}
                 />
             </div>

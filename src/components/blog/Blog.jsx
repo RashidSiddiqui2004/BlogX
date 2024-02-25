@@ -12,10 +12,12 @@ import CommentSection from './comments/CommentSection'
 import Footer from '../homepage/footer/Footer';
 import AuthorDetails from './blogAuthorHighlights/AuthorDetails';
 import getUserID from '../../utilities/userData/GetUserID';
-import getUsernameByUID from '../../utilities/userData/GetUser'; 
+import getUsernameByUID from '../../utilities/userData/GetUser';
 import BlogNavigation from './BlogNavigation';
 import OutputCode from '../code-editor/OutputCode';
-import extractText from '../../utilities/initials/getContent';
+import extractText from '../../utilities/initials/getContent'; 
+import PDF from './pdfImage.svg'
+
 
 const Blog = () => {
 
@@ -34,15 +36,6 @@ const Blog = () => {
 
   const [comments, setComments] = useState([]);
   const commentsCnt = comments.length;
-
-  const navigation = [
-    'Starting with React',
-    'useMemo Hook',
-    'useState Hook',
-    'useRef Hook',
-    'useState Hook',
-    'Context API'
-  ]
 
   // get comments
   useEffect(() => {
@@ -100,6 +93,7 @@ const Blog = () => {
     window.scrollTo(0, 0);
   }, []);
 
+
   return (
     <div style={{ color: mode === 'dark' ? 'white' : '' }}
       className='overflow-hidden'>
@@ -130,13 +124,13 @@ const Blog = () => {
 
 
           {
-            blogState?.blogContent?.map((section, index) => {
+            blogState?.blogContent && blogState?.blogContent?.map((section, index) => {
 
-              const { title, content, code } = section;
-
+              const { title, content, code, resources } = section; 
               const sectionContent = extractText(content);
 
               return (
+
                 <div key={index} id={title} className='md:mx-6 mb-3 px-8'>
 
                   <h2 className="text-2xl md:text-3xl text-left 
@@ -147,9 +141,6 @@ const Blog = () => {
                     {sectionContent}
                   </p>
 
-                  {/* <div className='flex justify-start'>
-                    <RenderHTMLContent htmlContent={sectionContent} />
-                  </div> */}
 
                   {
                     !(code === null)
@@ -158,6 +149,39 @@ const Blog = () => {
                       :
                       <></>
                   }
+
+                  <div className="container mx-auto py-4 flex flex-row justify-center gap-x-7
+                   rounded-xl my-6">
+
+                    {resources && Object.entries(resources).map(([index, file]) => (
+
+                      <div key={index} className="mb-4">
+
+                        <div className="p-4 rounded-md flex items-center">
+                          {file ? (
+                            <>
+                              <label>
+                                <a href={file?.fileURL} target="_blank">
+                                  <img className="w-24 h-24" src={PDF} alt="PDF Icon" />
+                                </a>
+ 
+                                {/* <FontAwesomeIcon icon={faFilePdf} className="text-red-500 mr-4 text-5xl" /> */}
+
+                                <a href={file?.fileURL} target="_blank" rel="noopener noreferrer" 
+                                className="hover:underline py-3 text-sm">{file?.filename}</a>
+
+                                {/* <p className="text-gray-200 text-sm">{file?.filename}</p> */}
+                              
+                              </label>
+                            </>
+                          ) : (
+                            <span className="text-gray-500">No file uploaded</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+                  </div>
 
                 </div>
               )
@@ -180,7 +204,6 @@ const Blog = () => {
           </div>
 
           {/* claps and comment count */}
-
           <div className={`my-10 md:mx-6 border-2 border-l-0
        border-r-0  ${isDarkTheme ? 'border-gray-800' : 'border-gray-100'}`}>
             <BlogInteraction blogId={blogId} claps={blogState?.claps} commentsCount={commentsCnt}
@@ -192,7 +215,7 @@ const Blog = () => {
 
 
         {/* blog navigation */}
-        <div className='hidden md:block pl-10 mt-6'>
+        <div className='hidden md:block md:w-[30%] pl-10 mt-6'>
           <BlogNavigation navigation={blogState?.sectionTitles} />
         </div>
 
@@ -209,11 +232,11 @@ const Blog = () => {
           </div>
           :
           <div className="bg-gray-800 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-lg mb-4">Please sign in to leave a comment.</p>
+            <p className="text-lg mb-4">Login in to leave a comment.</p>
             <Link to={'/login'}>
-              <button className="bg-blue-500 hover:bg-blue-600
-             text-white px-4 py-2 rounded-md">
-                Sign In
+              <button className="bg-slate-900 hover:scale-[97%] transition-all
+             text-white px-5 py-3 rounded-md">
+                Log In
               </button>
             </Link>
 

@@ -38,8 +38,7 @@ const AuthorDetails = ({ blog, followersCnt, userId }) => {
 
             <div className='mx-4 my-12 md:my-16 flex flex-col justify-start'>
                 <button className="bg-gray-800 text-white px-6 py-4 outline-none hover:outline-none
-                rounded-lg hover:bg-gray-700 focus:outline-none focus:ring"
-                    disabled={userId === null}
+                rounded-lg hover:bg-gray-700 focus:outline-none focus:ring" 
                     onClick={followUser}>
                     Follow
                 </button>
