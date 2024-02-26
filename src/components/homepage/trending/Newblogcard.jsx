@@ -1,55 +1,55 @@
-// import React, { useContext } from "react";
-// import { GoArrowRight } from "react-icons/go";
-// import myContext from "../../../context/data/myContext";
-// import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { GoArrowRight } from "react-icons/go";
+import myContext from "../../../context/data/myContext";
+import { Link } from "react-router-dom";
 
-// const Newblogcard = ({
-//   blogid,
-//   title,
-//   urlTitle,
-//   summary,
-//   department,
-//   blogPoster,
-//   minutesRead,
-// }) => {
-//   const context = useContext(myContext);
-//   const { mode } = context;
-//   return (
-//     <div className="flex flex-grow h-full max-md:ml-0 max-md:w-full  transform transition-all hover:scale-[99%]">
-//       <div className="flex flex-col flex-grow p-5 w-full bg-black rounded-3xl border-0 border-white border-solid max-md:mt-4 relative"> {/* Add relative positioning */}
-//         <Link to={`/blog/${urlTitle}/${blogid}`}>
-//           <img src={blogPoster} alt={title} className="w-full transform transition-all hover:scale-[103%] rounded-3xl aspect-[1.59] ease-in-out shadow-orange-100" />
-//         </Link>
+const Newblogcard = ({
+  blogid,
+  title,
+  urlTitle,
+  summary,
+  department,
+  blogPoster,
+  minutesRead,
+}) => {
+  const context = useContext(myContext);
+  const { mode } = context;
+  return (
+    <div className="blog-card flex flex-grow h-full max-md:ml-0 max-md:w-full  transform transition-all hover:scale-[99%]">
+      <div className="flex flex-col flex-grow p-5 w-full bg-black rounded-3xl border-0 border-white border-solid max-md:mt-4 relative"> {/* Add relative positioning */}
+        <Link to={`/blog/${urlTitle}/${blogid}`}>
+          <img src={blogPoster} alt={title} className="w-full transform transition-all hover:scale-[103%] rounded-3xl aspect-[1.59] ease-in-out shadow-orange-100" />
+        </Link>
 
-//         <div className="flex flex-col px-2 pt-2 mt-5">
-//           <Link to={`/blog/${urlTitle}/${blogid}`}>
-//             <div className="text-4xl font-black tracking-tight leading-9 text-stone-300">
-//               {title}
-//             </div>
-//           </Link>
-//         </div>
-//         <div className="flex-grow flex flex-col justify-end"> {/* Adjust this div */}
-//           <div className="flex gap-5 justify-between py-3 pr-2 mt-auto w-full text-sm tracking-normal leading-4 text-sky-500 border-0 border-white border-solid">
-//             <div className="flex gap-4 ">
-//               <div>{department}</div>
-//               <div className="flex-auto">{minutesRead} min read </div>
-//             </div>
-//             <Link
-//               to={`/blog/${urlTitle}/${blogid}`}
-//               className="text-blue-500 hover:text-blue-700"
-//             >
-//               <GoArrowRight />
-//             </Link>
-//           </div>
-//         </div>
+        <div className="flex flex-col px-2 pt-2 mt-5">
+          <Link to={`/blog/${urlTitle}/${blogid}`}>
+            <div className="text-4xl font-black tracking-tight leading-9 text-stone-300">
+              {title}
+            </div>
+          </Link>
+        </div>
+        <div className="flex-grow flex flex-col justify-end"> {/* Adjust this div */}
+          <div className="flex gap-5 justify-between py-3 pr-2 mt-auto w-full text-sm tracking-normal leading-4 text-sky-500 border-0 border-white border-solid">
+            <div className="flex gap-4 ">
+              <div>{department}</div>
+              <div className="flex-auto">{minutesRead} min read </div>
+            </div>
+            <Link
+              to={`/blog/${urlTitle}/${blogid}`}
+              className="text-blue-500 hover:text-blue-700"
+            >
+              <GoArrowRight />
+            </Link>
+          </div>
+        </div>
 
-//       </div>
-//       <div className="pb-5"></div>
-//     </div>
-//   );
-// };
+      </div>
+      <div className="pb-5"></div>
+    </div>
+  );
+};
 
-// export default Newblogcard;
+export default Newblogcard;
 
 // import React, { useContext } from "react";
 // import { GoArrowRight } from "react-icons/go";
@@ -112,62 +112,62 @@
 // };
 
 // export default Newblogcard;
-import React, { useContext } from "react";
-import { GoArrowRight } from "react-icons/go";
-import { Link } from "react-router-dom";
-import myContext from "../../../context/data/myContext";
-import "./styles.css"; 
+// import React, { useContext } from "react";
+// import { GoArrowRight } from "react-icons/go";
+// import { Link } from "react-router-dom";
+// import myContext from "../../../context/data/myContext";
 
-const Newblogcard = ({
-  blogid,
-  title,
-  urlTitle,
-  summary,
-  department,
-  blogPoster,
-  minutesRead,
-}) => {
-  const context = useContext(myContext);
-  const { mode } = context;
 
-  return (
-    <div className="blog-card">
-      <div className="flex bg-black p-5 rounded-3xl border-0 border-white border-solid max-md:mt-4">
-        <Link to={`/blog/${urlTitle}/${blogid}`} className="w-100 h-60 mr-5">
-          <img
-            src={blogPoster}
-            alt={title}
-            className="w-full h-full rounded-3xl object-fill hover-scale"
-          />
-        </Link>
+// const Newblogcard = ({
+//   blogid,
+//   title,
+//   urlTitle,
+//   summary,
+//   department,
+//   blogPoster,
+//   minutesRead,
+// }) => {
+//   const context = useContext(myContext);
+//   const { mode } = context;
 
-        <div className="flex flex-col flex-grow justify-between">
-          <Link to={`/blog/${urlTitle}/${blogid}`}>
-            <div className="text-3xl h-full text-start font-black tracking-tight leading-9 text-stone-300 overflow-hidden md:text-3xl lg:text-3xl xl:text-5xl">
-              {title}
-            </div>
-          </Link>
-          <div className="px-10 mt-2">
-            <div className="flex justify-between items-start w-full text-sm tracking-normal leading-4 text-sky-500">
-              <div className="flex gap-3">
-                <div>{department}</div>
-                <div>{minutesRead} min read</div>
-              </div>
-              <Link
-                to={`/blog/${urlTitle}/${blogid}`}
-                className="text-blue-500 hover:text-blue-700"
-              >
-                <GoArrowRight />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className="blog-card">
+//       <div className="flex bg-black p-5 rounded-3xl border-0 border-white border-solid max-md:mt-4">
+//         <Link to={`/blog/${urlTitle}/${blogid}`} className="w-100 h-60 mr-5">
+//           <img
+//             src={blogPoster}
+//             alt={title}
+//             className="w-full h-full rounded-3xl object-fill hover-scale"
+//           />
+//         </Link>
 
-export default Newblogcard;
+//         <div className="flex flex-col flex-grow justify-between">
+//           <Link to={`/blog/${urlTitle}/${blogid}`}>
+//             <div className="text-3xl h-full text-start font-black tracking-tight leading-9 text-stone-300 overflow-hidden md:text-3xl lg:text-3xl xl:text-5xl">
+//               {title}
+//             </div>
+//           </Link>
+//           <div className="px-10 mt-2">
+//             <div className="flex justify-between items-start w-full text-sm tracking-normal leading-4 text-sky-500">
+//               <div className="flex gap-3">
+//                 <div>{department}</div>
+//                 <div>{minutesRead} min read</div>
+//               </div>
+//               <Link
+//                 to={`/blog/${urlTitle}/${blogid}`}
+//                 className="text-blue-500 hover:text-blue-700"
+//               >
+//                 <GoArrowRight />
+//               </Link>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Newblogcard;
 
 
 

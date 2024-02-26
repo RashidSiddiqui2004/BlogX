@@ -42,7 +42,7 @@ function TrendingBlogs() {
       </div>
 
       <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="grid md:grid-cols-2 gap-x-16 gap-y-10">
+        <div className="grid md:grid-cols-3 gap-x-16 gap-y-10">
           {trendingBlogs &&
             trendingBlogs.slice(0, 6).map((blog, index) => {
               const {
