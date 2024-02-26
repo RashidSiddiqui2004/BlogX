@@ -1,0 +1,13 @@
+.blog-card,
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: scale(1.03);
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+  
+}
