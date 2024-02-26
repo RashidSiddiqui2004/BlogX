@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { Link } from 'react-router-dom'
 import myContext from "../../context/data/myContext";
 import BlogCard from "../homepage/trending/BlogCard";
+import Newblogcard from "../homepage/trending/Newblogcard";
 import extractFirstXWords from "../../utilities/initials/fetchXWords";
 
 function TrendingPage() {
@@ -30,10 +31,10 @@ function TrendingPage() {
             : "bg-neutral-80 text-zinc-800"
             }`}
         >
-          <div className="text-sm text-sky-500 uppercase max-md:max-w-full ">
+          <div className="text-sm font-extrabold  pt-10 text-sky-500 uppercase max-md:max-w-full ">
             Trending Topics
           </div>
-          <div className="mt-2 text-5xl text-start  space-around tracking-tight leading-12  ma-md:max-text-sm max-md:max-w-full max-md:text-4xl max-md:leading-10">
+          <div className="mt-2 font-extrabold  text-5xl text-start  space-around tracking-tight leading-12  ma-md:max-text-sm max-md:max-w-full max-md:text-4xl max-md:leading-10">
             Stay Updated with Our <br /> Latest Insights
           </div>
         </div>
@@ -63,7 +64,7 @@ function TrendingPage() {
 
               return (
                 <Link to={`/blog/${title}/${id}`} key={index}>
-                  <BlogCard blogid={id} title={title} description={description}
+                  <Newblogcard blogid={id} title={title} description={description}
                     summary={shortSummary} department={department} blogPoster={blogPoster}
                     author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
                 </Link>
