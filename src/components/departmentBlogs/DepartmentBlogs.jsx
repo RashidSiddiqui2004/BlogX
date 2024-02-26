@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import myContext from '../../context/data/myContext';
 import { Link, useParams } from 'react-router-dom';
 import extractFirstXWords from '../../utilities/initials/fetchXWords'
@@ -7,6 +7,8 @@ import deptMap from '../../utilities/departments/DepartmentMap'
 import RecentDeptBlogs from './RecentDeptBlogs';
 import ShortDeptBlog from './ShortDeptBlog';
 import getEncodedTitle from '../../utilities/fetchURLTitle/GetEncodedTitle';
+import NewBlogLayout from './NewBlogLayout';
+import Pagination from './Pagination';
 
 const DepartmentBlogs = () => {
 
@@ -19,7 +21,12 @@ const DepartmentBlogs = () => {
     const params = useParams();
     const departmentName = params.deptName;
 
-    const department = deptMap.get(departmentName);
+    const [currentPage, setCurrentPage] = useState(1);
+    const totalPages = 10;
+
+    const handlePageChange = (newPageNumber) =>{
+        setCurrentPage(newPageNumber)
+    }
 
     // get dept specific blogs
     useEffect(() => {
@@ -42,9 +49,9 @@ const DepartmentBlogs = () => {
     }, []);
 
     return (
-        <div className="w-full max-md:max-w-full min-h-screen md:py-24">
+        <div className="w-full max-md:max-w-full min-h-screen md:py-6">
 
-            <h1 className={`text-2xl md:text-5xl justify-center font-semibold mb-3 py-3 ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>{department}</h1>
+            {/* <h1 className={`text-2xl md:text-5xl justify-center font-semibold mb-3 py-3 ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>{department}</h1> */}
 
             {
                 deptBlogs && deptBlogs?.length > 0
@@ -53,7 +60,7 @@ const DepartmentBlogs = () => {
 
                     <div className="mx-[5%]">
 
-                        <h2 className={`text-lg flex justify-start font-semibold ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>Recent blog posts</h2>
+                        <h2 className={`text-lg flex justify-start font-bold mb-4 ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>Recent blog posts</h2>
 
                         <div className='grid md:grid-cols-2 h-full gap-x-8 mb-6'>
 
@@ -72,19 +79,20 @@ const DepartmentBlogs = () => {
                                             id,
                                         } = blog;
 
-                                        let shortSummary = extractFirstXWords(summary, 30);
+                                        let shortSummary = extractFirstXWords(summary, 15);
                                         shortSummary += ' ...'
 
                                         const encodedTitle = getEncodedTitle(title);
 
                                         return (
-                                            <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
+                                            <div key={index}>
                                                 <RecentDeptBlogs blogid={id} title={title}
                                                     summary={shortSummary} blogPoster={blogPoster}
                                                     author={author} tags={tags} claps={claps}
                                                     publishDate={date} minutesRead={minutesRead}
+                                                    encodedTitle={encodedTitle}
                                                 />
-                                            </Link>
+                                            </div>
                                         )
 
                                     })
@@ -106,7 +114,7 @@ const DepartmentBlogs = () => {
                                             id,
                                         } = blog;
 
-                                        let shortSummary = extractFirstXWords(summary, 5);
+                                        let shortSummary = extractFirstXWords(summary, 10);
                                         shortSummary += ' ...';
 
                                         const encodedTitle = getEncodedTitle(title);
@@ -139,19 +147,53 @@ const DepartmentBlogs = () => {
             }
 
 
+            <div className="mx-[5%] my-20">
+                {
+                    deptBlogs && deptBlogs?.slice(3, 4)?.map((blog, index) => {
+
+                        const { title,
+                            summary,
+                            author,
+                            blogPoster,
+                            tags,
+                            claps,
+                            minutesRead,
+                            date,
+                            id,
+                        } = blog;
+
+                        let shortSummary = extractFirstXWords(summary, -1);
+
+                        const encodedTitle = getEncodedTitle(title);
+
+                        return (
+                            <div key={index}>
+                                <NewBlogLayout blogid={id} title={title}
+                                    summary={shortSummary} blogPoster={blogPoster}
+                                    author={author} tags={tags} claps={claps}
+                                    publishDate={date} minutesRead={minutesRead}
+                                    encodedTitle={encodedTitle}
+                                />
+                            </div>
+                        )
+
+                    })
+                }
+            </div>
+
 
             <div>
 
                 {
-                    (deptBlogs.slice(3).length >= 1)
+                    (deptBlogs.slice(4).length >= 1)
 
                         ?
 
                         <div className="mx-[5%] my-10">
 
-                            <h2 className={`text-lg flex justify-start font-semibold ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>All blog posts</h2>
+                            <h2 className={`text-lg md:text-4xl flex justify-start mb-10 font-bold ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>All blog posts</h2>
 
-                            <div className='grid md:grid-cols-2 h-full gap-x-8'>
+                            <div className='grid md:grid-cols-3 h-full gap-x-8'>
 
                                 {
                                     deptBlogs && deptBlogs?.slice(3)?.map((blog, index) => {
@@ -167,13 +209,14 @@ const DepartmentBlogs = () => {
                                             id,
                                         } = blog;
 
-                                        let shortSummary = extractFirstXWords(summary, 25);
+                                        let shortSummary = extractFirstXWords(summary, 15);
                                         shortSummary += ' ...';
 
                                         const encodedTitle = getEncodedTitle(title);
 
                                         return (
-                                            <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
+                                            // <div></div>
+                                            <Link to={`/blog/${encodedTitle}/${id}`} key={index} className='mb-8'>
                                                 <RecentDeptBlogs blogid={id} title={title}
                                                     summary={shortSummary} blogPoster={blogPoster}
                                                     author={author} tags={tags} claps={claps}
@@ -195,6 +238,15 @@ const DepartmentBlogs = () => {
                         <>
                         </>
                 }
+            </div>
+
+            <div>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                />
+
             </div>
 
 

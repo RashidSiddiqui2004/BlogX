@@ -3,12 +3,18 @@ import DepartmentBlogs from './DepartmentBlogs'
 import Navbar from './../homepage/navbar/Navbar'
 import Footer from './../homepage/footer/Footer'
 import DepartmentBlogsMobile from './DepartmentBlogsMobile'
+import NavbarDept from './NavbarDept'
+import { useParams } from 'react-router-dom'
 
 const DeptBlogLayout = () => {
+
+  const params = useParams();
+  const departmentName = params.deptName;
+
   return (
     <div>
 
-      <Navbar />
+      <NavbarDept department={departmentName}/>
 
       <div className='hidden md:block'>
         <DepartmentBlogs />

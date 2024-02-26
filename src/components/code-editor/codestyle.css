@@ -1,22 +1,25 @@
+.parent-container {
+    overflow-y: auto;
+}
 
-.code-editor-container { 
-    border-radius: 8px; 
+.code-editor-container {
+    border-radius: 8px;
     margin-top: 20px;
-    margin-bottom: 15px; 
+    margin-bottom: 15px;
 }
 
 .code-editor-header {
     display: flex;
     align-items: center;
-    justify-content: space-between; 
+    justify-content: space-between;
 }
 
 .code-editor-header h2 {
     color: #fff;
-    font-size: 18px;  
+    font-size: 18px;
 }
 
-.copy-code-button { 
+.copy-code-button {
     color: #fff;
     border: none;
     padding: 8px 12px;
@@ -30,8 +33,7 @@
     margin-left: 5px;
 }
 
-.code-editor {
-    /* background-color: #070201; */ 
+.code-editor { 
     border-radius: 4px;
     height: auto;
 }

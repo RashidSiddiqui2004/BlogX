@@ -111,7 +111,7 @@ const Navbar = () => {
     }
 
     return ( 
-        <div className={`w-[100%] mx-auto flex py-4 md:fixed bg-[#1b1c23] z-10
+        <div className={`w-[100%] mx-auto flex py-4 md:fixed bg-[#1b1c2391] z-10
         border-${(mode === "light") ? "black" : "white"} text-${mode === "light" ? "black" : "white"} border-b-2`}
             style={{ fontFamily: 'Nunito Sans, sans-serif' }}>
 
