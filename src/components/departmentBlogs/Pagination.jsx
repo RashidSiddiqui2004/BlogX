@@ -24,7 +24,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     };
 
     return (
-        <div className="flex justify-center items-center mt-4">
+        <div className="flex justify-between items-center mt-4 mx-20">
 
             {/* {currentPage > 1 && ( */}
 

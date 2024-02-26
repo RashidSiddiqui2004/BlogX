@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import myContext from '../../context/data/myContext';
 import { Link, useParams } from 'react-router-dom';
 import extractFirstXWords from '../../utilities/initials/fetchXWords'
-import deptMap from '../../utilities/departments/DepartmentMap'
 import RecentDeptBlogs from './RecentDeptBlogs';
 import ShortDeptBlog from './ShortDeptBlog';
 import getEncodedTitle from '../../utilities/fetchURLTitle/GetEncodedTitle';
@@ -13,20 +12,28 @@ import Pagination from './Pagination';
 const DepartmentBlogs = () => {
 
     const context = useContext(myContext);
-
     const { mode, deptBlogs, getDepartmentBlogs } = context;
+
+    const numberBlogs = deptBlogs.length;
 
     const isDarkTheme = (mode == "dark");
 
     const params = useParams();
     const departmentName = params.deptName;
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = 10;
+    const thresholdBlogs = 4;
 
-    const handlePageChange = (newPageNumber) =>{
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.floor((numberBlogs - thresholdBlogs) / 6 +
+        (((numberBlogs - thresholdBlogs) % 6) ? 1 : 0));
+
+    const startBlogNumber = thresholdBlogs + (currentPage - 1) * 6;
+
+    const handlePageChange = (newPageNumber) => {
         setCurrentPage(newPageNumber)
     }
+
 
     // get dept specific blogs
     useEffect(() => {
@@ -41,14 +48,14 @@ const DepartmentBlogs = () => {
             }
         }
 
+        window.scrollTo(0, 0);
         fetchDeptBlogs();
+
     }, []);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
 
     return (
+        
         <div className="w-full max-md:max-w-full min-h-screen md:py-6">
 
             {/* <h1 className={`text-2xl md:text-5xl justify-center font-semibold mb-3 py-3 ${isDarkTheme ? 'text-white' : 'text-zinc-800'}`}>{department}</h1> */}
@@ -185,7 +192,7 @@ const DepartmentBlogs = () => {
             <div>
 
                 {
-                    (deptBlogs.slice(4).length >= 1)
+                    (deptBlogs.slice(startBlogNumber).length > 1)
 
                         ?
 
@@ -196,7 +203,7 @@ const DepartmentBlogs = () => {
                             <div className='grid md:grid-cols-3 h-full gap-x-8'>
 
                                 {
-                                    deptBlogs && deptBlogs?.slice(3)?.map((blog, index) => {
+                                    deptBlogs && deptBlogs?.slice(startBlogNumber, startBlogNumber + 6)?.map((blog, index) => {
 
                                         const { title,
                                             summary,
@@ -215,7 +222,6 @@ const DepartmentBlogs = () => {
                                         const encodedTitle = getEncodedTitle(title);
 
                                         return (
-                                            // <div></div>
                                             <Link to={`/blog/${encodedTitle}/${id}`} key={index} className='mb-8'>
                                                 <RecentDeptBlogs blogid={id} title={title}
                                                     summary={shortSummary} blogPoster={blogPoster}

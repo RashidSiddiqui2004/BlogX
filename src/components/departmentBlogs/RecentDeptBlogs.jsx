@@ -41,7 +41,7 @@ const RecentDeptBlogs = ({
                 </div>
             </div>
 
-            <div className="px-6 py-4">
+            <div className="px-2 py-4">
 
                 <div className='flex justify-between items-center'>
                     <div className="font-bold text-lg md:text-xl mb-3 text-left">{title}</div>

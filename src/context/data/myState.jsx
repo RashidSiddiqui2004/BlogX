@@ -274,7 +274,7 @@ function myState(props) {
 
                 QuerySnapshot.forEach((doc) => {
                     deptBlogsArray.push({ ...doc.data(), id: doc.id });
-                });
+                }); 
 
                 setDeptBlogs(deptBlogsArray);
                 setLoading(false);
