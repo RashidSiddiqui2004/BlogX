@@ -1,0 +1,10 @@
+.search-input {
+    transition: all 0.3s ease; /* Add transition for smooth effect */
+    width: 600px;
+}
+
+.search-input:hover {
+    width: 1rem; /* Increase width when hovered */
+    background-color: #4a5568; /* Change background color when hovered */
+    color: #fff; /* Change text color when hovered */
+}

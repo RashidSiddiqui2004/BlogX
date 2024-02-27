@@ -4,7 +4,9 @@ import myContext from '../../context/data/myContext';
 import { Editor } from '@tinymce/tinymce-react';
 import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
 import { Link, useParams } from 'react-router-dom';
-import departmentsInDevComm from "../../utilities/departments/DepartmentsInDevComm.js";
+ 
+import departmentsInDevComm from '../../utilities/departments/DepartmentsinDevCommm';
+ 
 import BtnTemplate from '../../utilities/BtnTemplate2/BtnTemplate';
 
 const UpdateBlog = () => {

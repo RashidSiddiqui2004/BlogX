@@ -1,13 +1,13 @@
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { FaCircleUser } from "react-icons/fa6";
 import BlogInteraction from '../interaction/BlogInteraction';
 import myContext from '../../../context/data/myContext';
 
-const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
+const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount, department }) => {
 
   const context = useContext(myContext);
-  const { mode, followAuthor } = context;
+  const { mode, followAuthor, isFollowingAuthor } = context;
 
   const isDarkTheme = (mode == "dark");
 
@@ -18,6 +18,14 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
     // followerId, followingId, followingUsername  
     await followAuthor(userId, authorId, author);
   }
+
+  useEffect(()=>{
+    const checkIfFollowing = async () =>{
+      await isFollowingAuthor(userId, authorId);
+    }
+
+    checkIfFollowing();
+  },[])
 
   return (
     <div className='cursor:default mt-2'>
@@ -32,25 +40,24 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
         {/* blog details */}
         <div className='text-sm md:text-lg'>
           {/* author details */}
+          <div className='flex flex-row items-center space-x-4'>
+            <h2>{author}</h2>
+            <div className='text-xs'>•</div> {/* Centered Dot */}
+            <button disabled={userId === null || isFollowingAuthor} className={`text-md ${isFollowingAuthor ? 'text-slate-300' : 'text-white'}`}
+            onClick={followUser}> {isFollowingAuthor ? 'Following' : 'Follow'}</button>
 
-          <div className='flex flex-row items-center space-x-4 justify-between'>
-            <h2 className='text-lg font-extralight hover:underline cursor:default'>{author}</h2>
-            <div className=''></div> {/* Centered Dot */}
-            <button disabled={userId === null} onClick={followUser} />
           </div>
 
+          {/* blog details */}
+          <div className='flex flex-row items-center space-x-1 md:space-x-3
+           mt-6 md:mt-1 justify-start'>
 
-        </div>
-
-        {/* blog details */}
-        <div className='flex flex-row items-center space-x-1 md:space-x-4
-           mt-4 md:mt-1 justify-between'>
-          {/* <h2 className=''>UI/UX Department</h2>
-            <div className=''>•</div>  */}
-          <h2 className='w-[110px] text-sm text-left'>{minutesRead} min Read</h2>
-
-          <div className=''></div> {/* Centered Dot */}
-          <h2 className='w-[110px] text-right text-sm'>{date}</h2>
+            <h2 className='text-right font-medium text-sm hidden sm:block'>Published in <span> {department?.toUpperCase()} </span></h2>
+            <div className='text-xs hidden sm:block'>•</div> {/* Centered Dot */}
+            <h2 className='ml-8 text-sm text-left'>{minutesRead} min Read</h2>
+            <div className='text-xs'>•</div> {/* Centered Dot */}
+            <h2 className='text-right text-sm'>{date}</h2>
+          </div>
         </div>
 
       </div>
@@ -58,8 +65,8 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount }) => {
 
       {/* claps and comments count */}
 
-      < div className={`my-10 ml-[0.9rem] border-2 border-l-0 
-      border-r-0 ${isDarkTheme ? 'border-gray-800' : 'border-gray-100'}`}>
+      < div className={`my-10 md:ml-[0.9rem] border-2 border-l-0 py-2
+      border-r-0 ${isDarkTheme ? 'border-gray-900' : 'border-gray-100'}`}>
         <BlogInteraction blogId={blogId} claps={claps} commentsCount={commentsCount}
           userId={userId} blog={blog} />
 
