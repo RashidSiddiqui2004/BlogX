@@ -4,7 +4,7 @@ const BlogNavigation = ({ navigation, blogheight }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
     const updateBar = () => {
-      const scrollHeight = blogheight;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrolled = (window.scrollY / scrollHeight) * 100;
       setScrollProgress(scrolled)
 
