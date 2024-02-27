@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const BlogNavigation = ({ navigation }) => {
+const BlogNavigation = ({ navigation, blogheight }) => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+    const updateBar = () => {
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (window.scrollY / scrollHeight) * 100;
+      setScrollProgress(scrolled)
+
+    };
+
+    useEffect (() => {
+      window.addEventListener('scroll', updateBar);
+
+    return () => window.removeEventListener('scroll', updateBar)
+    })
  
   return (
     <div className="p-5 rounded-md text-start bg-slate-950 bg-opacity-5">
@@ -12,14 +26,20 @@ const BlogNavigation = ({ navigation }) => {
           const isValidTitle = !(name===null);
 
           return isValidTitle && (
-          <li key={index} className="mb-2">
+          <li key={index} className="my-6">
             <a href={`#${name}`} className="text-slate-200 hover:text-green-200 transition-all" onClick={() => smoothScroll(name)}>
-              - {name}
+              {name}
             </a>
           </li>
         )
         })}
       </ul>
+
+      <div className='mt-10 flex-col justify-center items-center'>
+        <div className='flex justify-center items-center'>Till Bottom</div>
+        <div className='border-t-2 border-white'
+        style={{width : `${scrollProgress}%`}}></div>
+      </div>
     </div>
   );
 };
@@ -28,11 +48,11 @@ export default BlogNavigation;
 
 
 function smoothScroll(id) {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
   }
+}
