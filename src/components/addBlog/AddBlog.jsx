@@ -5,8 +5,9 @@ import { Editor } from '@tinymce/tinymce-react';
 import getUsernameByUID from '../.././utilities/userData/GetUser';
 import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
 import getUserID from '../../utilities/userData/GetUserID';
+ 
 import departmentsInDevComm from '../../utilities/departments/DepartmentsinDevCommm';
-
+ 
 import BtnTemplate from '../../utilities/BtnTemplate2/BtnTemplate';
 import { toast } from 'react-toastify';
 import { Editor as CodeEditor } from '@monaco-editor/react'; 
@@ -365,7 +366,11 @@ function AddBlog() {
         }
 
         else if (sectionFiles === undefined) {
-            const updatedFiles = [fileURL];
+            const fileObject = {
+                filename: filename,
+                fileURL: fileURL
+            }
+            const updatedFiles = [fileObject];
             const newFilesForSections = [...filesForSections];
             newFilesForSections[sectionIndex] = updatedFiles;
             setFilesForSections(newFilesForSections);
@@ -441,9 +446,13 @@ function AddBlog() {
         }
 
         else if (sectionImages === undefined) {
-            const updatedFiles = [fileURL];
+            const imageObject = {
+                imageName: imageName,
+                imageURL: imageURL
+            }
+            const updatedImages = [imageObject];
             const newFilesForSections = [...imagesForSections];
-            newFilesForSections[sectionIndex] = updatedFiles;
+            newFilesForSections[sectionIndex] = updatedImages;
             setImagesForSections(newFilesForSections);
         }
         else {

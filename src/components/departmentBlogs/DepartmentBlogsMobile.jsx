@@ -56,10 +56,8 @@ const DepartmentBlogsMobile = () => {
 
                     <div className="mx-[5%] my-10">
 
-                        <div className='grid gap-x-8'>
-
-                            <div>
-
+                        <div className='grid gap-x-8 gap-y-6'>
+ 
                                 {
                                     deptBlogs && deptBlogs?.map((blog, index) => {
 
@@ -80,7 +78,8 @@ const DepartmentBlogsMobile = () => {
                                         const encodedTitle = getEncodedTitle(title);
 
                                         return (
-                                            <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
+
+                                            <Link to={`/blog/${encodedTitle}/${id}`} key={index} className='mb-4'>
                                                 <RecentDeptBlogs blogid={id} title={title}
                                                     summary={shortSummary} blogPoster={blogPoster}
                                                     author={author} tags={tags} claps={claps}
@@ -91,9 +90,7 @@ const DepartmentBlogsMobile = () => {
 
                                     })
                                 }
-
-                            </div>
-
+ 
 
                         </div>
 
