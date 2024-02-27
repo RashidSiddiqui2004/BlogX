@@ -79,6 +79,7 @@ const Blog = () => {
     fetchBlogData();
     fetchUserData();
     fetchComments();
+ 
   }, [blogId]);
 
   useEffect(() => {
@@ -92,7 +93,9 @@ const Blog = () => {
       <Navbar />
       <div className='flex flex-row mt-8'>
         <div className='w-[100%] md:w-[70%] md:ml-48 md:mt-14'>
-          <h1 className='text-3xl md:text-6xl md:ml-0 text-left font-bold mx-6 mt-8 mb-6 pl-4'>{blogState?.title}</h1>
+
+          <h1 className='mt-4 bg-slate-800 rounded-md w-fit px-3 py-1 mx-6 '>{blogState?.department ? blogState.department : 'Department'}</h1>
+          <h1 className='text-3xl md:text-6xl md:ml-0 text-left font-bold mx-6 mt-4 mb-6 pl-4'>{blogState?.title}</h1>
           <div className='md:w-[75%] mr-6 mt-4 pt-5'>
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
           </div>
@@ -101,9 +104,10 @@ const Blog = () => {
               <RenderHTMLContent htmlContent={blogState?.description} />
             </div>
           )}
+
           {blogState?.blogContent?.map((section, index) => {
             const { title, content, code, resources, images } = section;
-
+ 
             const sectionContent = extractText(content);
             return (
               <div key={index} id={title} className='md:ml-4 mb-3 text-left '>
@@ -116,11 +120,11 @@ const Blog = () => {
 
                 }
 
-                {resources?.length >= 1
+                {resources && Object.keys(resources).length > 0 
                   &&
                   <div className="container mx-auto py-4 flex flex-row justify-center gap-x-7
                 rounded-xl my-6">
-
+ 
                     {resources && Object.entries(resources).map(([index, file]) => (
 
                       <div key={index} className="mb-4">

@@ -25,7 +25,7 @@ const OutputCode = ({ lang, code }) => {
     };
 
     const numberOfLines = code.split('\n').length;
-    const lineHeight = 20;
+    const lineHeight = 22;
     const height = numberOfLines * lineHeight;
 
     return (

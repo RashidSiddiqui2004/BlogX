@@ -213,7 +213,7 @@ function myState(props) {
                 let blogArray = [];
                 QuerySnapshot.forEach((doc) => {
                     blogArray.push({ ...doc.data(), id: doc.id });
-                });
+                });  
                 setTrendingBlogs(blogArray);
                 setLoading(false);
             });
@@ -275,11 +275,12 @@ function myState(props) {
                 QuerySnapshot.forEach((doc) => {
                     deptBlogsArray.push({ ...doc.data(), id: doc.id });
                 }); 
-
+ 
                 setDeptBlogs(deptBlogsArray);
                 setLoading(false);
 
             });
+            
 
             return true;
 

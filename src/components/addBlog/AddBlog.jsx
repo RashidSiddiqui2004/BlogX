@@ -365,7 +365,11 @@ function AddBlog() {
         }
 
         else if (sectionFiles === undefined) {
-            const updatedFiles = [fileURL];
+            const fileObject = {
+                filename: filename,
+                fileURL: fileURL
+            }
+            const updatedFiles = [fileObject];
             const newFilesForSections = [...filesForSections];
             newFilesForSections[sectionIndex] = updatedFiles;
             setFilesForSections(newFilesForSections);
@@ -441,9 +445,13 @@ function AddBlog() {
         }
 
         else if (sectionImages === undefined) {
-            const updatedFiles = [fileURL];
+            const imageObject = {
+                imageName: imageName,
+                imageURL: imageURL
+            }
+            const updatedImages = [imageObject];
             const newFilesForSections = [...imagesForSections];
-            newFilesForSections[sectionIndex] = updatedFiles;
+            newFilesForSections[sectionIndex] = updatedImages;
             setImagesForSections(newFilesForSections);
         }
         else {
