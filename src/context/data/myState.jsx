@@ -213,7 +213,7 @@ function myState(props) {
                 let blogArray = [];
                 QuerySnapshot.forEach((doc) => {
                     blogArray.push({ ...doc.data(), id: doc.id });
-                });  
+                });
                 setTrendingBlogs(blogArray);
                 setLoading(false);
             });
@@ -274,13 +274,13 @@ function myState(props) {
 
                 QuerySnapshot.forEach((doc) => {
                     deptBlogsArray.push({ ...doc.data(), id: doc.id });
-                }); 
- 
+                });
+
                 setDeptBlogs(deptBlogsArray);
                 setLoading(false);
 
             });
-            
+
 
             return true;
 
@@ -293,7 +293,7 @@ function myState(props) {
 
     const [authorSpecificBlogs, setAuthorBlogs] = useState([]);
 
-    const getAuthorBlogs = async (authorId) => {
+    const getAuthorBlogs = async (authorId, currentBlogId) => {
         setLoading(true)
 
         try {
@@ -307,10 +307,13 @@ function myState(props) {
                 let blogsArray = [];
 
                 QuerySnapshot.forEach((doc) => {
-                    blogsArray.push({ ...doc.data(), id: doc.id });
+                    if (doc.id !== currentBlogId) {
+                        blogsArray.push({ ...doc.data(), id: doc.id });
+                    }
                 });
 
                 setAuthorBlogs(blogsArray);
+
                 setLoading(false);
 
             });
@@ -433,7 +436,7 @@ function myState(props) {
     const followAuthor = async (followerId, followingId, followingUsername) => {
         try {
 
-            if(followerId===null){
+            if (followerId === null) {
                 toast.info("Please login to follow authors", {
                     position: 'top-right',
                     autoClose: 800,
