@@ -17,7 +17,7 @@ const BlogNavigation = ({ navigation, blogheight }) => {
     })
  
   return (
-    <div className="p-5 rounded-md text-start bg-slate-950 bg-opacity-5">
+    <div className="p-5 rounded-md text-start bg-slate-950 bg-opacity-5 sticky top-16">
       <h2 className="text-white text-lg font-semibold mb-4">In this blog </h2>
       <ul className='border-[1px] border-l-slate-400 px-5
        border-r-0 border-t-0 border-b-0'>

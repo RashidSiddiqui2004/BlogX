@@ -50,6 +50,8 @@ const Blog = () => {
 
         setBlogHeight(document.getElementById('parent')?.offsetHeight)
 
+        console.log(blogheight)
+
         const followersCount = await getFollowersCount(blogData?.authorId);
 
         await getAuthorBlogs(blogData.authorId, blogId);
@@ -103,6 +105,24 @@ const Blog = () => {
     <div style={{ color: mode === 'dark' ? 'white' : '' }} className='overflow-hidden'>
 
       <Navbar />
+ 
+      <div className='hidden left-0 md:mt-20 md:ml-16 2xl:ml-24 absolute md:inline-block min-w-56 w-60 max-w-72'
+      style={{
+        height : `${blogheight-100}px`
+      }}>
+
+          {/* blog navigation */}
+
+          <BlogNavigation blogheight={blogheight}
+          navigation={blogState?.sectionTitles} />
+        </div>
+        <div className='w-[100%] md:w-[55%] md:mt-14 inline-block' id='parent'>
+          <h1 className='text-3xl md:text-6xl md:ml-0 text-left font-bold mx-6 mt-8 mb-6 pl-4'>{blogState?.title}</h1>
+          <div className='md:w-[75%] mr-6 mt-4 pt-5'>
+ 
+            {/* <div className='flex flex-row mt-8'>
+        <div className='w-[100%] md:w-[70%] md:ml-48 md:mt-14'>
+ 
 
       <div className='flex flex-row mt-8'>
         {/* <center> */}
@@ -239,6 +259,7 @@ const Blog = () => {
             )
           }
         </div>
+ 
         {/* </center> */}
 
         <div className='hidden md:block fixed md:mt-20 min-w-56 w-60 max-w-72 ml-2'>
@@ -251,6 +272,7 @@ const Blog = () => {
       </div>
 
 
+ 
 
       <div className='md:flex md:flex-row'>
         <div className='mx-4 md:w-[45%] md:mx-auto' id='Starting with React'>
