@@ -1,51 +1,73 @@
-
-import React, { useContext, useEffect } from "react"; 
-import { Link } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import myContext from "../../context/data/myContext";
 import BlogCard from "../homepage/trending/BlogCard";
 import Newblogcard from "../homepage/trending/Newblogcard";
 import extractFirstXWords from "../../utilities/initials/fetchXWords";
+import "./styles.css";
 
 function TrendingPage() {
-
   const context = useContext(myContext);
   const { mode, trendingBlogs, getTrendingBlogs } = context;
 
-  useEffect(() => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredBlogs, setFilteredBlogs] = useState([]);
 
+  useEffect(() => {
     const fetchAllTrendingBlogs = async () => {
-      await getTrendingBlogs()
+      await getTrendingBlogs();
     };
 
     fetchAllTrendingBlogs();
-  }, [])
+  }, []);
 
+  useEffect(() => {
+    // Filter the trending blogs based on the search query
+    if (searchQuery.trim() === "") {
+      setFilteredBlogs(trendingBlogs);
+    } else {
+      const filtered = trendingBlogs.filter((blog) =>
+        blog.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredBlogs(filtered);
+    }
+  }, [searchQuery, trendingBlogs]);
+
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
-    <div className="flex flex-col py-12 w-[90%] mx-[6%]">
-      <div className="flex gap-5 justify-between mt-8 w-full max-md:flex-wrap
-       max-md:max-w-full">
-        <div
-          className={`flex text-start flex-col px-5 font-semibold max-md:max-w-full ${mode === "dark"
-            ? "bg- rounded-lg text-white"
-            : "bg-neutral-80 text-zinc-800"
-            }`}
-        >
-          <div className="text-sm font-extrabold  pt-10 text-sky-500 uppercase max-md:max-w-full ">
+    <div className="bg-[#0f1018]">
+      <div className="flex  flex-row mb-10 overflow-hidden relative  items-start pr-20 pl-10 text-white rounded-xl max-md:px-5">
+        <div className="flex overflow-hidden relative flex-col justify-end items-start  pr-20 pl-10 text-white rounded-xl  max-md:px-5">
+          <div className="relative justify-center px-2.5 py-1 mt-44 text-sm font-medium leading-5 whitespace-nowrap bg-indigo-500 rounded-md max-md:mt-10">
             Trending Topics
           </div>
-          <div className="mt-2 font-extrabold  text-5xl text-start  space-around tracking-tight leading-12  ma-md:max-text-sm max-md:max-w-full max-md:text-4xl max-md:leading-10">
-            Stay Updated with Our <br /> Latest Insights
+          <div className="relative mt-4 text-4xl font-extrabold text-start leading-10 w-[720px] max-md:max-w-full">
+            Stay Updated with Our Latest Insights
           </div>
         </div>
       </div>
+      
+      <input
+  type="text"
+  value={searchQuery}
+  onChange={handleSearchInputChange}
+  placeholder="Search blogs..."
+  className="px-3  search-input py-2 rounded-md bg-gray-800 text-white focus:outline-none focus:ring focus:border-blue-300 search-input"
+  style={{ width: '100%', maxWidth: '400px', fontSize: '16px' }}
+/>
 
-      <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="grid md:grid-cols-3 h-full gap-x-16 gap-y-10">
-          {
-            trendingBlogs && trendingBlogs.slice(0, 9)?.map((item, index) => {
+      <div className="flex flex-col py-12 w-[90%] mx-[6%]">
+        {/* Search bar */}
+      
 
-              const { title,
+        <div className="px-5 mt-10 w-full max-md:max-w-full">
+          <div className="grid md:grid-cols-3 h-full gap-x-16 gap-y-10">
+            {filteredBlogs.map((item, index) => {
+              const {
+                title,
                 description,
                 summary,
                 author,
@@ -60,35 +82,30 @@ function TrendingPage() {
               } = item;
 
               let shortSummary = extractFirstXWords(summary, 30);
-              shortSummary += ' ...'
+              shortSummary += " ...";
 
               return (
                 <Link to={`/blog/${title}/${id}`} key={index}>
-                  <Newblogcard blogid={id} title={title} description={description}
-                    summary={shortSummary} department={department} blogPoster={blogPoster}
-                    author={author} tags={tags} claps={claps} date={date} authorId={authorId} minutesRead={minutesRead} />
+                  <Newblogcard
+                    blogid={id}
+                    title={title}
+                    description={description}
+                    summary={shortSummary}
+                    department={department}
+                    blogPoster={blogPoster}
+                    author={author}
+                    tags={tags}
+                    claps={claps}
+                    date={date}
+                    authorId={authorId}
+                    minutesRead={minutesRead}
+                  />
                 </Link>
-              )
-
-            })
-          }
-
-
+              );
+            })}
+          </div>
         </div>
       </div>
-
-      {/* <div className="flex flex-col">
-        <div
-          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
-            ? "bg-customBlue rounded-lg text-white border-neutral-50"
-            : "bg-neutral-80 text-zinc-800"
-            } border-opacity-40 max-md:px-10 max-md:mt-10 `}
-          style={{ transform: "translateX(-30px)" }}
-        >
-          <button onClick={handleSeeMoreClick}>See More</button>
-        </div>
-      </div> */}
-
     </div>
   );
 }

@@ -20,7 +20,7 @@ function TrendingBlogs() {
   }, []);
 
   return (
-    <div className={`flex flex-col py-12 md:mx-[6%] blur-container`}>
+    <div className={`flex flex-col py-10 md:mx-[5%] blur-container`}>
       <div className="flex flex-col gap-5 justify-between mt-8 max-md:flex-wrap max-md:max-w-full">
         <div
           className={`flex flex-col px-5 font-semibold max-md:max-w-full ${
