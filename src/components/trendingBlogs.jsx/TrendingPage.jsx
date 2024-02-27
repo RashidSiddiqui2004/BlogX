@@ -1,15 +1,29 @@
 
-import React, { useContext, useEffect } from "react"; 
+import React, { useContext, useEffect, useState } from "react"; 
 import { Link } from 'react-router-dom'
-import myContext from "../../context/data/myContext";
-import BlogCard from "../homepage/trending/BlogCard";
+import myContext from "../../context/data/myContext"; 
 import Newblogcard from "../homepage/trending/Newblogcard";
 import extractFirstXWords from "../../utilities/initials/fetchXWords";
+import Pagination from "../pagination/Pagination";
 
 function TrendingPage() {
 
   const context = useContext(myContext);
   const { mode, trendingBlogs, getTrendingBlogs } = context;
+
+  const numberBlogs = trendingBlogs.length;
+  const thresholdBlogs = 0;
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.floor((numberBlogs - thresholdBlogs) / 6 +
+      (((numberBlogs - thresholdBlogs) % 6) ? 1 : 0));
+
+  const startBlogNumber = thresholdBlogs + (currentPage - 1) * 6;
+
+  const handlePageChange = (newPageNumber) => {
+      setCurrentPage(newPageNumber)
+  }
 
   useEffect(() => {
 
@@ -40,10 +54,10 @@ function TrendingPage() {
         </div>
       </div>
 
-      <div className="px-5 mt-10 w-full max-md:max-w-full">
-        <div className="grid md:grid-cols-3 h-full gap-x-16 gap-y-10">
-          {
-            trendingBlogs && trendingBlogs.slice(0, 9)?.map((item, index) => {
+      <div className="px-5 mt-10 w-full max-md:max-w-full mb-7">
+        <div className="grid md:grid-cols-3 h-full gap-x-16 gap-y-4">
+          { 
+            trendingBlogs && trendingBlogs.slice(startBlogNumber, startBlogNumber + 6)?.map((item, index) => {
 
               const { title,
                 description,
@@ -77,18 +91,19 @@ function TrendingPage() {
         </div>
       </div>
 
-      {/* <div className="flex flex-col">
-        <div
-          className={`justify-center self-end px-6 py-2 mt-5 text-base whitespace-nowrap border rounded-lg border-solid ${mode === "dark"
-            ? "bg-customBlue rounded-lg text-white border-neutral-50"
-            : "bg-neutral-80 text-zinc-800"
-            } border-opacity-40 max-md:px-10 max-md:mt-10 `}
-          style={{ transform: "translateX(-30px)" }}
-        >
-          <button onClick={handleSeeMoreClick}>See More</button>
-        </div>
-      </div> */}
+      {(trendingBlogs.slice(startBlogNumber).length > 1) ?
+                <div>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
+                :
+                <></>
+            }
 
+ 
     </div>
   );
 }

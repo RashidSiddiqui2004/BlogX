@@ -89,8 +89,8 @@ const NavbarDept = ({ department }) => {
       </div>
 
 
-      <h1 className='text-2xl text-slate-100 font-bold text-center mb-3 md:text-3xl 
-      hidden md:flex tracking-wide'>{departmentName}</h1>
+      <h1 className='text-2xl text-slate-100 font-bold items-center mb-3 md:text-3xl 
+      hidden md:flex tracking-wider ml-28'>{departmentName}</h1>
  
 
       <div className={`mx-4 text-[16px] hidden md:flex items-center py-2 px-4`}>

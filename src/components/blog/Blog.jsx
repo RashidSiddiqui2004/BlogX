@@ -9,7 +9,6 @@ import TagSection from './tags/TagSection';
 import BlogInteraction from './interaction/BlogInteraction';
 import CommentSection from './comments/CommentSection';
 import Footer from '../homepage/footer/Footer';
-import AuthorDetails from './blogAuthorHighlights/AuthorDetails';
 import getUserID from '../../utilities/userData/GetUserID';
 import getUsernameByUID from '../../utilities/userData/GetUser';
 import BlogNavigation from './BlogNavigation';
@@ -19,11 +18,13 @@ import './image.css'
 
 import extractText from '../../utilities/initials/getContent';
 import PDF from './pdfImage.svg'
+import RecommendedBlogs from './recommendedBlogs/RecommendedBlogs';
 
 
 const Blog = () => {
   const context = useContext(myContext);
-  const { mode, getBlogData, getFollowersCount, getCommentsForBlog } = context;
+  const { mode, getBlogData, getFollowersCount, getCommentsForBlog,
+    authorSpecificBlogs, getAuthorBlogs } = context;
   const isDarkTheme = mode === 'dark';
 
   const params = useParams();
@@ -38,6 +39,7 @@ const Blog = () => {
   const [commentsCnt, setCommentsCnt] = useState(0);
 
   useEffect(() => {
+
     const fetchBlogData = async () => {
       try {
         const blogData = await getBlogData(blogId);
@@ -45,6 +47,9 @@ const Blog = () => {
 
 
         const followersCount = await getFollowersCount(blogData?.authorId);
+
+        await getAuthorBlogs(blogData.authorId, blogId);
+
         setFollowersCnt(followersCount);
       } catch (error) {
         console.error('Error fetching blog data:', error);
@@ -75,10 +80,13 @@ const Blog = () => {
         console.error('Error fetching comments:', error);
       }
     };
+ 
+    Promise.all([
+      fetchBlogData(), 
+      fetchUserData(),
+      fetchComments()
+    ])  
 
-    fetchBlogData();
-    fetchUserData();
-    fetchComments();
   }, [blogId]);
 
   useEffect(() => {
@@ -92,8 +100,10 @@ const Blog = () => {
       <Navbar />
       <div className='flex flex-row mt-8'>
         <div className='w-[100%] md:w-[70%] md:ml-48 md:mt-14'>
-          <h1 className='text-3xl md:text-6xl md:ml-0 text-left font-bold mx-6 mt-8 mb-6 pl-4'>{blogState?.title}</h1>
-          <div className='md:w-[75%] mr-6 mt-4 pt-5'>
+
+          <h1 className='mt-4 bg-slate-800 rounded-md w-fit px-3 py-1 mx-6 '>{blogState?.department ? blogState.department : 'Department'}</h1>
+          <h1 className='text-3xl md:text-6xl md:ml-0 text-left font-bold mx-6 mt-4 mb-6 pl-4'>{blogState?.title}</h1>
+          <div className='md:w-[75%] md:mr-6 mt-4 pt-5'>
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
           </div>
           {blogState?.description && (
@@ -101,12 +111,14 @@ const Blog = () => {
               <RenderHTMLContent htmlContent={blogState?.description} />
             </div>
           )}
+
           {blogState?.blogContent?.map((section, index) => {
+
             const { title, content, code, resources, images } = section;
 
             const sectionContent = extractText(content);
             return (
-              <div key={index} id={title} className='md:ml-4 mb-3 text-left '>
+              <div key={index} id={title} className='md:ml-4 mb-3 text-left mx-3'>
                 <h2 className='text-2xl md:text-3xl text-left font-semibold mb-6 mt-6'>{title || ''}</h2>
                 <p className='text-lg sm:text-lg text-gray-100 text-justify'>{sectionContent}</p>
                 {code !== null &&
@@ -116,7 +128,7 @@ const Blog = () => {
 
                 }
 
-                {resources?.length >= 1
+                {resources && Object.keys(resources).length > 0
                   &&
                   <div className="container mx-auto py-4 flex flex-row justify-center gap-x-7
                 rounded-xl my-6">
@@ -136,8 +148,6 @@ const Blog = () => {
 
                                 <a href={file?.fileURL} target="_blank" rel="noopener noreferrer"
                                   className="hover:underline py-3 text-sm">{file?.filename}</a>
-
-                                {/* <p className="text-gray-200 text-sm">{file?.filename}</p> */}
 
                               </label>
                             </>
@@ -176,14 +186,11 @@ const Blog = () => {
                     ))}
 
                   </div>}
-
-
-
               </div>
             );
           })}
           <div className='mx-6 md:mr-14 md:ml-4 mb-4 mt-6'>
-            <TagSection tagList={blogState?.tags} />
+            <TagSection tagList={blogState?.tags} buttonSize='large' />
           </div>
 
           <div className={`my-10 md:mx-6 border-2 border-l-0 border-r-0 ${isDarkTheme ? 'border-gray-800' : 'border-gray-100'}`}>
@@ -194,7 +201,6 @@ const Blog = () => {
         </div>
 
         <div className='hidden md:block md:mt-20'>
-
 
           {/* blog navigation */}
 
@@ -214,12 +220,15 @@ const Blog = () => {
         </div>
       )}
 
-
-      <div className='md:w-[65%] md:mx-auto' id='Starting with React'>
-
-
-        <CommentSection comments={comments} />
+      <div className='md:flex md:flex-row'>
+        <div className='mx-4 md:w-[45%] md:mx-auto' id='Starting with React'>
+          <CommentSection comments={comments} />
+        </div>
+        <div className='md:w-[45%] md:mx-auto' id='Starting with React'>
+          <RecommendedBlogs author={blogState.author} authorSpecificBlogs={authorSpecificBlogs} />
+        </div>
       </div>
+
 
 
       <Footer />
