@@ -1,13 +1,11 @@
  
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import myContext from "../../context/data/myContext";
-import BlogCard from "../homepage/trending/BlogCard";
+import myContext from "../../context/data/myContext"; 
 import Newblogcard from "../homepage/trending/Newblogcard"; 
 import "./styles.css";
  
-  
-import Newblogcard from "../homepage/trending/Newblogcard";
+   
 import extractFirstXWords from "../../utilities/initials/fetchXWords";
 import Pagination from "../pagination/Pagination";
  

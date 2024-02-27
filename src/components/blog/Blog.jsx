@@ -50,7 +50,7 @@ const Blog = () => {
 
         setBlogHeight(document.getElementById('parent')?.offsetHeight)
 
-        console.log(blogheight)
+
 
         const followersCount = await getFollowersCount(blogData?.authorId);
 
@@ -105,39 +105,36 @@ const Blog = () => {
     <div style={{ color: mode === 'dark' ? 'white' : '' }} className='overflow-hidden'>
 
       <Navbar />
- 
-      <div className='hidden left-0 md:mt-20 md:ml-16 2xl:ml-24 absolute md:inline-block min-w-56 w-60 max-w-72'
-      style={{
-        height : `${blogheight-100}px`
-      }}>
 
-          {/* blog navigation */}
+      <div className='hidden left-0 md:mt-20 md:ml-10 2xl:ml-24 absolute md:inline-block min-w-56 w-60 max-w-72'
+        style={{
+          height: `${blogheight - 100}px`
+        }}>
 
-          <BlogNavigation blogheight={blogheight}
+        {/* blog navigation */}
+        <BlogNavigation blogheight={blogheight}
           navigation={blogState?.sectionTitles} />
-        </div>
-        <div className='w-[100%] md:w-[55%] md:mt-14 inline-block' id='parent'>
-          <h1 className='text-3xl md:text-6xl md:ml-0 text-left font-bold mx-6 mt-8 mb-6 pl-4'>{blogState?.title}</h1>
-          <div className='md:w-[75%] mr-6 mt-4 pt-5'>
- 
-            {/* <div className='flex flex-row mt-8'>
-        <div className='w-[100%] md:w-[70%] md:ml-48 md:mt-14'>
- 
 
-      <div className='flex flex-row mt-8'>
-        {/* <center> */}
-        <div className='w-full md:w-[70%] md:ml-80 md:mt-14'>
+
+      </div>
+
+
+      <div className='mx-2 mt-8 pt-5' id='parent'>
+
+        <div className='w-full md:w-[70%] md:ml-80 md:mt-14' >
 
           <div className="flex justify-start">
             <h2 className='mt-4 bg-slate-800 rounded-md w-fit px-3 py-1 mx-4'>{blogState?.department ? blogState.department : 'Department'}</h2>
           </div>
+
           <h1 className='text-4xl md:text-6xl md:ml-0 text-left py-3 
             sm:mx-6 mt-4 mb-6 pl-6 md:pl-4 font-bold bg-clip-text bg-gradient-to-b text-transparent from-gray-100 to-neutral-200'>{blogState?.title}</h1>
 
           <div className='w-full md:mx-4 md:mr-6 mt-4 pt-5'>
 
-            <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} department={blogState?.department}/>
+            <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} department={blogState?.department} />
           </div>
+
           {blogState?.description && (
             <div className={`ml-4 text-left ${blogState.description.includes('<img') ? 'image-left' : ''}`}>
               <RenderHTMLContent htmlContent={blogState?.description} />
@@ -180,7 +177,7 @@ const Blog = () => {
                             {file && (
                               <>
                                 <a href={file?.fileURL} target="_blank" rel="noopener noreferrer">
-                                  { file?.fileURL && getFileType(file?.fileURL) === 'pdf' ? (
+                                  {file?.fileURL && getFileType(file?.fileURL) === 'pdf' ? (
                                     <img className="w-32 h-auto" src={PDF} alt="PDF file" />
                                   ) : (
                                     <img className="w-32 h-auto" src={Word} alt="Word file" />
@@ -198,7 +195,7 @@ const Blog = () => {
                       ))}
 
                     </div>
- 
+
                   </div>}
 
 
@@ -231,9 +228,15 @@ const Blog = () => {
                     ))}
 
                   </div>}
+
+
               </div>
+
+
             );
           })}
+
+
           <div className='mx-6 md:mr-14 md:ml-4 mb-4 mt-6'>
             <TagSection tagList={blogState?.tags} buttonSize='large' />
           </div>
@@ -258,21 +261,12 @@ const Blog = () => {
               </div>
             )
           }
+
         </div>
- 
-        {/* </center> */}
 
-        <div className='hidden md:block fixed md:mt-20 min-w-56 w-60 max-w-72 ml-2'>
 
-          {/* blog navigation */}
-
-          <BlogNavigation blogheight={blogheight}
-            navigation={blogState?.sectionTitles} />
-        </div>
       </div>
 
-
- 
 
       <div className='md:flex md:flex-row'>
         <div className='mx-4 md:w-[45%] md:mx-auto' id='Starting with React'>
@@ -284,9 +278,12 @@ const Blog = () => {
       </div>
 
 
-
       <Footer />
+
+
     </div >
+
+
   );
 };
 
