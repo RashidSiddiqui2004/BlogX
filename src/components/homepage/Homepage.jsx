@@ -17,7 +17,7 @@ const Homepage = () => {
   // },[])
 
   return (
-    <div className=" bg-[#0f1018]">
+    <div>
       <Navbar /> 
       
       <div className="TrendingBlogs  overflow-hidden w-[90%] m-auto">

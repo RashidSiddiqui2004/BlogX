@@ -32,7 +32,7 @@ const CommentForm = ({ blogId, userId, username}) => {
         placeholder="What's your view on this blog...."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className="flex-1 px-4 py-1 h-16 text-black rounded-md focus:outline-none hidden md:block
+        className="flex-1 px-4 py-1 h-16 text-white rounded-md focus:outline-none hidden md:block
          focus:border-blue-500 transition duration-300 border-[0.1px] border-slate-400 bg-slate-900"
       />
       <input
@@ -40,7 +40,7 @@ const CommentForm = ({ blogId, userId, username}) => {
         placeholder="Your views..."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className="flex-1 px-4 py-1 h-16 text-slate-800 rounded-md focus:outline-none block md:hidden
+        className="flex-1 px-4 py-1 h-16 text-slate-900 rounded-md focus:outline-none block md:hidden
          focus:border-blue-500 transition duration-300 border-2"
       />
       <button type="submit" className="bg-slate-900 rounded-lg text-white

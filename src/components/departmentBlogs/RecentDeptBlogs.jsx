@@ -1,6 +1,6 @@
 
 import React, { useContext } from 'react'
-import myContext from '../../context/data/myContext'; 
+import myContext from '../../context/data/myContext';
 import { GoArrowUpRight } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import TagSection from '../blog/tags/TagSection';
@@ -27,11 +27,15 @@ const RecentDeptBlogs = ({
                 : "bg-neutral-80 text-zinc-800"
                 }`}>
 
-            <img
-                src={blogPoster}
-                alt={title}
-                className="w-full h-64 object-cover rounded-sm"
-            />
+
+            <Link to={`/blog/${encodedTitle}/${blogid}`}  >
+                <img
+                    src={blogPoster}
+                    alt={title}
+                    className="w-full h-64 object-cover rounded-sm"
+                />
+            </Link>
+
 
             <div className="mt-8 w-full text-sm tracking-normal leading-4 text-sky-500">
                 <div className="">
@@ -41,10 +45,14 @@ const RecentDeptBlogs = ({
                 </div>
             </div>
 
-            <div className="px-6 py-4">
+            <div className="px-2 py-4">
 
                 <div className='flex justify-between items-center'>
-                    <div className="font-bold text-lg md:text-xl mb-3 text-left">{title}</div>
+                    <Link
+                        to={`/blog/${encodedTitle}/${blogid}`}
+                    >
+                        <div className="font-bold text-lg md:text-xl mb-3 text-left">{title}</div>
+                    </Link>
 
                     <div className="flex items-center">
                         <Link
@@ -64,8 +72,8 @@ const RecentDeptBlogs = ({
 
 
             <div className="px-6 mb-2 mt-auto flex justify-start w-full text-sm 
-            tracking-normal leading-4 text-sky-500"> 
-                <TagSection tagList={tags}/>
+            tracking-normal leading-4 text-sky-500">
+                <TagSection tagList={tags} />
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 
 import React from 'react'
 import TagButton from './TagButton'
+import TagButtonLarge from './TagButtonsLarge';
 
 const colorCombos = [
   { bgColor: 'bg-slate-100', textColor: 'text-blue-400' },
@@ -8,7 +9,7 @@ const colorCombos = [
   { bgColor: 'bg-red-200', textColor: 'text-pink-800' }, 
 ];
 
-const TagSection = ({ tagList }) => {
+const TagSection = ({ tagList, buttonSize='small' }) => {
   return (
     <div className='flex flex-wrap gap-y-2  md:flex-row gap-x-4'>
       {
@@ -16,7 +17,13 @@ const TagSection = ({ tagList }) => {
           const colorCombo = colorCombos[index % colorCombos.length];
           return (
             <div key={index}>
-              <TagButton tagName={tag} bgColor={colorCombo.bgColor} textColor={colorCombo.textColor} />
+              {
+                buttonSize === 'small'
+                ?
+                <TagButton tagName={tag} bgColor={colorCombo.bgColor} textColor={colorCombo.textColor} />
+                :
+                <TagButtonLarge tagName={tag} bgColor={colorCombo.bgColor} textColor={colorCombo.textColor} />
+              }
             </div>
           )
         })
