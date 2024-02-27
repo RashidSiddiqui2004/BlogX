@@ -36,13 +36,15 @@ const Blog = () => {
   const [comments, setComments] = useState([]);
 
   const [commentsCnt, setCommentsCnt] = useState(0);
+  const [blogheight, setBlogHeight] = useState(0)
 
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
         const blogData = await getBlogData(blogId);
         setBlogState(blogData);
-
+        
+        setBlogHeight(document.getElementById('parent').offsetHeight)
 
         const followersCount = await getFollowersCount(blogData?.authorId);
         setFollowersCnt(followersCount);
@@ -90,8 +92,9 @@ const Blog = () => {
 
     <div style={{ color: mode === 'dark' ? 'white' : '' }} className='overflow-hidden'>
       <Navbar />
-      <div className='flex flex-row mt-8'>
-        <div className='w-[100%] md:w-[70%] md:ml-48 md:mt-14'>
+      <div className='flex mt-8 m-[10%]' id='parent'>
+        <center>
+        <div className='w-[100%] md:w-[55%] md:mt-14'>
           <h1 className='text-3xl md:text-6xl md:ml-0 text-left font-bold mx-6 mt-8 mb-6 pl-4'>{blogState?.title}</h1>
           <div className='md:w-[75%] mr-6 mt-4 pt-5'>
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} />
@@ -192,13 +195,14 @@ const Blog = () => {
 
           </div>
         </div>
-
-        <div className='hidden md:block md:mt-20'>
+          </center>
+        <div className='hidden md:block fixed md:mt-20 min-w-56 w-60 max-w-72'>
 
 
           {/* blog navigation */}
 
-          <BlogNavigation navigation={blogState?.sectionTitles} />
+          <BlogNavigation blogheight={blogheight}
+          navigation={blogState?.sectionTitles} />
         </div>
       </div>
       {userId !== null ? (
