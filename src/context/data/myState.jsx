@@ -518,6 +518,37 @@ function myState(props) {
         }
     };
 
+    const isFollowingAuthor = async (followerId, followingId) => {
+        try {
+
+            if (followerId === null) { 
+                return false;
+            }
+
+            if (followerId == followingId) { 
+                return false;
+            }
+
+            const followingsQuery = query(
+                collection(fireDB, 'followings'),
+                where('follower', '==', followerId),
+                where('following', '==', followingId)
+            );
+
+            const followingsSnapshot = await getDocs(followingsQuery);
+
+            if (!followingsSnapshot.empty) { 
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        } catch (error) {
+            return false;
+        }
+    };
+
     const getFollowersCount = async (authorId) => {
         // Get the followings count 
         const followersQuery = query(collection(fireDB, 'followings'), where('following', '==', authorId));
@@ -614,7 +645,7 @@ function myState(props) {
             getDepartmentBlogs, deptBlogs, getFeaturedBlogs,
             getAuthorBlogs, authorSpecificBlogs,
             clapBlog, commentOnBlog, comments, setComments,
-            followAuthor, getFollowersCount,
+            followAuthor, isFollowingAuthor, getFollowersCount,
             getCommentsForBlog,
             fetchNumPosts, fetchNumUsers, fetchPosts,
             makeCreator, fetchUsersListforCreatorSelection,
