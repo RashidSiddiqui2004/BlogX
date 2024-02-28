@@ -48,7 +48,8 @@ const Blog = () => {
         const blogData = await getBlogData(blogId);
         setBlogState(blogData);
 
-        setBlogHeight(document.getElementById('parent')?.offsetHeight)
+        setTimeout(() => setBlogHeight(document.getElementById('parent')?.offsetHeight),
+        1000)
 
 
 
@@ -106,7 +107,7 @@ const Blog = () => {
 
       <Navbar />
 
-      <div className='hidden left-0 md:mt-20 md:ml-10 2xl:ml-24 absolute lg:inline-block min-w-56 w-60 max-w-72'
+      <div className='hidden left-0 md:mt-20 md:ml-10 2xl:ml-16 absolute lg:inline-block min-w-56 w-60 max-w-72'
         style={{
           height: `${blogheight - 100}px`
         }}>

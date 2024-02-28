@@ -25,7 +25,10 @@ const Navbar = () => {
         navigate("/");
     }; 
     
-    const { userId, isAuthor } = useUser();
+    // const { userId, isAuthor } = useUser();
+
+    const userId = null;
+    const isAuthor = true;
 
     const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
@@ -43,7 +46,7 @@ const Navbar = () => {
     };
 
     const Ham_menu = () => {
-        return (<div className={`flex-col md:hidden w-[70%]
+        return (<div className={`flex-col md:hidden w-[70%] fixed top-0
          z-10 ${mode === "light" ? "bg-white" : "bg-[#2A2C38]"} h-[100%] shadow-2xl`}>
             <div className="mx-6 w-[70%] flex items-center
         justify-start font-extrabold text-[30px]  mt-4 "
@@ -67,12 +70,12 @@ const Navbar = () => {
                 </div>
             </Link> */}
 
-            <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
+            {/* <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
                 <div className="my-4 mx-6 text-[14px] flex items-center
         justify-start border-b-2 border-gray-600 py-4 w-[70%]">
                     Trending
                 </div>
-            </Link>
+            </Link> */}
 
             {
                 isAuthor && 
@@ -135,21 +138,22 @@ const Navbar = () => {
                 </div>
             </Link> */}
 
-            <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
+            {/* <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
                 <div className="md:mx-20 text-[14px] hidden md:flex items-center">
                     Trending
                 </div>
-            </Link>
+            </Link> */}
 
 
 
-
-            <div className={`font-semibold text-[20px] flex-1 flex items-center ml
-                justify-center ${isAuthor ? 'md:ml-52' : 'md:ml-20'} cursor-pointer`} onClick={handleHome}>
-                Blog
-                <span className="text-[#0096FF]">
-                    X
-                </span>
+            <div className='flex flex-1 justify-start'>
+                <div className={`font-semibold text-[20px] flex-1 flex items-center ml
+                 ml-8 cursor-pointer`} onClick={handleHome}>
+                    Blog
+                    <span className="text-[#0096FF]">
+                        X
+                    </span>
+                </div>
             </div>
 
             {
@@ -208,10 +212,10 @@ const Navbar = () => {
 
             <div className={`mx-4 text-[14px] hidden md:flex items-center
                 py-2 px-4`}>
-                <button disabled={true}> About Us</button>
+                <button disabled={true}> Contact Us</button>
             </div>
 
-            <div className="mx-4 text-[14px] flex items-center cursor-pointer">
+            {/* <div className="mx-4 text-[14px] flex items-center cursor-pointer">
                 {mode === "light"
                     ?
                     <img src={blog_x} onClick={() => {
@@ -223,7 +227,7 @@ const Navbar = () => {
                         toggleMode("light")
                         document.querySelector("body").style.backgroundColor = "white"
                     }} />}
-            </div>
+            </div> */}
         </div>
     );
 }
