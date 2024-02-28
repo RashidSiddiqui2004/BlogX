@@ -132,7 +132,7 @@ const Blog = () => {
 
           {
             blogState?.subtitle
-            && 
+            &&
             <h1 className='text-2xl md:text-3xl md:ml-0 text-left pb-3 
             sm:mx-6 mt-4 mb-6 pl-4 md:pl-4 font-semibold bg-clip-text bg-gradient-to-b text-transparent from-gray-400 to-neutral-200'>{blogState?.subtitle}</h1>
           }
@@ -156,21 +156,29 @@ const Blog = () => {
 
             const sectionContent = extractPlainText(content);
 
-            console.log(content);
-
             return (
               <div key={index} id={title} className='md:ml-4 mb-3 text-left mx-3 pt-14'>
 
-                <h2 className='text-2xl md:text-3xl text-left font-semibold mb-6 mt-6'>{title || ''}</h2>
-
-                {
-                  sectionContent.map((para, index) => {
-                    return (para != 'Write blog') && <p className='text-lg sm:text-lg text-gray-100 text-justify my-1' key={index}>{para}</p>
-
-                  })
+                {title &&
+                  <h2 className='text-2xl md:text-3xl text-left font-semibold mb-6 mt-6'>{title || ''}</h2>
                 }
 
-                <p className='text-lg sm:text-lg text-gray-100 text-justify'>{sectionContent}</p>
+
+                {sectionContent.map((item, index) => {
+                  return item.type === 'paragraph' ? (
+                    (item.content !== 'Write blog') && <p className='text-lg sm:text-lg text-gray-100 text-justify my-1' key={index}>
+                      {item.content}
+                    </p>
+                  ) : (
+                    <ul className='list-disc text-gray-100 my-1 mx-3' key={index}>
+                      {item.items.map((listItem, idx) => (
+                        <li key={idx} className='text-lg sm:text-lg italic'>{listItem}</li>
+                      ))}
+                    </ul>
+
+                  );
+                })}
+
 
                 {
                   !(quote === null) && <Quote text={quote} />
@@ -185,8 +193,7 @@ const Blog = () => {
 
                 {resources && Object.keys(resources).length > 0
                   &&
-                  <div className="container mx-auto py-4
-                rounded-xl my-6">
+                  <div className="container mx-auto rounded-xl my-6">
 
                     <h2 className="text-lg font-semibold mb-4">Resources</h2>
 
@@ -227,7 +234,7 @@ const Blog = () => {
 
                 {images && Object.keys(images).length > 0
                   &&
-                  <div className="container mx-auto py-4 flex flex-row justify-center gap-x-7
+                  <div className="container mx-auto flex flex-row justify-center gap-x-7
                 rounded-xl my-6">
 
                     {images && Object.entries(images).map(([index, file]) => (
