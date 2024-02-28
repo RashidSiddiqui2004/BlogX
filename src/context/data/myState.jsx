@@ -200,6 +200,7 @@ function myState(props) {
         setLoading(true)
 
         if (trendingBlogs.length >= 1) {
+            setLoading(false);
             return;
         }
 
@@ -257,6 +258,8 @@ function myState(props) {
     const [deptBlogs, setDeptBlogs] = useState([]);
 
 
+    // need to correct this for no repeatition
+
     const getDepartmentBlogs = async (department) => {
         setLoading(true)
 
@@ -271,6 +274,10 @@ function myState(props) {
 
             const data = onSnapshot(q, (QuerySnapshot) => {
                 let deptBlogsArray = [];
+
+                QuerySnapshot.forEach((doc) => {
+                    deptBlogsArray.push({ ...doc.data(), id: doc.id });
+                });
 
                 QuerySnapshot.forEach((doc) => {
                     deptBlogsArray.push({ ...doc.data(), id: doc.id });

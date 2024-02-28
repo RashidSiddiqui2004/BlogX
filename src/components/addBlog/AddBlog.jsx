@@ -5,16 +5,16 @@ import { Editor } from '@tinymce/tinymce-react';
 import getUsernameByUID from '../.././utilities/userData/GetUser';
 import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
 import getUserID from '../../utilities/userData/GetUserID';
- 
+
 import departmentsInDevComm from '../../utilities/departments/DepartmentsinDevCommm';
- 
+
 import BtnTemplate from '../../utilities/BtnTemplate2/BtnTemplate';
 import { toast } from 'react-toastify';
-import { Editor as CodeEditor } from '@monaco-editor/react'; 
+import { Editor as CodeEditor } from '@monaco-editor/react';
 import ImageUploadIcon from './ImageUpload.svg'
 import PDF from './pdf.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf } from '@fortawesome/free-solid-svg-icons'; 
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { FaTrashAlt } from 'react-icons/fa';
 
 function AddBlog() {
@@ -90,7 +90,7 @@ function AddBlog() {
         setSections([...sections, newSection]);
 
         setBlog(prevBlog => {
-            const sectionTitlesCopy = [...prevBlog.sectionTitles];
+            const sectionTitlesCopy = [...prevBlog.sectionTitles]; 
             while (sectionTitlesCopy.length <= sections.length) {
                 sectionTitlesCopy.push(null);
             }
@@ -169,9 +169,26 @@ function AddBlog() {
         });
     };
 
+    const [uploadQuoteBlock, setUploadQuoteBlock] = useState([false]);
+
+    const handleQuoteUploadBlock = (index) => {
+        setUploadQuoteBlock((prevChecks) => {
+            const indexExists = prevChecks[index] !== undefined;
+
+            // If index exists, toggle its value 
+            if (indexExists) {
+                return prevChecks.map((value, i) => (i === index ? !value : value));
+            } else {
+                const newChecks = [...prevChecks];
+                newChecks[index] = true;
+                return newChecks;
+            }
+        });
+    };
+
 
     // add code block code below
-    const lang = "javascript";
+    const lang = "JS";
 
     const [languages, setLang] = useState(["javascript"]);
     const [codes, setCodes] = useState([null]);
@@ -214,9 +231,13 @@ function AddBlog() {
     };
 
     // handle section save code
-    const handleSaveContent = async () => {
+    const handleSaveContent = async (callIndex) => {
 
-        const updatedBlogContent = [...blog.blogContent];
+        if(callIndex===3){
+            return;
+        }
+
+        const updatedBlogContent = [...blog.blogContent]; 
 
         // Create an array to store promises for each section update
         const updatePromises = editorRefs.current.map(async (editor, index) => {
@@ -242,12 +263,15 @@ function AddBlog() {
                 imagePos++;
             });
 
+            const quoteForSection = quotesForSections[index]; 
+
             const newSection = {
                 title: blog?.sectionTitles[index],
                 content: content,
                 code: codeForSection,
                 resources: filesForThisSection,
                 images: imagesForThisSection,
+                quote: quoteForSection ?? null,
             };
 
             // Update or add the new section to the array
@@ -260,16 +284,18 @@ function AddBlog() {
 
         await Promise.all(updatePromises);
 
-        setBlog({ ...blog, blogContent: updatedBlogContent, filesUpload: null });
+        setBlog({ ...blog, blogContent: updatedBlogContent});
 
         localStorage.setItem('temporaryBlog', JSON.stringify(blog));
-         
+ 
+        handleSaveContent(callIndex + 1);
+
     };
 
     // pre-upload checking
     const checkIfAllFieldsAreFilled = async () => {
 
-        await handleSaveContent();
+        await handleSaveContent(1);
 
         const blogSummary = await blogSummaryEditor.current.getContent();
 
@@ -314,10 +340,54 @@ function AddBlog() {
     const uploadBlog = async () => {
         const postUploadstate = await createBlog().then(() => localStorage.removeItem('temporaryBlog'));
 
-        console.log(blog);
-
         return postUploadstate;
-    }
+    } 
+ 
+    // localStorage.removeItem('temporaryBlog')
+
+    const [quotesForSections, setQuotesForSections] = useState(['']);
+
+    const submitQuoteforSections = async (quote, sectionIndex) => {
+ 
+        const sectionQuote = quotesForSections[sectionIndex];
+
+        if (sectionQuote || quotesForSections[sectionIndex]=='') { 
+            const updatedQuote = quote;
+            const newQuotes = [...quotesForSections];
+            newQuotes[sectionIndex] = updatedQuote;
+            setQuotesForSections(newQuotes);
+        }
+
+        else if (sectionQuote === undefined) { 
+            const updatedQuote = quote;
+            const newQuotes = [...quotesForSections];
+            newQuotes[sectionIndex] = updatedQuote;
+            setQuotesForSections(newQuotes);
+        } 
+    };
+
+    const submitTitleForSections= async (sectionTitle, sectionIndex) => {
+ 
+        const sectionQuote = blog?.sectionTitles[sectionIndex];
+
+        if (sectionQuote || quotesForSections[sectionIndex]=='') { 
+            const updatedTitle = sectionTitle;
+            const newTitles = [...quotesForSections];
+            newTitles[sectionIndex] = updatedTitle; 
+            setBlog(prevBlog => { 
+                return { ...prevBlog, sectionTitles: newTitles };
+            });
+        }
+
+        else if (sectionQuote === undefined) { 
+            const updatedTitle = sectionTitle;
+            const newTitles = [...quotesForSections];
+            newTitles[sectionIndex] = updatedTitle;
+            setBlog(prevBlog => { 
+                return { ...prevBlog, sectionTitles: newTitles };
+            });
+        } 
+    };
 
     const maxFilesPerSection = 4;
 
@@ -378,7 +448,7 @@ function AddBlog() {
         else {
             alert('Maximum number of files reached for this section');
         }
- 
+
     };
 
     const handleFileChange = (event, sectionIndex) => {
@@ -424,15 +494,15 @@ function AddBlog() {
                 const uploadedFileURL = await uploadFile(image);
                 if (uploadedFileURL) {
                     imageURL = uploadedFileURL;
-                } 
+                }
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
         }
- 
+
 
         const sectionImages = imagesForSections[sectionIndex];
- 
+
 
         if (sectionImages && sectionImages.length <= maxImagesPerSection) {
             const imageObject = {
@@ -459,10 +529,10 @@ function AddBlog() {
             alert('Maximum number of images reached for this section');
         }
     };
-  
+
 
     const handleImageChange = (event, sectionIndex) => {
-        const file = event.target?.files[0]; 
+        const file = event.target?.files[0];
         setImageName(file?.name);
         submitImageforSections(file, sectionIndex);
     };
@@ -523,7 +593,18 @@ function AddBlog() {
                             onChange={(e) => setBlog({ ...blog, title: e.target.value })}
                             name='title'
                             className='bg-inherit text-3xl mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
-                            placeholder='Post title'
+                            placeholder='Blog title'
+                        />
+                    </div>
+
+                    {/* blog subtitle of blog */}
+                    <div>
+                        <input type="text" 
+                            value={blog.subtitle}
+                            onChange={(e) => setBlog({ ...blog, subtitle: e.target.value })}
+                            name='subtitle'
+                            className='bg-inherit text-lg mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 placeholder:text-2xl outline-none'
+                            placeholder='Blog subtitle'
                         />
                     </div>
 
@@ -537,23 +618,26 @@ function AddBlog() {
                                     <input type="text"
                                         value={blog.sectionTitles[index]}
 
-                                        onChange={(e, i) => {
-                                            setBlog(prevBlog => {
-                                                const sectionTitlesCopy = [...prevBlog.sectionTitles];
-                                                // If index i is out of bounds, fill the array with empty strings up to index i
-                                                while (sectionTitlesCopy.length <= i) {
-                                                    sectionTitlesCopy.push(null);
-                                                }
-                                                sectionTitlesCopy[index] = e.target.value;
-                                                return { ...prevBlog, sectionTitles: sectionTitlesCopy };
-                                            });
-                                        }}
+                                        // onChange={(e, i) => {
+                                        //     setBlog(prevBlog => {
+                                        //         const sectionTitlesCopy = [...prevBlog.sectionTitles];
+                                        //         // If index i is out of bounds, fill the array with empty strings up to index i
+                                        //         while (sectionTitlesCopy.length <= i) {
+                                        //             sectionTitlesCopy.push(null);
+                                        //         }
+                                        //         sectionTitlesCopy[index] = e.target.value;
+                                        //         return { ...prevBlog, sectionTitles: sectionTitlesCopy };
+                                        //     });
+                                        // }}
+
+                                        onChange={(e) => submitTitleForSections(e.target.value,index)}
+
 
                                         name='sectionTitle'
                                         className='bg-inherit text-3xl mb-4 px-2 py-2 w-full rounded-lg inputbox
                                          text-white placeholder:text-gray-200 placeholder:text-xl outline-none'
                                         placeholder={`Section ${index + 1} title ${(index === 0 ? '' : '(leave empty if want to continue with previous section)')}`}
-                                    />
+                                    /> 
                                 </div>
 
                                 <Editor
@@ -635,6 +719,7 @@ function AddBlog() {
 
 
                                         </div>
+
                                     </div>
                                     :
                                     <div className=' flex flex-row gap-x-9'>
@@ -663,6 +748,15 @@ function AddBlog() {
                                               focus:ring-blue-400 hover:scale-95 transition-all duration-300"
                                         >
                                             Upload Image
+                                        </button>
+
+                                        <button
+                                            onClick={() => handleQuoteUploadBlock(index)}
+                                            className="bg-blue-700 text-white my-4 px-4 py-2 flex justify-end rounded-md
+                                             hover:bg-blue-900 focus:outline-none focus:ring
+                                              focus:ring-blue-400 hover:scale-95 transition-all duration-300"
+                                        >
+                                            Add Quote Block
                                         </button>
 
                                     </div>
@@ -744,7 +838,7 @@ function AddBlog() {
                                                         <div className='flex flex-row gap-x-3'>
                                                             <img src={imageUrl.imageURL} alt="Uploaded Image" className="w-40 h-auto mr-2" />
                                                             <button onClick={() => removeImage(index, fileIndex)} className="ml-2 text-red-500 hover:text-red-400">
-                                                                <FaTrashAlt className='text-3xl'/>
+                                                                <FaTrashAlt className='text-3xl' />
                                                             </button>
                                                         </div>
                                                     ) : (
@@ -779,7 +873,7 @@ function AddBlog() {
                                             </div>
                                         </div>
 
-                                        <input id={`fileInput-${index}`} accept="image/*" className="hidden" onChange={(event) => handleFileChange(event, sectionIndex)} />
+                                        <input id={`fileInput-${index}`} accept="image/*" className="hidden" onChange={(event) => handleImageChange(event, sectionIndex)} />
 
 
                                         <button
@@ -789,6 +883,22 @@ function AddBlog() {
                                             Remove Image Upload
                                         </button>
 
+                                    </div>
+                                    :
+                                    <>
+                                    </>
+                                }
+
+                                {(uploadQuoteBlock[index] === true)
+                                    ?
+                                    <div>
+                                        <input type="text" 
+                                            value={quotesForSections[index]} 
+                                            onChange={(e) => submitQuoteforSections(e.target.value,index)}
+                                            name='Quote'
+                                            className='bg-inherit text-lg mb-4 px-2 py-2 w-full rounded-lg inputbox text-white placeholder:text-gray-200 outline-none'
+                                            placeholder='Add your quote here'
+                                        /> 
                                     </div>
                                     :
                                     <>
@@ -809,17 +919,17 @@ function AddBlog() {
                                 Add New Section
                             </button>
 
-                            <button
+                            {/* <button
                                 onClick={handleRemoveSection}
                                 className="bg-blue-950 text-white px-4 py-2 text-xl
                     rounded-md hover:bg-blue-900 shadow-md shadow-green-200
                     hover:scale-95 transition-all"
                             >
                                 Remove this section
-                            </button>
+                            </button> */}
 
                             <button
-                                onClick={handleSaveContent}
+                                onClick={() => handleSaveContent(1)}
                                 className="bg-blue-950 text-white px-4 py-2 text-xl
                     rounded-md hover:bg-blue-900 shadow-md shadow-green-200
                     hover:scale-95 transition-all"

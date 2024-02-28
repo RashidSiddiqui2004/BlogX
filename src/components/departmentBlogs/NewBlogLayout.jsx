@@ -22,7 +22,7 @@ const NewBlogLayout = ({
 
     return (
         <div
-            className={`flex flex-row mt-2 max-md:ml-0 max-md:w-full flex-grow md:h-full ${mode === "dark"
+            className={`grid grid-cols-12 mt-2 max-md:ml-0 max-md:w-full flex-grow md:h-full ${mode === "dark"
                 ? "rounded-lg text-white"
                 : "bg-neutral-80 text-zinc-800"
                 }`}>
@@ -30,10 +30,10 @@ const NewBlogLayout = ({
             <img
                 src={blogPoster}
                 alt={title}
-                className="w-full h-64 object-cover rounded-sm"
+                className="w-full h-64 object-cover rounded-sm col-span-6"
             />
 
-            <div>
+            <div className='col-span-6'>
 
 
                 <div className="w-full text-sm tracking-normal leading-4 text-sky-500">

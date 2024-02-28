@@ -24,26 +24,41 @@ const OutputCode = ({ lang, code }) => {
         }, 2000);
     };
 
-    const numberOfLines = code.split('\n').length;
+    const numberOfLines = code?.split('\n').length;
     const lineHeight = 22;
     const height = numberOfLines * lineHeight;
 
     return (
+
         <div className="parent-container">
 
+            {codeCopied ? <h3 className='ml-[80%] sm:ml-[91%] w-fit rounded-md bg-slate-800 text-slate-100 px-2 py-2 tracking-wide'>Copied!</h3> : <h3 className='h-10 w-fit tracking-wide'></h3>}
+
             <div className="code-editor-container">
-                <div className="code-editor-header bg-slate-800">
-                    <div className='flex flex-row gap-x-1 ml-3'>
+
+                <div className="code-editor-header grid grid-cols-12 bg-slate-800">
+                    {/* Logo on the left */}
+                    <div className='flex flex-row gap-x-1 ml-3 col-span-2 items-center'>
                         <div className='bg-red-500 rounded-full h-3 w-3'></div>
                         <div className='bg-yellow-400 rounded-full h-3 w-3'></div>
-                        <div className='bg-green-500 rounded-full h-3 w-3'></div>
+                        <div className='bg-green-500 rounded-full h-3 w-3'></div> 
                     </div>
-                    <h2 className='mx-4 text-xs'>{lang}</h2>
-                    <button onClick={copyCodeToClipboard} className="copy-code-button">
-                        {codeCopied ? <CiSquareCheck /> : <FaCopy />}
-                        <span className='italic'>{codeCopied ? 'Copied' : 'Copy Code'}</span>
-                    </button>
+ 
+                    <div className='col-span-6 flex justify-start'>
+                        <h2 className='text-xs/5 bg-slate-700/35 rounded-md px-3 py-1'>{lang}</h2>
+                    </div>
+
+                    {/* Copy button on the right */}
+
+                    <div className='col-span-4 flex justify-end mr-1'>
+                        <button onClick={copyCodeToClipboard} className="copy-code-button col-span-3 flex items-center justify-end">
+                            {codeCopied ? <CiSquareCheck /> : <FaCopy />}
+                            {/* <span className=''>{codeCopied ? 'Copied' : 'Copy Code'}</span> */}
+                        </button>    </div>
+
+
                 </div>
+
 
                 {/* Code editor */}
                 <div className="code-editor">
@@ -57,6 +72,7 @@ const OutputCode = ({ lang, code }) => {
                             readOnly: true,
                             automaticLayout: true,
                             scrollBeyondLastLine: false,
+                            minimap: false,
                             acceptSuggestionOnCommitCharacter: false,
                             tabFocusMode: false,
                             stickyTabStops: false,

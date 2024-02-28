@@ -87,7 +87,7 @@ function Signup() {
                 progress: undefined,
                 theme: "colored",
             })
-            setLoading(loading)
+            setLoading(false)
         }
 
     }

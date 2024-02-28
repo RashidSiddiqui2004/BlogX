@@ -2,6 +2,7 @@
 import React from 'react'  
 import { Link } from 'react-router-dom'; 
 import RecommendationCard from './RecommendationCard';
+import getEncodedTitle from '../../../utilities/fetchURLTitle/GetEncodedTitle';
 
 const RecommendedBlogs = ({ author, authorSpecificBlogs}) => {
  
@@ -10,7 +11,7 @@ const RecommendedBlogs = ({ author, authorSpecificBlogs}) => {
         <div>
 
             <div className="more-from-author-container mt-8 text-left ml-4">
-                <h2 className="text-xl font-semibold mb-4">{`More from ${author}`}</h2>
+                <h2 className="text-xl font-semibold mb-4">{`More from ${author ? author : "Author"}`}</h2>
                 
             </div>
 
@@ -32,8 +33,10 @@ const RecommendedBlogs = ({ author, authorSpecificBlogs}) => {
                             // let shortSummary = extractFirstXWords(summary, 30);
                             // shortSummary += ' ...'
 
+                            const encodedTitle = getEncodedTitle(title);
+
                             return (
-                                <Link to={`/blog/${title}/${id}`} key={index}>
+                                <Link to={`/blog/${encodedTitle}/${id}`} key={index}>
                                     <RecommendationCard title={title} publishDate={date}
                                         department={department} blogPoster={blogPoster}
                                         tags={tags} minsRead={minutesRead}/>

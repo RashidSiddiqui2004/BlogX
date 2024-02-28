@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Navbar from "./navbar/Navbar";
 import FeaturedSection from './featured/FeaturedSection';
 import CategorySection from './categories/Categories';
@@ -10,37 +10,39 @@ import myContext from "../../context/data/myContext";
 const Homepage = () => {
 
   const context = useContext(myContext);
-  const { loading, setLoading} = context;
-
-  // useEffect(()=>{
-  //   setLoading(false);
-  // },[])
-
+  const { loading } = context;
+ 
   return (
- 
+
     <div className="bg-[#0F1016]">
- 
-      <Navbar /> 
-      
-      <div className="TrendingBlogs  overflow-hidden w-[90%] m-auto">
-        <FeaturedSection />
-      </div>
 
-      {/* {loading && <Loader />} */}
+    
+      {loading ? <Loader />
+        :
+        <div>
 
-      <div className="CategorySection  overflow-hidden w-[90%] m-auto">
-        <CategorySection />
-      </div>
-      
-      <div className="TrendingBlogs  overflow-hidden w-[90%] m-auto">
- 
-        <TrendingBlogs />
-      </div>
-      
-      <Footer/>
- 
+          <Navbar />
+
+          <div className="TrendingBlogs  overflow-hidden w-[90%] m-auto">
+            <FeaturedSection />
+          </div>
+
+          <div className="CategorySection  overflow-hidden w-[90%] m-auto">
+            <CategorySection />
+          </div>
+
+          <div className="TrendingBlogs  overflow-hidden w-[90%] m-auto">
+
+            <TrendingBlogs />
+          </div>
+
+          <Footer />
+
+        </div>}
+
+
     </div>
-     
+
   );
 
 }

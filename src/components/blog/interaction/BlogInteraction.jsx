@@ -42,13 +42,13 @@ const BlogInteraction = ({ blogId, claps, commentsCount, userId, blog }) => {
                     <button disabled={(userId === null)} 
                     onClick={ () => {
                         throttleClapBlog(); 
-                        }} >
-                        <PiHandsClappingBold className='text-2xl font-thin text-slate-300' />
+                        }} title='Clap Blog'>
+                        <PiHandsClappingBold className='text-2xl font-thin text-slate-3000' />
                     </button>
                     <span className='text-lg font-semibold'>{claps}</span>
                 </div>
                 <div className='flex flex-row space-x-3'>
-                    <FaRegComment className='text-2xl text-slate-300' />
+                    <a href='#comments' title='Comment Section'><FaRegComment className='text-2xl text-slate-300' /></a>
                     <span className='text-lg font-semibold'>{commentsCount}</span>
                 </div>
                 <div className='flex flex-row space-x-3 cursor-pointer'

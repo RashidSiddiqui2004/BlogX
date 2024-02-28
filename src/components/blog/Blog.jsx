@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Navbar from '../homepage/navbar/Navbar';
 import BlogAuthorHighlights from './blogAuthorHighlights/BlogAuthorHighlights';
-import RenderHTMLContent from '../../utilities/htmlRenderer/RenderHTMLContent';
 import myContext from '../../context/data/myContext';
 import CommentForm from './comments/CommentForm';
 import TagSection from './tags/TagSection';
@@ -16,11 +15,12 @@ import OutputCode from '../code-editor/OutputCode';
 
 import './image.css'
 
-import extractText from '../../utilities/initials/getContent';
 import PDF from './pdfImage.svg'
 import Word from './ms-word.svg'
 import RecommendedBlogs from './recommendedBlogs/RecommendedBlogs';
 import getFileType from '../../utilities/filetype/GetFileType'
+import extractPlainText from '../../utilities/initials/getBlogContent';
+import Quote from './Quote';
 
 
 const Blog = () => {
@@ -106,7 +106,7 @@ const Blog = () => {
 
       <Navbar />
 
-      <div className='hidden left-0 md:mt-20 md:ml-10 2xl:ml-24 absolute md:inline-block min-w-56 w-60 max-w-72'
+      <div className='hidden left-0 md:mt-20 md:ml-10 2xl:ml-24 absolute lg:inline-block min-w-56 w-60 max-w-72'
         style={{
           height: `${blogheight - 100}px`
         }}>
@@ -121,39 +121,63 @@ const Blog = () => {
 
       <div className='mx-2 mt-8 pt-5' id='parent'>
 
-        <div className='w-full md:w-[70%] md:ml-80 md:mt-14' >
+        <div className='w-full lg:w-[70%] lg:ml-80 md:mt-14' >
 
           <div className="flex justify-start">
             <h2 className='mt-4 bg-slate-800 rounded-md w-fit px-3 py-1 mx-4'>{blogState?.department ? blogState.department : 'Department'}</h2>
           </div>
 
-          <h1 className='text-4xl md:text-6xl md:ml-0 text-left py-3 
-            sm:mx-6 mt-4 mb-6 pl-6 md:pl-4 font-bold bg-clip-text bg-gradient-to-b text-transparent from-gray-100 to-neutral-200'>{blogState?.title}</h1>
+          <h1 className='text-4xl md:text-6xl md:ml-0 text-left pt-3 pb-2 
+            sm:mx-6 mt-4 mb-6 pl-4 md:pl-4 font-bold bg-clip-text bg-gradient-to-b text-transparent from-gray-100 to-neutral-200'>{blogState?.title}</h1>
+
+          {
+            blogState?.subtitle
+            && 
+            <h1 className='text-2xl md:text-3xl md:ml-0 text-left pb-3 
+            sm:mx-6 mt-4 mb-6 pl-4 md:pl-4 font-semibold bg-clip-text bg-gradient-to-b text-transparent from-gray-400 to-neutral-200'>{blogState?.subtitle}</h1>
+          }
+
 
           <div className='w-full md:mx-4 md:mr-6 mt-4 pt-5'>
 
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} department={blogState?.department} />
           </div>
 
-          {blogState?.description && (
+          {/* {blogState?.description && (
             <div className={`ml-4 text-left ${blogState.description.includes('<img') ? 'image-left' : ''}`}>
               <RenderHTMLContent htmlContent={blogState?.description} />
             </div>
-          )}
+          )} */}
+
 
           {blogState?.blogContent?.map((section, index) => {
 
-            const { title, content, code, resources, images } = section;
+            const { title, content, code, resources, images, quote } = section;
 
-            const sectionContent = extractText(content);
+            const sectionContent = extractPlainText(content);
 
+            console.log(content);
 
             return (
-              <div key={index} id={title} className='md:ml-4 mb-3 text-left mx-3'>
+              <div key={index} id={title} className='md:ml-4 mb-3 text-left mx-3 pt-14'>
+
                 <h2 className='text-2xl md:text-3xl text-left font-semibold mb-6 mt-6'>{title || ''}</h2>
+
+                {
+                  sectionContent.map((para, index) => {
+                    return (para != 'Write blog') && <p className='text-lg sm:text-lg text-gray-100 text-justify my-1' key={index}>{para}</p>
+
+                  })
+                }
+
                 <p className='text-lg sm:text-lg text-gray-100 text-justify'>{sectionContent}</p>
+
+                {
+                  !(quote === null) && <Quote text={quote} />
+                }
+
                 {code !== null &&
-                  <div className='mt-8 mb-4'>
+                  <div className='mt-4 mb-4'>
                     <OutputCode lang='javascript' code={code} />
                   </div>
 
@@ -196,7 +220,8 @@ const Blog = () => {
 
                     </div>
 
-                  </div>}
+                  </div>
+                }
 
 
 
@@ -213,11 +238,12 @@ const Blog = () => {
                           {file && (
                             <>
                               <label>
-                                <img className="w-64 h-auto" src={file?.imageURL} alt="PDF Icon" />
+                                <img className="h-auto rounded-sm" src={file?.imageURL} alt="PDF Icon" />
 
 
-                                <a href={file?.imageURL} target="_blank" rel="noopener noreferrer"
-                                  className="hover:underline py-3 text-sm">{file?.imageName}</a>
+                                <p className="py-3 text-sm items-center text-center">
+                                  {file?.imageName}
+                                </p>
 
 
                               </label>
@@ -227,7 +253,8 @@ const Blog = () => {
                       </div>
                     ))}
 
-                  </div>}
+                  </div>
+                }
 
 
               </div>
@@ -268,7 +295,7 @@ const Blog = () => {
       </div>
 
 
-      <div className='md:flex md:flex-row'>
+      <div className='md:flex md:flex-row' id='comments'>
         <div className='mx-4 md:w-[45%] md:mx-auto' id='Starting with React'>
           <CommentSection comments={comments} />
         </div>

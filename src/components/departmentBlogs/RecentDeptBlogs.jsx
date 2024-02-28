@@ -41,7 +41,7 @@ const RecentDeptBlogs = ({
                 <div className="">
                     {/* <div className="text-xs md:text-sm">{author}</div> */}
                     {/* <div className="text-xs md:text-sm ml-3 md:ml-6">{minutesRead} min read</div> */}
-                    <div className="text-xs md:text-sm ml-3 md:ml-6 text-left font-bold">{publishDate}</div>
+                    <div className="text-xs md:text-sm ml-2 md:ml-4 text-left font-bold">{publishDate}</div>
                 </div>
             </div>
 

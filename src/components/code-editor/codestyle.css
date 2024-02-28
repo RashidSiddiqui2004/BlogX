@@ -4,14 +4,15 @@
 
 .code-editor-container {
     border-radius: 8px;
-    margin-top: 20px;
+    margin-top: 16px;
     margin-bottom: 15px;
 }
 
 .code-editor-header {
-    display: flex;
+    /* display: flex; */
     align-items: center;
-    justify-content: space-between;
+    justify-content:stretch;
+    padding-bottom: 2px;
 }
 
 .code-editor-header h2 {
@@ -20,13 +21,17 @@
 }
 
 .copy-code-button {
+    background-color: #1d1d1db0;
     color: #fff;
     border: none;
-    padding: 8px 12px;
+    padding: 5px 5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
     border-radius: 4px;
+    margin-right: 2px;
     cursor: pointer;
     display: flex;
-    align-items: center;
+    align-items: center; 
 }
 
 .copy-code-button span {

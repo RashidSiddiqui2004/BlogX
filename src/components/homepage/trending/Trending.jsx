@@ -5,7 +5,7 @@ import myContext from "../../../context/data/myContext";
 import Newblogcard from "./Newblogcard";
 import extractFirstXWords from "../../../utilities/initials/fetchXWords";
 import getEncodedTitle from "../../../utilities/fetchURLTitle/GetEncodedTitle";
-import "./styles.css"; // Adjust the path to your CSS file
+import "./styles.css"; 
 
 function TrendingBlogs() {
   const context = useContext(myContext);
