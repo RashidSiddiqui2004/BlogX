@@ -3,7 +3,7 @@ import React from 'react';
 
 const Modal = ({ isOpen, onClose, title, content="", blogTitle="", onConfirm }) => {
     return (
-        <div className={`fixed inset-0 flex justify-center items-center z-50 ${isOpen ? 'visible' : 'invisible'}`}>
+        <div className={`fixed inset-0 flex justify-center items-center my-[45vh] z-50 ${isOpen ? 'visible' : 'invisible'}`}>
             <div className="absolute inset-0 bg-gray-800 opacity-50"></div>
             <div className="bg-white p-6 rounded-md shadow-md z-10">
                 <h2 className="text-lg font-semibold mb-4 text-slate-800">{title}</h2>

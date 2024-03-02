@@ -7,7 +7,7 @@ import myContext from '../../../context/data/myContext';
 const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount, department }) => {
 
   const context = useContext(myContext);
-  const { mode, followAuthor, isFollowingAuthor } = context;
+  const { mode, followAuthor, isFollower, isFollowingAuthor } = context;
 
   const isDarkTheme = (mode == "dark");
 
@@ -19,13 +19,13 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount, department 
     await followAuthor(userId, authorId, author);
   }
 
-  useEffect(()=>{
-    const checkIfFollowing = async () =>{
+  useEffect(() => {
+    const checkIfFollowing = async () => {
       await isFollowingAuthor(userId, authorId);
-    }
-
+    } 
     checkIfFollowing();
-  },[])
+ 
+  }, [blog])
 
   return (
     <div className='cursor:default mt-2'>
@@ -43,8 +43,8 @@ const BlogAuthorHighlights = ({ userId, blog, blogId, commentsCount, department 
           <div className='flex flex-row items-center space-x-4'>
             <h2>{author}</h2>
             <div className='text-xs'>•</div> {/* Centered Dot */}
-            <button disabled={userId === null || isFollowingAuthor} className={`text-md ${isFollowingAuthor ? 'text-slate-300' : 'text-white'}`}
-            onClick={followUser}> {isFollowingAuthor ? 'Following' : 'Follow'}</button>
+            <button disabled={authorId === null || isFollower} className={`text-md ${isFollower ? 'text-slate-300' : 'text-white'}`}
+              onClick={followUser}> {isFollower ? 'Following' : 'Follow'}</button>
 
           </div>
 

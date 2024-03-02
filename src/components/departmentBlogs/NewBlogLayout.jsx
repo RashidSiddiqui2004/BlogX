@@ -27,11 +27,17 @@ const NewBlogLayout = ({
                 : "bg-neutral-80 text-zinc-800"
                 }`}>
 
-            <img
-                src={blogPoster}
-                alt={title}
-                className="w-full h-64 object-cover rounded-sm col-span-6"
-            />
+            <Link
+                to={`/blog/${encodedTitle}/${blogid}`}
+                className="text-blue-500 hover:text-blue-700 col-span-6"
+            >
+                <img
+                    src={blogPoster}
+                    alt={title}
+                    className="w-full h-64 object-cover rounded-sm"
+                />
+            </Link>
+
 
             <div className='col-span-6'>
 
@@ -60,9 +66,14 @@ const NewBlogLayout = ({
                     </div>
 
 
-                    <p className="text-base mb-2 text-justify">
-                        {summary}
-                    </p>
+                    <Link
+                        to={`/blog/${encodedTitle}/${blogid}`} 
+                    >
+                        <p className="text-base mb-2 text-justify">
+                            {summary}
+                        </p>                          
+                    </Link>
+
                 </div>
 
 

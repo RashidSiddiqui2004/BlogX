@@ -41,7 +41,7 @@ const DepartmentBlogs = () => {
         const fetchDeptBlogs = async () => {
             try {
                 // Fetch dept blogs data
-                const deptBlogsData = await getDepartmentBlogs(departmentName);
+                await getDepartmentBlogs(departmentName);
 
             } catch (error) {
                 return;
@@ -149,7 +149,7 @@ const DepartmentBlogs = () => {
 
                     <div>
                         <h1 className='text-2xl md:text-2xl font-semibold text-center
-                    text-gray-700 mb-6 mt-11'>No blogs found in this department</h1>
+                    text-gray-400 mb-6 mt-11'>No blogs found in this department</h1>
                     </div>
 
             }

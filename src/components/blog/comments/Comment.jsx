@@ -33,7 +33,7 @@ const Comment = ({ comment }) => {
                 </div>
 
             </div>
-            <p className="mt-2 flex justify-start mx-16">{comment.comment}</p>
+            <p className="mt-2 flex justify-start mx-16 text-justify">{comment.comment}</p>
         </div>
     )
 }

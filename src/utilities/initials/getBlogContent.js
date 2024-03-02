@@ -1,5 +1,10 @@
  
 function extractPlainText(html) {
+
+    if(html==undefined){
+        return null;
+    }
+
     const entitiesMap = {
         '&nbsp;': ' ',
         '&ldquo;': '“',
@@ -22,7 +27,7 @@ function extractPlainText(html) {
 
     // Process each paragraph
     if (paragraphMatches) {
-        paragraphMatches.forEach(paragraph => {
+        paragraphMatches?.forEach(paragraph => {
             // Remove HTML tags and trim whitespace
             const plainText = paragraph.replace(/<[^>]*>/g, '').trim();
             result.push({ type: 'paragraph', content: plainText });
@@ -31,7 +36,7 @@ function extractPlainText(html) {
 
     // Process each list
     if (listMatches) {
-        listMatches.forEach(list => {
+        listMatches?.forEach(list => {
             // Remove HTML tags and trim whitespace
             const listItems = list.replace(/<[^>]*>/g, '').trim().split('\n').map(item => item.trim());
             result.push({ type: 'list', items: listItems });
@@ -39,7 +44,7 @@ function extractPlainText(html) {
     }
 
     if (listMatches2) {
-        listMatches.forEach(list => {
+        listMatches?.forEach(list => {
             // Remove HTML tags and trim whitespace
             const listItems = list.replace(/<[^>]*>/g, '').trim().split('\n').map(item => item.trim());
             result.push({ type: 'list', items: listItems });

@@ -284,10 +284,10 @@ function myState(props) {
                 });
 
                 setDeptBlogs(deptBlogsArray);
-                setLoading(false);
+
 
             });
-
+            setLoading(false);
 
             return true;
 
@@ -525,14 +525,18 @@ function myState(props) {
         }
     };
 
+    const [isFollower,setIsFollower] = useState(false);
+
     const isFollowingAuthor = async (followerId, followingId) => {
         try {
 
-            if (followerId === null) { 
+            if (followerId === null || followingId===null)  { 
+                setIsFollower(false);
                 return false;
             }
 
-            if (followerId == followingId) { 
+            if (followerId == followingId) {
+                setIsFollower(false);
                 return false;
             }
 
@@ -544,14 +548,17 @@ function myState(props) {
 
             const followingsSnapshot = await getDocs(followingsQuery);
 
-            if (!followingsSnapshot.empty) { 
+            if (!followingsSnapshot.empty) {
+                setIsFollower(true);
                 return true;
             }
-            else{
+            else {
+                setIsFollower(false);
                 return false;
             }
 
         } catch (error) {
+            setIsFollower(false);
             return false;
         }
     };
@@ -652,7 +659,7 @@ function myState(props) {
             getDepartmentBlogs, deptBlogs, getFeaturedBlogs,
             getAuthorBlogs, authorSpecificBlogs,
             clapBlog, commentOnBlog, comments, setComments,
-            followAuthor, isFollowingAuthor, getFollowersCount,
+            followAuthor, isFollowingAuthor, isFollower, getFollowersCount,
             getCommentsForBlog,
             fetchNumPosts, fetchNumUsers, fetchPosts,
             makeCreator, fetchUsersListforCreatorSelection,

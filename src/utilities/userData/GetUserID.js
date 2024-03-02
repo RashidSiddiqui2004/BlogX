@@ -4,7 +4,7 @@ async function getUserID() {
     try {
         const userid = await JSON.parse(localStorage.getItem('user'))?.user?.uid;
   
-        if(userid===undefined) return -1;
+        if(userid===undefined || userid===null) return -1;
 
         return userid;
         

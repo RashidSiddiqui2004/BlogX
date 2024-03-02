@@ -7,8 +7,8 @@ const ShortDeptBlog = ({
     summary,
     tags,
     blogPoster,
-    minutesRead,
-    author,
+    // minutesRead,
+    // author,
     publishDate,
 }) => {
 

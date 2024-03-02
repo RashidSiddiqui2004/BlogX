@@ -44,19 +44,17 @@ const Blog = () => {
   useEffect(() => {
 
     const fetchBlogData = async () => {
-      try {
-        const blogData = await getBlogData(blogId);
-        setBlogState(blogData);
+      try { 
+        const blogData = await getBlogData(blogId).then((data) => {
+          // setBlogHeight(document.getElementById('parent')?.offsetHeight);
+          setBlogState(data);
+          getAuthorBlogs(data.authorId, blogId); 
+          getFollowersCount(data.authorId).then((followersCount) => setFollowersCnt(followersCount));
+        });
 
-        setBlogHeight(document.getElementById('parent')?.offsetHeight)
-
-
-
-        const followersCount = await getFollowersCount(blogData?.authorId);
-
-        await getAuthorBlogs(blogData.authorId, blogId);
-
-        setFollowersCnt(followersCount);
+        setTimeout(() => setBlogHeight(document.getElementById('parent')?.offsetHeight),
+          1000)
+ 
       } catch (error) {
         console.error('Error fetching blog data:', error);
       }
@@ -65,8 +63,7 @@ const Blog = () => {
     const fetchUserData = async () => {
       try {
         const uid = await getUserID();
-        if (uid === -1) return;
-
+        if (uid === -1) return; 
         const username = await getUsernameByUID(uid);
         if (username) {
           setUserName(username);
@@ -99,16 +96,15 @@ const Blog = () => {
 
 
 
-
   return (
 
     <div style={{ color: mode === 'dark' ? 'white' : '' }} className='overflow-hidden'>
 
-      <Navbar />
+      <Navbar isFixed={false} />
 
       <div className='hidden left-0 md:mt-20 md:ml-10 2xl:ml-24 absolute lg:inline-block min-w-56 w-60 max-w-72'
         style={{
-          height: `${blogheight - 100}px`
+          height: `${blogheight}px`
         }}>
 
         {/* blog navigation */}
@@ -119,12 +115,12 @@ const Blog = () => {
       </div>
 
 
-      <div className='mx-2 mt-8 pt-5' id='parent'>
+      <div className='mx-2 mt-8 sm:pt-5 sm:my-4' id='parent'>
 
-        <div className='w-full lg:w-[70%] lg:ml-80 md:mt-14' >
+        <div className='w-full lg:w-[70%] lg:ml-80 mt-8 md:mt-14' >
 
           <div className="flex justify-start">
-            <h2 className='mt-4 bg-slate-800 rounded-md w-fit px-3 py-1 mx-4'>{blogState?.department ? blogState.department : 'Department'}</h2>
+            <h2 className='mt-4 bg-slate-800 text-sm rounded-md w-fit px-3 py-1 mx-4'>{blogState?.department ? blogState.department : 'Department'}</h2>
           </div>
 
           <h1 className='text-4xl md:text-6xl md:ml-0 text-left pt-3 pb-2 
@@ -133,8 +129,8 @@ const Blog = () => {
           {
             blogState?.subtitle
             &&
-            <h1 className='text-2xl md:text-3xl md:ml-0 text-left pb-3 
-            sm:mx-6 mt-4 mb-6 pl-4 md:pl-4 font-semibold bg-clip-text bg-gradient-to-b text-transparent from-gray-400 to-neutral-200'>{blogState?.subtitle}</h1>
+            <h1 className='text-2xl md:text-3xl md:ml-0 text-left 
+            sm:mx-6 mt-4 mb-2 pl-4 md:pl-4 font-semibold bg-clip-text bg-gradient-to-b text-transparent from-gray-400 to-neutral-200'>{blogState?.subtitle}</h1>
           }
 
 
@@ -142,13 +138,7 @@ const Blog = () => {
 
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} department={blogState?.department} />
           </div>
-
-          {/* {blogState?.description && (
-            <div className={`ml-4 text-left ${blogState.description.includes('<img') ? 'image-left' : ''}`}>
-              <RenderHTMLContent htmlContent={blogState?.description} />
-            </div>
-          )} */}
-
+  
 
           {blogState?.blogContent?.map((section, index) => {
 
@@ -157,7 +147,7 @@ const Blog = () => {
             const sectionContent = extractPlainText(content);
 
             return (
-              <div key={index} id={title} className='md:ml-4 mb-3 text-left mx-3 pt-14'>
+              <div key={index} id={title} className='md:ml-4 mb-3 text-left mx-3 pt-10'>
 
                 {title &&
                   <h2 className='text-2xl md:text-3xl text-left font-semibold mb-6 mt-6'>{title || ''}</h2>

@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import DepartmentBlogs from './DepartmentBlogs'
-import Navbar from './../homepage/navbar/Navbar'
 import Footer from './../homepage/footer/Footer'
 import DepartmentBlogsMobile from './DepartmentBlogsMobile'
 import NavbarDept from './NavbarDept'
 import { useParams } from 'react-router-dom'
+import myContext from '../../context/data/myContext'
+import Loader from '../../utilities/loader/Loader'
 
 const DeptBlogLayout = () => {
+
+  const context = useContext(myContext);
+  const { loading } = context;
 
   const params = useParams();
   const departmentName = params.deptName;
@@ -14,17 +18,22 @@ const DeptBlogLayout = () => {
   return (
     <div>
 
-      <NavbarDept department={departmentName}/>
 
-      <div className='hidden md:block'>
-        <DepartmentBlogs />
-      </div>
+      {loading ? <Loader />
+        :
+        <div>
+          <NavbarDept department={departmentName} />
 
-      <div className='block md:hidden'>
-        <DepartmentBlogsMobile />
-      </div>
+          <div className='hidden md:block'>
+            <DepartmentBlogs />
+          </div> <div className='block md:hidden'>
+            <DepartmentBlogsMobile />
+          </div>
+          <Footer />
+        </div>
 
-      <Footer />
+      }
+
     </div>
   )
 }
