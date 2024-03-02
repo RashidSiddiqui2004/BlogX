@@ -7,7 +7,7 @@ const Card = ({ title, image }) => {
         <img className="w-full h-full object-cover" src={image} alt="Card" />
       </div>
       <div className="px-4 py-3">
-        <div className="text-lg font-semibold">{title}</div>
+        <div className="text-lg font-extrabold">{title}</div>
       </div>
     </div>
   );
