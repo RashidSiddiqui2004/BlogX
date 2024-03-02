@@ -35,13 +35,13 @@ const BlogNavigation = ({ navigation, blogheight }) => {
         })}
       </ul>
 
-      {/* <div className='mt-10 flex-col justify-center items-center'>
+      <div className='mt-10 flex-col justify-center items-center'>
         <div className='flex justify-center items-center'>Till Bottom</div>
         <div className='border-t-2 border-white my-1'
         style={{width : `${scrollProgress}%`}}></div>
-      </div> */}
+      </div>
 
-      <div className='mt-10 flex flex-col justify-center items-center'>
+      {/* <div className='mt-10 flex flex-col justify-center items-center'>
         <div className='flex justify-center items-center'>Reading Progress</div>
         <div className='w-full h-4 bg-gray-300 mt-1 relative rounded-full'>
           <div className='h-full bg-slate-100 rounded-full' style={{ width: `${scrollProgress}%` }}></div>
@@ -49,7 +49,7 @@ const BlogNavigation = ({ navigation, blogheight }) => {
             <span className='text-xs text-gray-800 font-semibold py-2'>{Math.floor(scrollProgress) + 1}%</span>
           </div>
         </div>
-      </div>
+      </div> */}
 
     </div>
   );

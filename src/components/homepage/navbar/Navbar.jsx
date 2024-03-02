@@ -23,7 +23,10 @@ const Navbar = ({isFixed=true}) => {
         navigate("/");
     }; 
     
-    const { userId, isAuthor } = useUser();
+    // const { userId, isAuthor } = useUser();
+
+    const userId = null;
+    const isAuthor = true;
 
     const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
@@ -41,8 +44,12 @@ const Navbar = ({isFixed=true}) => {
     };
 
     const Ham_menu = () => {
+<<<<<<< HEAD
         return (<div className={`flex-col md:hidden w-[70%] 
         fixed top-0
+=======
+        return (<div className={`flex-col md:hidden w-[70%] fixed top-0
+>>>>>>> 2b6545e433e668cfd1697820081419c521b1bc71
          z-10 ${mode === "light" ? "bg-white" : "bg-[#2A2C38]"} h-[100%] shadow-2xl`}>
             <div className="mx-6 w-[70%] flex items-center
         justify-start font-extrabold text-[30px]  mt-4 "
@@ -66,12 +73,12 @@ const Navbar = ({isFixed=true}) => {
                 </div>
             </Link> */}
 
-            <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
+            {/* <Link to={'/trending-blogs'} className='md:flex md:gap-x-2'>
                 <div className="my-4 mx-6 text-[14px] flex items-center
         justify-start border-b-2 border-gray-600 py-4 w-[70%]">
                     Trending
                 </div>
-            </Link>
+            </Link> */}
 
             {
                 isAuthor && 
@@ -142,7 +149,10 @@ const Navbar = ({isFixed=true}) => {
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2b6545e433e668cfd1697820081419c521b1bc71
             <div className='flex flex-1 justify-start'>
                 <div className={`font-semibold text-[20px] flex-1 flex items-center ml
                  ml-8 cursor-pointer`} onClick={handleHome}>
@@ -225,7 +235,10 @@ const Navbar = ({isFixed=true}) => {
                         document.querySelector("body").style.backgroundColor = "white"
                     }} />}
             </div> */}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2b6545e433e668cfd1697820081419c521b1bc71
         </div>
     );
 }

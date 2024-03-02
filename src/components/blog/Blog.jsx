@@ -53,8 +53,20 @@ const Blog = () => {
         });
 
         setTimeout(() => setBlogHeight(document.getElementById('parent')?.offsetHeight),
+<<<<<<< HEAD
           1000)
  
+=======
+        1000)
+
+
+
+        const followersCount = await getFollowersCount(blogData?.authorId);
+
+        await getAuthorBlogs(blogData.authorId, blogId);
+
+        setFollowersCnt(followersCount);
+>>>>>>> 2b6545e433e668cfd1697820081419c521b1bc71
       } catch (error) {
         console.error('Error fetching blog data:', error);
       }
@@ -102,7 +114,7 @@ const Blog = () => {
 
       <Navbar isFixed={false} />
 
-      <div className='hidden left-0 md:mt-20 md:ml-10 2xl:ml-24 absolute lg:inline-block min-w-56 w-60 max-w-72'
+      <div className='hidden left-0 md:mt-20 md:ml-10 2xl:ml-16 absolute lg:inline-block min-w-56 w-60 max-w-72'
         style={{
           height: `${blogheight}px`
         }}>
