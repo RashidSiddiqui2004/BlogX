@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import myContext from '../../context/data/myContext';
 import { Editor } from '@tinymce/tinymce-react';
-import getUsernameByUID from '../.././utilities/userData/GetUser';
+import getUsernameByUserID from '../.././utilities/userData/GetUser';
 import { uploadFile } from '../.././utilities/uploadFile/UploadFile';
 import getUserID from '../../utilities/userData/GetUserID';
 
@@ -549,7 +549,7 @@ function AddBlog() {
         const fetchData = async () => {
             try {
                 const uid = await getUserID();
-                const username = await getUsernameByUID(uid);
+                const username = await getUsernameByUserID(uid);
 
                 if (username) {
                     setUser(username);

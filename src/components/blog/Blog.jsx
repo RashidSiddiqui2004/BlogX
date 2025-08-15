@@ -9,7 +9,7 @@ import BlogInteraction from './interaction/BlogInteraction';
 import CommentSection from './comments/CommentSection';
 import Footer from '../homepage/footer/Footer';
 import getUserID from '../../utilities/userData/GetUserID';
-import getUsernameByUID from '../../utilities/userData/GetUser';
+import getUsernameByUserID from '../../utilities/userData/GetUser';
 import BlogNavigation from './BlogNavigation';
 import OutputCode from '../code-editor/OutputCode';
 import PDF from './pdfImage.svg'
@@ -22,7 +22,7 @@ import './image.css'
 
 const Blog = () => {
   const context = useContext(myContext);
-  const { mode, getBlogData, getFollowersCount, getCommentsForBlog,
+  const { mode, getBlogData, getCommentsForBlog,
     authorSpecificBlogs, getAuthorBlogs } = context;
   const isDarkTheme = mode === 'dark';
 
@@ -55,12 +55,12 @@ const Blog = () => {
 
     const fetchUserData = async () => {
       try {
-        const uid = await getUserID();
-        if (uid === -1) return; 
-        const username = await getUsernameByUID(uid);
+        const userid = await getUserID();
+        if (userid === -1) return; 
+        const username = await getUsernameByUserID(userid);
         if (username) {
           setUserName(username);
-          setUserId(uid);
+          setUserId(userid);
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
