@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import MyContext from './myContext'
 import {
@@ -12,7 +11,6 @@ import blogModel from './BlogModal';
 import deptMap from '../../utilities/departments/DepartmentMap';
 
 function myState(props) {
-
     const [mode, setMode] = useState('dark');
 
     const toggleMode = () => {
@@ -42,8 +40,8 @@ function myState(props) {
             const blogRef = collection(fireDB, 'blogs')
             await addDoc(blogRef, blog)
 
-            const permanentBlogRef = collection(fireDB, 'recoveryBlogs')
-            await addDoc(permanentBlogRef, blog)
+            const recoveryBlogCollectionRef = collection(fireDB, 'recoveryBlogs')
+            await addDoc(recoveryBlogCollectionRef, blog)
 
             toast.success('Blog added', {
                 position: 'top-right',

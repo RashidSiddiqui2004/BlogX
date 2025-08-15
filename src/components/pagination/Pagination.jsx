@@ -25,9 +25,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
     return (
         <div className="flex justify-center items-center mt-4 mx-20">
-
-            {/* {currentPage > 1 && ( */}
-
             <div className='flex gap-1 font-bold'>
                 <GoArrowLeft className='font-semibold mt-2 text-white' />
                 <button
@@ -39,11 +36,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                 </button>
 
             </div>
-            {/* )} */}
 
             {renderPageBlocks()}
-
-            {/* {currentPage < totalPages && ( */}
 
             <div className='flex gap-1 font-bold'>
                 <button
@@ -55,7 +49,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                 </button>
                 <GoArrowRight className='font-semibold mt-2 text-white' />
             </div>
-            {/* )} */}
         </div>
     );
 };

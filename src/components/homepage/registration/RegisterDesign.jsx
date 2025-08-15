@@ -5,8 +5,6 @@ import backgroundImage from './WebDev.png'
 const RegisterDesign = () => {
     return (
         <div className="flex justify-center items-center py-12 md:py-0 md:min-h-screen overflow-hidden bg-gray-100">
-            
-            {/* Left side */}
             <div className="md:w-3/4 p-8" style={{ backgroundImage: `url('WebDev.png')` }}>
 
                 <div className="font-bold text-4xl mb-3">
@@ -33,11 +31,6 @@ const RegisterDesign = () => {
                     </li>
                 </ul>
             </div>
-
-            {/* Right side */}
-            {/* <div className="w-1/2 p-8 bg-white rounded-md shadow-md">
-                {children}
-            </div> */}
         </div>
     )
 }
