@@ -8,7 +8,6 @@ import myContext from '../../context/data/myContext';
 const AddBlogLayout = () => {
     const context = useContext(myContext);
     const { mode } = context;
-
     const isLightMode = (mode === 'light');
 
     return (

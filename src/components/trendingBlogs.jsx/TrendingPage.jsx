@@ -1,39 +1,26 @@
-
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import myContext from "../../context/data/myContext";
 import Newblogcard from "../homepage/trending/Newblogcard";
 import "./styles.css";
-
-
 import extractFirstXWords from "../../utilities/initials/fetchXWords";
 import Pagination from "../pagination/Pagination";
 import getEncodedTitle from "../../utilities/fetchURLTitle/GetEncodedTitle";
 
-
 function TrendingPage() {
   const context = useContext(myContext);
   const { mode, trendingBlogs, getTrendingBlogs } = context;
-
-
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredBlogs, setFilteredBlogs] = useState([]);
-
   const numberBlogs = trendingBlogs.length;
   const thresholdBlogs = 0;
-
   const [currentPage, setCurrentPage] = useState(1);
-
   const totalPages = Math.floor((numberBlogs - thresholdBlogs) / 6 +
     (((numberBlogs - thresholdBlogs) % 6) ? 1 : 0));
-
   const startBlogNumber = thresholdBlogs + (currentPage - 1) * 6;
-
   const handlePageChange = (newPageNumber) => {
     setCurrentPage(newPageNumber)
   }
-
-
 
   useEffect(() => {
     const fetchAllTrendingBlogs = async () => {
@@ -72,7 +59,6 @@ function TrendingPage() {
         </div>
       </div>
 
-
       <input
         type="text"
         value={searchQuery}
@@ -85,15 +71,12 @@ function TrendingPage() {
       <div className="flex flex-col py-12 w-[90%] mx-[6%]">
         {/* Search bar */}
 
-
-
         <div className="px-5 mt-10 w-full max-md:max-w-full mb-7">
           <div className="grid md:grid-cols-3 h-full gap-x-16 gap-y-4">
             {
               trendingBlogs && trendingBlogs.slice(startBlogNumber, startBlogNumber + 6)?.map((item, index) => {
 
                 const { title,
-
                   description,
                   summary,
                   author,
@@ -135,7 +118,6 @@ function TrendingPage() {
         </div>
       </div>
 
-
       {(trendingBlogs.slice(startBlogNumber).length > 1) ?
         <div>
           <Pagination
@@ -147,7 +129,6 @@ function TrendingPage() {
         :
         <></>
       }
-
 
     </div>
   );

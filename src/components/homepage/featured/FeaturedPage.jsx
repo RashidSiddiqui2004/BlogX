@@ -11,7 +11,6 @@ const FeaturedPage = () => {
             <div className='mx-8'>
                 <FeaturedSection />
             </div>
-
             <Footer />
         </div>
     )

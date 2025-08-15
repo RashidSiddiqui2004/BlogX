@@ -11,19 +11,15 @@ const DeptBlogLayout = () => {
 
   const context = useContext(myContext);
   const { loading } = context;
-
   const params = useParams();
   const departmentName = params.deptName;
 
   return (
     <div>
-
-
       {loading ? <Loader />
         :
         <div>
           <NavbarDept department={departmentName} />
-
           <div className='hidden md:block'>
             <DepartmentBlogs />
           </div> <div className='block md:hidden'>
@@ -31,9 +27,7 @@ const DeptBlogLayout = () => {
           </div>
           <Footer />
         </div>
-
       }
-
     </div>
   )
 }

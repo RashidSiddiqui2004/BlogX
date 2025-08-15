@@ -7,7 +7,6 @@ import UpdateBlog from './UpdateBlog';
 const UpdateBlogLayout = () => {
   const context = useContext(myContext);
   const { mode } = context;
-
   const isLightMode = (mode === 'light');
 
   return (

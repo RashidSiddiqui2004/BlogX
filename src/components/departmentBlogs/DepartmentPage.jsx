@@ -7,16 +7,13 @@ const DepartmentPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-}, []);
+  }, []);
 
   return (
     <div>
       <Navbar />
-      
       <CategorySection /> 
-      
       <div className='flex-grow'></div>
-
       <Footer />
     </div>
   );

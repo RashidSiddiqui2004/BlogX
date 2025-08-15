@@ -12,16 +12,13 @@ import getUserID from '../../utilities/userData/GetUserID';
 import getUsernameByUID from '../../utilities/userData/GetUser';
 import BlogNavigation from './BlogNavigation';
 import OutputCode from '../code-editor/OutputCode';
-
-import './image.css'
-
 import PDF from './pdfImage.svg'
 import Word from './ms-word.svg'
 import RecommendedBlogs from './recommendedBlogs/RecommendedBlogs';
 import getFileType from '../../utilities/filetype/GetFileType'
 import extractPlainText from '../../utilities/initials/getBlogContent';
 import Quote from './Quote';
-
+import './image.css'
 
 const Blog = () => {
   const context = useContext(myContext);
@@ -31,8 +28,7 @@ const Blog = () => {
 
   const params = useParams();
   const blogId = params.blogID;
-
-  const [followersCnt, setFollowersCnt] = useState(0);
+ 
   const [blogState, setBlogState] = useState('');
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState('');
@@ -45,28 +41,13 @@ const Blog = () => {
 
     const fetchBlogData = async () => {
       try { 
-        const blogData = await getBlogData(blogId).then((data) => {
-          // setBlogHeight(document.getElementById('parent')?.offsetHeight);
+        const blogData = await getBlogData(blogId).then((data) => { 
           setBlogState(data);
-          getAuthorBlogs(data.authorId, blogId); 
-          getFollowersCount(data.authorId).then((followersCount) => setFollowersCnt(followersCount));
+          getAuthorBlogs(data.authorId, blogId);  
         });
 
-        setTimeout(() => setBlogHeight(document.getElementById('parent')?.offsetHeight),
-<<<<<<< HEAD
-          1000)
- 
-=======
-        1000)
-
-
-
-        const followersCount = await getFollowersCount(blogData?.authorId);
-
+        setTimeout(() => setBlogHeight(document.getElementById('parent')?.offsetHeight), 1000); 
         await getAuthorBlogs(blogData.authorId, blogId);
-
-        setFollowersCnt(followersCount);
->>>>>>> 2b6545e433e668cfd1697820081419c521b1bc71
       } catch (error) {
         console.error('Error fetching blog data:', error);
       }
@@ -106,26 +87,18 @@ const Blog = () => {
 
   }, [blogId]);
 
-
-
   return (
 
     <div style={{ color: mode === 'dark' ? 'white' : '' }} className='overflow-hidden'>
-
       <Navbar isFixed={false} />
-
       <div className='hidden left-0 md:mt-20 md:ml-10 2xl:ml-16 absolute lg:inline-block min-w-56 w-60 max-w-72'
         style={{
           height: `${blogheight}px`
         }}>
-
         {/* blog navigation */}
         <BlogNavigation blogheight={blogheight}
           navigation={blogState?.sectionTitles} />
-
-
       </div>
-
 
       <div className='mx-2 mt-8 sm:pt-5 sm:my-4' id='parent'>
 
@@ -145,13 +118,11 @@ const Blog = () => {
             sm:mx-6 mt-4 mb-2 pl-4 md:pl-4 font-semibold bg-clip-text bg-gradient-to-b text-transparent from-gray-400 to-neutral-200'>{blogState?.subtitle}</h1>
           }
 
-
           <div className='w-full md:mx-4 md:mr-6 mt-4 pt-5'>
 
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} department={blogState?.department} />
           </div>
   
-
           {blogState?.blogContent?.map((section, index) => {
 
             const { title, content, code, resources, images, quote } = section;
@@ -164,7 +135,6 @@ const Blog = () => {
                 {title &&
                   <h2 className='text-2xl md:text-3xl text-left font-semibold mb-6 mt-6'>{title || ''}</h2>
                 }
-
 
                 {sectionContent.map((item, index) => {
                   return item.type === 'paragraph' ? (
@@ -180,7 +150,6 @@ const Blog = () => {
 
                   );
                 })}
-
 
                 {
                   !(quote === null) && <Quote text={quote} />
@@ -232,8 +201,6 @@ const Blog = () => {
                   </div>
                 }
 
-
-
                 {images && Object.keys(images).length > 0
                   &&
                   <div className="container mx-auto flex flex-row justify-center gap-x-7
@@ -248,13 +215,9 @@ const Blog = () => {
                             <>
                               <label>
                                 <img className="h-auto rounded-sm" src={file?.imageURL} alt="PDF Icon" />
-
-
                                 <p className="py-3 text-sm items-center text-center">
                                   {file?.imageName}
                                 </p>
-
-
                               </label>
                             </>
                           )}
@@ -264,23 +227,16 @@ const Blog = () => {
 
                   </div>
                 }
-
-
               </div>
-
-
             );
           })}
-
-
+          
           <div className='mx-6 md:mr-14 md:ml-4 mb-4 mt-6'>
             <TagSection tagList={blogState?.tags} buttonSize='large' />
           </div>
 
           <div className={`my-10 md:mx-6 py-2 border-2 border-l-0 border-r-0 ${isDarkTheme ? 'border-gray-800' : 'border-gray-100'}`}>
             <BlogInteraction blogId={blogId} claps={blogState?.claps} commentsCount={commentsCnt} userId={userId} blog={blogState} />
-
-
           </div>
 
           {
@@ -297,12 +253,8 @@ const Blog = () => {
               </div>
             )
           }
-
         </div>
-
-
       </div>
-
 
       <div className='md:flex md:flex-row' id='comments'>
         <div className='mx-4 md:w-[45%] md:mx-auto' id='Starting with React'>
@@ -312,14 +264,8 @@ const Blog = () => {
           <RecommendedBlogs author={blogState.author} authorSpecificBlogs={authorSpecificBlogs} />
         </div>
       </div>
-
-
       <Footer />
-
-
     </div >
-
-
   );
 };
 

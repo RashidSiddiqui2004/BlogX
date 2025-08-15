@@ -9,12 +9,9 @@ import Loader from '../../../utilities/loader/Loader';
 function Login() {
     const context = useContext(myContext)
     const { mode, loading, setLoading } = context;
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const isDarkTheme = (mode === 'dark');
-
     const navigate = useNavigate(); 
 
     const login = async () => {
@@ -48,7 +45,6 @@ function Login() {
             })
             setLoading(loading)
         }
-
     }
 
     useEffect(() => {

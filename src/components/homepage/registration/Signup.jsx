@@ -14,7 +14,6 @@ function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const [passwordLength, setPasswordLength] = useState(false);
     const [specialSymbol, setSpecialSymbol] = useState(false);
     const [numbers, setNumbers] = useState(false);
@@ -53,11 +52,8 @@ function Signup() {
 
     const context = useContext(myContext);
     const { mode, loading, setLoading } = context;
-
     const isDarkTheme = (mode === 'dark');
-
     const navigate = useNavigate();
-
     const login = async () => {
         setLoading(true)
         try {
@@ -112,7 +108,6 @@ function Signup() {
             const userRef = collection(fireDB, "users")
             await addDoc(userRef, user);
 
-
             toast.success("Signup Succesfully", {
                 position: "top-right",
                 autoClose: 800,
@@ -130,7 +125,6 @@ function Signup() {
             await login();
 
         } catch (error) {
-
             if (password.length < 6) {
                 toast.info("Password should consist of atleast 6 chars", {
                     position: "top-right",
@@ -142,9 +136,7 @@ function Signup() {
                     progress: undefined,
                     theme: "colored",
                 });
-
             }
-
             else {
                 toast.info("User already exits!", {
                     position: "top-right",
@@ -200,16 +192,7 @@ function Signup() {
                     />
                 </div>
                 <div>
-                    {/* <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                        placeholder='Shhh. its secret, Keep it strong'
-                    />
-
-                    <p className='text-white mb-3 italic font-semibold'>Password should be of atleast 6 characters.</p> */}
-
+                
                     <input
                         type="password"
                         value={password}
@@ -235,22 +218,6 @@ function Signup() {
                             </span>
                         </p>
                     </div>
-
-                    {/* <div className="text-white mb-3">
-                <p className={`italic font-semibold ${passwordLength ? 'line-through' : ''}`}>
-                    Password should be of at least 8 characters.
-                    {passwordLength && <span>&#10003;</span>}
-                </p>
-                <p className={`italic font-semibold ${specialSymbol ? 'line-through' : ''}`}>
-                    Password should contain at least 1 special symbol.
-                    {specialSymbol && <span>&#10003;</span>}
-                </p>
-                <p className={`italic font-semibold ${numbers ? 'line-through' : ''}`}>
-                    Password should contain at least 2 numbers.
-                    {numbers && <span>&#10003;</span>}
-                </p>
-            </div> */}
-
                 </div>
                 <div className=' flex justify-center mb-3'>
                     {
@@ -268,8 +235,8 @@ function Signup() {
                                 Signup
                             </button>
                     }
-
                 </div>
+                
                 <div>
                     <h2 className='text-white'>Have an account <Link className=' text-red-500 font-bold' to={'/login'}>Login</Link></h2>
                 </div>
