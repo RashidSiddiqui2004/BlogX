@@ -119,14 +119,11 @@ const Blog = () => {
           }
 
           <div className='w-full md:mx-4 md:mr-6 mt-4 pt-5'>
-
             <BlogAuthorHighlights userId={userId} blog={blogState} blogId={blogId} commentsCount={commentsCnt} department={blogState?.department} />
           </div>
   
           {blogState?.blogContent?.map((section, index) => {
-
             const { title, content, code, resources, images, quote } = section;
-
             const sectionContent = extractPlainText(content);
 
             return (
