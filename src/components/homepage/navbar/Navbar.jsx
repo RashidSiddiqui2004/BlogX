@@ -131,7 +131,7 @@ const Navbar = () => {
                 onClose={() =>  {toggleLogoutModal();}}  
                 title="Are you really sure you want to logout"
                 onConfirm={() => logout()}
-            />
+            /> 
 
             <div className={`mx-4 text-[14px] hidden md:flex items-center
                 py-2 px-4`}>

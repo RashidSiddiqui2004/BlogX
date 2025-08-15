@@ -1,8 +1,6 @@
-
-function getEncodedTitle(str) {
+function getEncodedTitle(title) {
     // Remove question marks from the string
-    const stringWithoutQuestionMarks = str?.replace(/\?/g, '');
-    
+    const stringWithoutQuestionMarks = title?.replace(/\?/g, '');
     // Replace spaces with dashes
     return stringWithoutQuestionMarks?.replace(/\s+/g, '-');
 }

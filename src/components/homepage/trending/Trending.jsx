@@ -1,5 +1,3 @@
-// TrendingBlogs.js
-
 import React, { useContext, useEffect } from "react";
 import myContext from "../../../context/data/myContext";
 import Newblogcard from "./Newblogcard";

@@ -3,6 +3,7 @@ import myContext from "../../../context/data/myContext";
 import { Link } from 'react-router-dom';
 import Card from './CardsCategory';
 
+// import images of different departments
 import WebDept from './WebDev.svg';
 import AppDept from './AppDev.svg';
 import MLDept from './MLDept.svg';
@@ -10,7 +11,6 @@ import MLDept from './MLDept.svg';
 function CategorySection() {
   const context = useContext(myContext);
   const { mode } = context;
-
   const departmentData = [
     {
       id: 1,
@@ -31,27 +31,12 @@ function CategorySection() {
       url: 'machine-learning'
     },
   ];
-
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
-    <div>
-
-      {/* <div className="md:w-[6%] flex justify-around">
-        <button className={`prev mr-3 md:mr-0 hidden md:block ${mode === "dark"
-          ? "bg- rounded-lg text-white"
-          : "bg-neutral-80  text-gray-400"
-          }`} >←</button>
-        <button className={`next hidden md:block ${mode === "dark"
-          ? "bg- rounded-lg text-white"
-          : "bg-neutral-80 text-zinc-800"
-          }`} >→</button>
-      </div> */}
-
+    <div> 
       <div className="flex flex-col justify-between md:flex-row md:py-12 md:h-[500px]">
-
-        <div className="gap-5 mt-9  md:mt-[10%] md:w-[30%] max-md:flex-wrap">
+        <div className="gap-5 mt-9 md:mt-[10%] md:w-[30%] max-md:flex-wrap">
           <div
             className={`flex text-start flex-col px-5 font-semibold max-md:max-w-full ${mode === "dark"
               ? "bg- rounded-lg text-white"
@@ -81,7 +66,6 @@ function CategorySection() {
               </Link>
             </div> */}
           </div>
-
         </div>
 
         <div className="md:w-[65%] w-[90%] mt-16 md:mt-2 mx-auto md:ml-auto md:mr-5 flex justify-center items-center transition-transform duration-500 ease-in-out md:mb-[-3.5%]">
@@ -96,7 +80,6 @@ function CategorySection() {
             ))}
           </div>
         </div>
-
       </div>
 
       <div className="border-b border-gray-300 md:mt-24 mt-24"></div>

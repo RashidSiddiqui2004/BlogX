@@ -1,7 +1,6 @@
-
 import React from 'react';
 
-const Modal = ({ isOpen, onClose, title, content="", blogTitle="", onConfirm }) => {
+const Modal = ({ isOpen, title, content="", blogTitle="", onClose, onConfirm }) => {
     return (
         <div className={`fixed inset-0 flex justify-center items-center my-[45vh] z-50 ${isOpen ? 'visible' : 'invisible'}`}>
             <div className="absolute inset-0 bg-gray-800 opacity-50"></div>

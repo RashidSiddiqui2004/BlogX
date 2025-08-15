@@ -1,14 +1,5 @@
 import React from 'react'
 
-// function Loader() {
-//   return (
-//     <div className="bg-[#0F1016]">
-//         <h1 className='text-slate-200 text-4xl shadow-md shadow-gray-600'>BlogX</h1>
-//     </div>
-//   )
-// }
-
-
 function Loader() {
   return (
     <div className="bg-[#0F1016]">

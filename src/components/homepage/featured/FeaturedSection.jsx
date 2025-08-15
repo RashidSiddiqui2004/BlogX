@@ -6,7 +6,6 @@ import "./FeaturedSection.css";
 function FeaturedSection() {
   const context = useContext(myContext);
   const { mode, getFeaturedBlogs } = context;
-
   const [featuredBlogs, setFeaturedBlogs] = useState([]);
   const numFeaturedBlogs = featuredBlogs.length;
 
