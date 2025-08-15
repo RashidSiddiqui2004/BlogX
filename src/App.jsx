@@ -14,8 +14,6 @@ import { ToastContainer } from 'react-toastify';
 import NoPage from './components/nopage/NoPage';
 import Blog from './components/blog/Blog';
 import AddBlogLayout from './components/addBlog/AddBlogLayout';
-
-
 import UpdateBlogLayout from "./components/updateblog/UpdateBlogLayout";
 import AboutUs from "./components/aboutus/AboutUs";
 import AdminDashboard from "./components/admin/AdminDashboard";
@@ -28,7 +26,6 @@ import DeptBlogLayout from "./components/departmentBlogs/DeptBlogLayout";
 import DepartmentPage from "./components/departmentBlogs/DepartmentPage";
 import Code_Editor from "./components/code-editor/Editor";
 import { useUser } from "./hooks/useUser";
-
 
 function App() {
   return (
@@ -113,30 +110,21 @@ export const ProtectedRoute = ({ children }) => {
 // admin verfication 
 const ProtectedRouteForAdmin = ({ children }) => {
   const admin = JSON.parse(localStorage.getItem('user'))
-
   if (admin.user.email === ADMIN_EMAIL) {
+    return children;
+  }
+  else {
+    return <Navigate to={'/'} />
+  }
+}
+
+// author verfication 
+const ProtectedRouteForAuthors = ({ children }) => {
+  const { userId, isAuthor } = useUser(); 
+  if (isAuthor === true) {
     return children
   }
   else {
     return <Navigate to={'/'} />
   }
-
-}
-
-
-// author verfication 
-const ProtectedRouteForAuthors = ({ children }) => {
-
-  const { userId, isAuthor } = useUser(); 
-
-  // console.log(isAuthor);
-
-  // if (isAuthor === true) {
-    return children
-  // }
-
-  // else {
-    return <Navigate to={'/'} />
-  // }
-
 }
